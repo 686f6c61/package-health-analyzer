@@ -1,0 +1,78 @@
+{
+  "nav": {
+    "home": "Home",
+    "documentation": "Documentation",
+    "liveReport": "Live Demo",
+    "github": "GitHub"
+  },
+  "hero": {
+    "title": "Dependency Security Health",
+    "subtitle": "Comprehensive dependency health analyzer for Node.js projects",
+    "description": "Analyze age, detect licenses, and assess security vulnerabilities in your dependencies - all in one tool.",
+    "getStarted": "Get Started",
+    "viewDocs": "View Documentation"
+  },
+  "features": {
+    "title": "Features",
+    "ageDetection": {
+      "title": "Age Detection",
+      "description": "Identify outdated dependencies and get recommendations for upgrades"
+    },
+    "licenseCompliance": {
+      "title": "License Compliance",
+      "description": "Validate licenses against SPDX standards and commercial compatibility"
+    },
+    "security": {
+      "title": "Security Insights",
+      "description": "Detect deprecated packages and security vulnerabilities"
+    },
+    "healthScore": {
+      "title": "Health Scoring",
+      "description": "Get an overall health score for your project dependencies"
+    },
+    "githubIntegration": {
+      "title": "GitHub Integration",
+      "description": "Analyze repository health, stars, forks, and maintenance status"
+    },
+    "reporting": {
+      "title": "Multiple Formats",
+      "description": "Export reports in CLI, JSON, and CSV formats"
+    }
+  },
+  "installation": {
+    "title": "Installation",
+    "description": "Install globally via npm or use npx to run without installation"
+  },
+  "liveReport": {
+    "title": "Live Demo",
+    "subtitle": "Example analysis of this landing page's dependencies",
+    "description": "This is a demonstration of the analysis output. The actual tool generates reports in multiple formats:",
+    "formats": {
+      "cli": "CLI - Beautiful colored terminal output with tables and summaries",
+      "json": "JSON - Structured data perfect for CI/CD pipelines and automation",
+      "csv": "CSV - Spreadsheet-friendly format for data analysis and tracking"
+    },
+    "analyzing": "Analyzing dependencies...",
+    "package": "Package",
+    "version": "Version",
+    "license": "License",
+    "age": "Age",
+    "score": "Score",
+    "status": "Status",
+    "noteTitle": "About this demo",
+    "noteDescription": "This table shows a simplified view of the landing page's dependencies. Run the tool in your own project to get a complete analysis with detailed recommendations, security insights, and customizable output formats."
+  },
+  "documentation": {
+    "title": "Documentation",
+    "tableOfContents": "Table of Contents"
+  },
+  "footer": {
+    "description": "Open source dependency health analyzer for Node.js projects",
+    "builtWith": "Built with",
+    "license": "MIT License"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
+  }
+}

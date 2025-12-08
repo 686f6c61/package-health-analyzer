@@ -1,0 +1,232 @@
+================================================================================
+PACKAGE HEALTH ANALYZER - DEPENDENCY ANALYSIS REPORT
+================================================================================
+
+Project: my-awesome-app v2.1.0
+Analysis Date: 2025-12-09T12:00:00.000Z
+Project Type: commercial
+Analysis Mode: production
+Config File: .packagehealthanalyzerrc.json
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Dependencies: 42
+  - Excellent Health: 35 (83%)
+  - Good Health: 4 (10%)
+  - Fair Health: 2 (5%)
+  - Poor Health: 1 (2%)
+
+Average Health Score: 87/100
+Risk Level: LOW
+
+Issues Found:
+  - Critical: 0
+  - Warning: 3
+  - Info: 2
+
+License Compliance:
+  - Commercial-friendly: 42 (100%)
+  - Commercial-warning: 0
+  - Commercial-incompatible: 0
+  - Unknown: 0
+
+Package Age Distribution:
+  - Recent (< 6 months): 28 (67%)
+  - Acceptable (6-12 months): 11 (26%)
+  - Outdated (1-2 years): 2 (5%)
+  - Critical (> 3 years): 1 (2%)
+
+================================================================================
+PACKAGES WITH ISSUES
+================================================================================
+
+--------------------------------------------------------------------------------
+[WARNING] moment@2.29.4
+--------------------------------------------------------------------------------
+Published: 2022-07-06T10:23:45.000Z (3 years 5 months ago)
+Age: 1247 days - WARNING threshold exceeded
+License: MIT (commercial-friendly, Blue Oak: gold)
+Repository: https://github.com/moment/moment (47,650 stars)
+Downloads: 15,234,567 weekly / 62,145,890 monthly (stable trend)
+Health Score: 62/100 (Fair)
+
+Score Breakdown:
+  - Age: 60/100 (⚠️ Warning)
+  - Deprecation: 100/100 (✓)
+  - License: 100/100 (✓)
+  - Vulnerability: 85/100 (✓)
+  - Popularity: 95/100 (✓)
+  - Repository: 85/100 (✓)
+  - Update Frequency: 40/100 (⚠️)
+
+Upgrade Path:
+  - Latest version: 2.30.1 (available)
+  - Breaking changes: No
+  - Effort: Low
+
+Alternatives:
+  1. date-fns - Modern, tree-shakeable, actively maintained (effort: medium)
+  2. dayjs - Moment.js compatible API, smaller bundle (effort: low)
+
+Recommendations:
+  [MEDIUM PRIORITY] Consider migrating to date-fns or native Temporal API
+  Estimated effort: 4-6 hours
+  Impact: Bundle size reduction and better maintenance
+
+--------------------------------------------------------------------------------
+[CRITICAL] request@2.88.2
+--------------------------------------------------------------------------------
+Published: 2020-04-21T14:32:18.000Z (5 years 8 months ago)
+Age: 2058 days - CRITICAL
+License: Apache-2.0 (commercial-friendly, Blue Oak: gold)
+Repository: https://github.com/request/request (25,634 stars, ARCHIVED)
+Downloads: 8,456,234 weekly / 34,125,678 monthly (declining trend)
+Health Score: 45/100 (Poor)
+
+⚠️ DEPRECATED: request has been deprecated, see https://github.com/request/request/issues/3142
+
+Score Breakdown:
+  - Age: 20/100 (❌ Critical)
+  - Deprecation: 0/100 (❌ Deprecated)
+  - License: 100/100 (✓)
+  - Vulnerability: 60/100 (⚠️)
+  - Popularity: 70/100 (declining)
+  - Repository: 50/100 (archived)
+  - Update Frequency: 0/100 (❌)
+
+Upgrade Path:
+  - Latest version: 2.88.2 (no updates available)
+  - Breaking changes: Yes
+  - Effort: High
+
+Alternatives:
+  1. axios - Promise-based, widely adopted, active maintenance (effort: medium)
+  2. got - Lightweight, modern API, excellent TypeScript support (effort: medium)
+  3. node-fetch - Fetch API compatible, minimal dependencies (effort: low)
+
+Recommendations:
+  [HIGH PRIORITY] Replace with axios, got, or native fetch API
+  Estimated effort: 2-4 hours
+  Impact: Security and long-term maintainability
+
+--------------------------------------------------------------------------------
+[WARNING] colors@1.4.0
+--------------------------------------------------------------------------------
+Published: 2022-10-15T09:15:33.000Z (2 years 3 months ago)
+Age: 835 days - Approaching 2 year threshold
+License: MIT (commercial-friendly, Blue Oak: gold)
+Repository: https://github.com/Marak/colors.js (5,178 stars)
+Downloads: 12,345,678 weekly / 48,765,432 monthly (stable trend)
+Health Score: 71/100 (Good)
+
+Score Breakdown:
+  - Age: 70/100 (⚠️)
+  - Deprecation: 100/100 (✓)
+  - License: 100/100 (✓)
+  - Vulnerability: 90/100 (✓)
+  - Popularity: 85/100 (✓)
+  - Repository: 75/100 (✓)
+  - Update Frequency: 60/100 (✓)
+
+Upgrade Path:
+  - Latest version: 1.4.1 (available)
+  - Breaking changes: No
+  - Effort: Minimal
+
+Recommendations:
+  [LOW PRIORITY] Update to latest version 1.4.1
+  Estimated effort: < 1 hour
+  Impact: Bug fixes and minor improvements
+
+================================================================================
+TOP 10 HEALTHIEST PACKAGES
+================================================================================
+
+1. zod@3.23.8 (98/100 - Excellent)
+   MIT | 2 months old | 18,765,432 weekly downloads | growing
+
+2. typescript@5.7.2 (97/100 - Excellent)
+   Apache-2.0 | 1 month old | 45,678,901 weekly downloads | growing
+
+3. vitest@4.0.15 (96/100 - Excellent)
+   MIT | 3 weeks old | 12,345,678 weekly downloads | growing
+
+4. commander@12.1.0 (95/100 - Excellent)
+   MIT | 4 months old | 8,765,432 weekly downloads | stable
+
+5. chalk@5.3.0 (94/100 - Excellent)
+   MIT | 8 months old | 23,456,789 weekly downloads | stable
+
+6. semver@7.6.3 (93/100 - Excellent)
+   ISC | 5 months old | 34,567,890 weekly downloads | stable
+
+7. p-limit@6.1.0 (92/100 - Excellent)
+   MIT | 6 months old | 6,789,012 weekly downloads | stable
+
+8. cli-table3@0.6.5 (91/100 - Excellent)
+   MIT | 9 months old | 4,567,890 weekly downloads | stable
+
+9. cosmiconfig@9.0.0 (90/100 - Excellent)
+   MIT | 7 months old | 7,890,123 weekly downloads | stable
+
+10. prompts@2.4.2 (89/100 - Good)
+    MIT | 1 year old | 5,678,901 weekly downloads | stable
+
+================================================================================
+RECOMMENDED ACTIONS
+================================================================================
+
+HIGH PRIORITY:
+  1. Replace 'request' package (DEPRECATED)
+     → Migrate to axios or native fetch
+     → Estimated effort: 2-4 hours
+     → Impact: Security and maintenance
+
+MEDIUM PRIORITY:
+  2. Evaluate moment.js migration
+     → Consider date-fns or native Temporal
+     → Estimated effort: 4-6 hours
+     → Impact: Bundle size and performance
+
+  3. Update colors to latest version
+     → Simple version bump
+     → Estimated effort: < 1 hour
+     → Impact: Bug fixes and improvements
+
+LOW PRIORITY:
+  4. Consider lodash alternatives
+     → Migrate to lodash-es for tree-shaking
+     → Estimated effort: 2-3 hours
+     → Impact: Bundle size reduction
+
+  5. Upgrade chalk to v5.x
+     → Better ESM support
+     → Estimated effort: 1-2 hours
+     → Impact: Module system compatibility
+
+================================================================================
+LICENSE DISTRIBUTION
+================================================================================
+
+MIT: 35 packages (83%)
+Apache-2.0: 4 packages (10%)
+ISC: 2 packages (5%)
+BSD-3-Clause: 1 package (2%)
+
+✓ All packages use commercial-friendly licenses
+
+================================================================================
+EXECUTION DETAILS
+================================================================================
+
+Exit Code: 0 (Success)
+Execution Time: 4523ms
+Cache Hits: 38
+Cache Misses: 4
+
+--------------------------------------------------------------------------------
+Generated by package-health-analyzer v1.0.0
+https://package-health-analyzer.onrender.com
+--------------------------------------------------------------------------------
