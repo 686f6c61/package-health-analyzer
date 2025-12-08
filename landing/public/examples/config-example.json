@@ -1,0 +1,103 @@
+{
+  "$schema": "https://package-health-analyzer.onrender.com/schema.json",
+
+  "_comment_projectType": "Available types: 'commercial', 'saas', 'open-source', 'personal', 'internal', 'library', 'startup', 'government', 'educational', 'custom'",
+  "_comment_projectType_details": "commercial=strict GPL blocking, saas=AGPL warnings, open-source=permissive, personal=relaxed, internal=enterprise tools, library=distribution-focused, startup=balanced, government=regulatory, educational=learning, custom=fully customizable",
+  "projectType": "commercial",
+
+  "_comment_age": "Age thresholds for alerts. Format: number + unit (y=years, m=months, d=days)",
+  "age": {
+    "warn": "2y",
+    "critical": "5y",
+    "checkDeprecated": true,
+    "checkRepository": true
+  },
+
+  "_comment_license": "Control allowed, denied, and warning licenses",
+  "license": {
+    "allow": [
+      "MIT",
+      "ISC",
+      "BSD-2-Clause",
+      "BSD-3-Clause",
+      "Apache-2.0",
+      "Unlicense",
+      "CC0-1.0",
+      "0BSD",
+      "Zlib",
+      "BSL-1.0"
+    ],
+    "deny": [],
+    "_comment_deny_examples": "Common examples: ['GPL-*', 'AGPL-*', 'SSPL-*']",
+    "warn": [
+      "LGPL-2.1",
+      "LGPL-3.0",
+      "MPL-2.0",
+      "EPL-1.0",
+      "EPL-2.0"
+    ],
+    "warnOnUnknown": true,
+    "checkPatentClauses": true
+  },
+
+  "_comment_scoring": "Scoring system 0-100 for each dependency",
+  "scoring": {
+    "enabled": true,
+    "minimumScore": 0,
+    "_comment_minimumScore": "0 = no minimum, 50-70 = recommended for production",
+    "boosters": {
+      "age": 1.5,
+      "deprecation": 4.0,
+      "license": 3.0,
+      "vulnerability": 2.0,
+      "popularity": 1.0,
+      "repository": 2.0,
+      "updateFrequency": 1.5
+    }
+  },
+
+  "_comment_ignore": "Exclude packages from analysis",
+  "ignore": {
+    "scopes": [],
+    "_comment_scopes_examples": "Examples: ['@mycompany/*', '@types/*', '@babel/*']",
+    "prefixes": [],
+    "_comment_prefixes_examples": "Examples: ['eslint-*', 'webpack-*', '@testing-library/*']",
+    "authors": [],
+    "packages": []
+  },
+
+  "_comment_includeDevDependencies": "true = analyze devDependencies, false = only dependencies",
+  "includeDevDependencies": false,
+
+  "_comment_failOn": "Severity level for exit code != 0. Options: 'none', 'info', 'warning', 'critical'",
+  "failOn": "critical",
+
+  "_comment_output": "Output format. Options: 'cli' (table), 'json', 'csv', 'txt' (plain text), 'md' (markdown)",
+  "output": "cli",
+
+  "_comment_cache": "Results cache to speed up analysis",
+  "cache": {
+    "enabled": true,
+    "ttl": 3600
+  },
+
+  "_comment_github": "GitHub integration for repository analysis. Requires GITHUB_TOKEN in environment variables",
+  "github": {
+    "enabled": false,
+    "_comment_token": "Use GITHUB_TOKEN environment variable instead of hardcoding here"
+  },
+
+  "_comment_monitor": "Monitoring and notifications",
+  "monitor": {
+    "enabled": false
+  },
+
+  "_comment_upgradePath": "Upgrade path analysis and breaking changes",
+  "upgradePath": {
+    "enabled": true,
+    "analyzeBreakingChanges": true,
+    "suggestAlternatives": true,
+    "fetchChangelogs": false,
+    "estimateEffort": true
+  }
+}

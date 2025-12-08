@@ -1,0 +1,236 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Package Health Analyzer Configuration",
+  "description": "Configuration schema for .packagehealthanalyzerrc.json",
+  "type": "object",
+  "properties": {
+    "projectType": {
+      "type": "string",
+      "enum": [
+        "commercial",
+        "saas",
+        "open-source",
+        "personal",
+        "internal",
+        "library",
+        "startup",
+        "government",
+        "educational",
+        "custom"
+      ],
+      "default": "commercial",
+      "description": "Project type to apply appropriate license checks"
+    },
+    "age": {
+      "type": "object",
+      "properties": {
+        "warn": {
+          "type": "string",
+          "pattern": "^\\d+[ymd]$",
+          "default": "2y",
+          "description": "Warning threshold for package age (e.g., '2y', '18m', '730d')"
+        },
+        "critical": {
+          "type": "string",
+          "pattern": "^\\d+[ymd]$",
+          "default": "5y",
+          "description": "Critical threshold for package age"
+        },
+        "checkDeprecated": {
+          "type": "boolean",
+          "default": true,
+          "description": "Alert on deprecated packages"
+        },
+        "checkRepository": {
+          "type": "boolean",
+          "default": true,
+          "description": "Check repository activity and health"
+        }
+      },
+      "additionalProperties": false
+    },
+    "license": {
+      "type": "object",
+      "properties": {
+        "allow": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Explicitly allowed licenses"
+        },
+        "deny": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Blocked licenses that fail the build"
+        },
+        "warn": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Licenses that trigger warnings"
+        },
+        "warnOnUnknown": {
+          "type": "boolean",
+          "default": true,
+          "description": "Alert when license is unrecognized"
+        },
+        "checkPatentClauses": {
+          "type": "boolean",
+          "default": true,
+          "description": "Verify patent protection clauses"
+        }
+      },
+      "additionalProperties": false
+    },
+    "scoring": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable scoring system"
+        },
+        "minimumScore": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 0,
+          "description": "Minimum acceptable score (0-100)"
+        },
+        "boosters": {
+          "type": "object",
+          "properties": {
+            "age": { "type": "number", "default": 1.5 },
+            "deprecation": { "type": "number", "default": 4.0 },
+            "license": { "type": "number", "default": 3.0 },
+            "vulnerability": { "type": "number", "default": 2.0 },
+            "popularity": { "type": "number", "default": 1.0 },
+            "repository": { "type": "number", "default": 2.0 },
+            "updateFrequency": { "type": "number", "default": 1.5 }
+          },
+          "additionalProperties": false,
+          "description": "Weight multipliers for each metric"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ignore": {
+      "type": "object",
+      "properties": {
+        "scopes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Ignore by npm scope (e.g., '@types/*')"
+        },
+        "prefixes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Ignore by package name prefix"
+        },
+        "authors": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Ignore by package author"
+        },
+        "packages": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Ignore specific package names"
+        }
+      },
+      "additionalProperties": false
+    },
+    "includeDevDependencies": {
+      "type": "boolean",
+      "default": false,
+      "description": "Include devDependencies in analysis"
+    },
+    "failOn": {
+      "type": "string",
+      "enum": ["none", "info", "warning", "critical"],
+      "default": "critical",
+      "description": "Severity level for exit code != 0"
+    },
+    "output": {
+      "type": "string",
+      "enum": ["cli", "json", "csv", "txt", "md"],
+      "default": "cli",
+      "description": "Output format"
+    },
+    "cache": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable results caching"
+        },
+        "ttl": {
+          "type": "number",
+          "default": 3600,
+          "description": "Cache time-to-live in seconds"
+        }
+      },
+      "additionalProperties": false
+    },
+    "github": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable GitHub API integration"
+        }
+      },
+      "additionalProperties": false
+    },
+    "monitor": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable monitoring mode"
+        }
+      },
+      "additionalProperties": false
+    },
+    "upgradePath": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable upgrade path analysis"
+        },
+        "analyzeBreakingChanges": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect breaking changes in updates"
+        },
+        "suggestAlternatives": {
+          "type": "boolean",
+          "default": true,
+          "description": "Recommend alternative packages"
+        },
+        "fetchChangelogs": {
+          "type": "boolean",
+          "default": false,
+          "description": "Fetch and parse changelogs"
+        },
+        "estimateEffort": {
+          "type": "boolean",
+          "default": true,
+          "description": "Estimate migration effort"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

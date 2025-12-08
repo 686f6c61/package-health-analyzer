@@ -1,0 +1,81 @@
+{
+  "name": "package-health-analyzer",
+  "version": "1.0.0",
+  "description": "Comprehensive dependency health analyzer combining age detection, license compliance, and security insights for Node.js projects",
+  "keywords": [
+    "dependencies",
+    "health",
+    "licenses",
+    "audit",
+    "npm",
+    "security",
+    "compliance",
+    "outdated",
+    "deprecated",
+    "vulnerabilities"
+  ],
+  "author": "686f6c61",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/686f6c61/package-health-analyzer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/686f6c61/package-health-analyzer/issues"
+  },
+  "homepage": "https://package-health-analyzer.onrender.com",
+  "bin": {
+    "package-health-analyzer": "./dist/index.js"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test && npm run build"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "cli-table3": "^0.6.5",
+    "commander": "^12.1.0",
+    "cosmiconfig": "^9.0.0",
+    "p-limit": "^6.1.0",
+    "prompts": "^2.4.2",
+    "semver": "^7.6.3",
+    "spdx-license-ids": "^3.0.22",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/prompts": "^2.4.9",
+    "@types/semver": "^7.5.8",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "@vitest/coverage-v8": "^4.0.15",
+    "eslint": "^9.16.0",
+    "globals": "^16.5.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^4.0.15"
+  }
+}

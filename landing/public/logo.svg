@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="#2563eb" stroke="#1e40af" stroke-width="2"/>
+
+  <!-- Letter D -->
+  <path d="M 30 25 L 45 25 C 65 25 72 35 72 50 C 72 65 65 75 45 75 L 30 75 Z M 38 33 L 38 67 L 45 67 C 60 67 64 60 64 50 C 64 40 60 33 45 33 Z" fill="white"/>
+
+  <!-- Decorative dot -->
+  <circle cx="75" cy="25" r="4" fill="#10b981"/>
+</svg>

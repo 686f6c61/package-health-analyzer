@@ -1,0 +1,78 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "documentation": "Documentación",
+    "liveReport": "Demo en Vivo",
+    "github": "GitHub"
+  },
+  "hero": {
+    "title": "Salud de Seguridad de Dependencias",
+    "subtitle": "Analizador integral de salud de dependencias para proyectos Node.js",
+    "description": "Analiza antigüedad, detecta licencias y evalúa vulnerabilidades de seguridad en tus dependencias, todo en una herramienta.",
+    "getStarted": "Comenzar",
+    "viewDocs": "Ver Documentación"
+  },
+  "features": {
+    "title": "Características",
+    "ageDetection": {
+      "title": "Detección de Antigüedad",
+      "description": "Identifica dependencias obsoletas y obtén recomendaciones de actualización"
+    },
+    "licenseCompliance": {
+      "title": "Cumplimiento de Licencias",
+      "description": "Valida licencias contra estándares SPDX y compatibilidad comercial"
+    },
+    "security": {
+      "title": "Información de Seguridad",
+      "description": "Detecta paquetes obsoletos y vulnerabilidades de seguridad"
+    },
+    "healthScore": {
+      "title": "Puntuación de Salud",
+      "description": "Obtén una puntuación general de salud para las dependencias de tu proyecto"
+    },
+    "githubIntegration": {
+      "title": "Integración con GitHub",
+      "description": "Analiza la salud del repositorio, estrellas, forks y estado de mantenimiento"
+    },
+    "reporting": {
+      "title": "Múltiples Formatos",
+      "description": "Exporta reportes en formatos CLI, JSON y CSV"
+    }
+  },
+  "installation": {
+    "title": "Instalación",
+    "description": "Instala globalmente vía npm o usa npx para ejecutar sin instalación"
+  },
+  "liveReport": {
+    "title": "Demo en Vivo",
+    "subtitle": "Ejemplo de análisis de las dependencias de esta landing page",
+    "description": "Esta es una demostración del análisis. La herramienta real genera reportes en múltiples formatos:",
+    "formats": {
+      "cli": "CLI - Salida de terminal colorida con tablas y resúmenes",
+      "json": "JSON - Datos estructurados perfectos para pipelines CI/CD y automatización",
+      "csv": "CSV - Formato compatible con hojas de cálculo para análisis y seguimiento"
+    },
+    "analyzing": "Analizando dependencias...",
+    "package": "Paquete",
+    "version": "Versión",
+    "license": "Licencia",
+    "age": "Antigüedad",
+    "score": "Puntuación",
+    "status": "Estado",
+    "noteTitle": "Acerca de esta demo",
+    "noteDescription": "Esta tabla muestra una vista simplificada de las dependencias de la landing. Ejecuta la herramienta en tu propio proyecto para obtener un análisis completo con recomendaciones detalladas, insights de seguridad y formatos de salida personalizables."
+  },
+  "documentation": {
+    "title": "Documentación",
+    "tableOfContents": "Tabla de Contenidos"
+  },
+  "footer": {
+    "description": "Analizador de salud de dependencias de código abierto para proyectos Node.js",
+    "builtWith": "Construido con",
+    "license": "Licencia MIT"
+  },
+  "theme": {
+    "light": "Claro",
+    "dark": "Oscuro"
+  }
+}

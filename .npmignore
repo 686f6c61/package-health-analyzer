@@ -1,0 +1,46 @@
+# Source files
+src/
+tests/
+*.test.ts
+*.spec.ts
+
+# Config files
+.github/
+.vscode/
+tsconfig.json
+tsup.config.ts
+vitest.config.ts
+eslint.config.js
+.eslintrc*
+.prettierrc*
+.editorconfig
+
+# Build artifacts
+coverage/
+*.log
+*.tsbuildinfo
+
+# Development files
+.env
+.env.local
+.env.*.local
+.packagehealthanalyzerrc.json
+.dephealthanalyzerrc.json
+.packagehealthanalyzerrc-test.json
+.depsecurityhealthrc.json
+.depsecurityhealthrc-test.json
+
+# Project files
+PROJECT_PLAN.md
+dep-health-PRD.md
+PUBLISHING.md
+*.md.backup
+.DS_Store
+landing/
+examples/
+render.yaml
+
+# Git
+.git/
+.gitignore
+.gitattributes
