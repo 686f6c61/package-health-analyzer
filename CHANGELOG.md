@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.2] - 2025-12-14
+
+### Fixed
+- **Tests**: Increased timeout for changelog fetch test to fix flaky failure on Node.js 18.x
+- **Publishing**: Re-publish to ensure README.md displays correctly on npm registry
+
 ## [2.0.1] - 2025-12-14
 
 ### Changed

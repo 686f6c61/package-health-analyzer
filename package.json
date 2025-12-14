@@ -1,6 +1,6 @@
 {
   "name": "package-health-analyzer",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Comprehensive dependency health analyzer combining age detection, license compliance, and security insights for Node.js projects",
   "keywords": [
     "dependencies",
