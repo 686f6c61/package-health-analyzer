@@ -1,6 +1,22 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - SPDX License Expression Parser
  *
+ * Parses and validates SPDX license expressions including complex dual-licensing (OR), multi-licensing (AND), and
+ * composite license scenarios. This module handles the complexity of real-world npm package licensing where packages
+ * may use SPDX expressions like "(MIT OR Apache-2.0)" or variations/mistakes in license strings. It normalizes common
+ * license name variations (e.g., "Apache 2.0" → "Apache-2.0") and validates against the official SPDX license list,
+ * while also detecting patent clauses by delegating to the comprehensive spdx-licenses database.
+ *
+ * Key responsibilities:
+ * - Parse SPDX license expressions with OR/AND operators and parentheses
+ * - Normalize common license name variations and formatting mistakes
+ * - Validate license strings against official SPDX identifier list
+ * - Detect dual-licensing scenarios and extract individual license options
+ * - Identify deprecated license forms and map to current SPDX standards
+ * - Integrate with spdx-licenses module for patent clause detection
+ * - Handle invalid/unknown licenses gracefully with clear validation
+ *
+ * @module utils/spdx
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT
@@ -9,6 +25,9 @@
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const spdxLicenseIds = require('spdx-license-ids') as string[];
+
+// Import comprehensive patent clause database
+import { licensesWithPatentClauses } from './spdx-licenses.js';
 
 /**
  * Parse SPDX license expression
@@ -59,24 +78,10 @@ export function parseSpdxExpression(license: string): {
 
 /**
  * Check if license has patent clause
+ * Delegates to comprehensive spdx-licenses database (30 licenses)
  */
 export function hasPatentClause(spdxId: string): boolean {
-  const patentLicenses = new Set([
-    'Apache-2.0',
-    'Apache-1.1',
-    'MPL-2.0',
-    'MPL-2.0-no-copyleft-exception',
-    'EPL-1.0',
-    'EPL-2.0',
-    'GPL-3.0-only',
-    'GPL-3.0-or-later',
-    'LGPL-3.0-only',
-    'LGPL-3.0-or-later',
-    'AGPL-3.0-only',
-    'AGPL-3.0-or-later',
-  ]);
-
-  return patentLicenses.has(spdxId);
+  return licensesWithPatentClauses.has(spdxId);
 }
 
 /**

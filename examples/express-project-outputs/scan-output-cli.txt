@@ -1,0 +1,16 @@
+Scanning 9 dependencies...
+
+package-health-analyzer
+
+Project: express-example-api@1.0.0
+Dependencies: 9
+Scan duration: 0.22s
+
+SUMMARY
+
+Excellent: 9 | Good: 0 | Fair: 0 | Poor: 0
+Average health score: 95/100
+Risk level: LOW
+
+Critical: 0 | Warnings: 0 | Info: 0
+

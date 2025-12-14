@@ -1,9 +1,20 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - Blue Oak Council License Rating System
  *
- * Blue Oak Council license ratings
- * Based on https://blueoakcouncil.org/list
+ * Implements the Blue Oak Council's license quality rating methodology to assess legal clarity and drafting quality
+ * of open source licenses. This module provides an authoritative categorization system (Gold/Silver/Bronze/Lead) based
+ * on the Blue Oak Council's expert legal analysis, helping teams make informed decisions about license compatibility
+ * and legal risk. By evaluating licenses beyond just permissiveness, it identifies licenses with ambiguous language,
+ * poor drafting, or confusing terms that could create legal complications even if technically open source.
  *
+ * Key responsibilities:
+ * - Map SPDX license identifiers to Blue Oak quality ratings (gold/silver/bronze/lead/unrated)
+ * - Maintain curated sets of licenses categorized by legal drafting quality
+ * - Provide human-readable descriptions for each rating tier
+ * - Identify legally sound licenses (gold/silver) suitable for commercial use
+ * - Flag problematic licenses (lead) with poor drafting that may cause legal issues
+ *
+ * @module utils/blue-oak
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT

@@ -35,8 +35,44 @@
       "description": "Analiza la salud del repositorio, estrellas, forks y estado de mantenimiento"
     },
     "reporting": {
-      "title": "Múltiples Formatos",
-      "description": "Exporta reportes en formatos CLI, JSON y CSV"
+      "title": "Múltiples formatos",
+      "description": "Exporta informes en formatos CLI, JSON y CSV"
+    },
+    "vulnerabilityScanning": {
+      "title": "Escaneo de vulnerabilidades",
+      "description": "Detección de CVE en tiempo real mediante GitHub Advisory Database con seguimiento de severidad y almacenamiento en caché"
+    },
+    "dependencyTreeAnalysis": {
+      "title": "Análisis del árbol de dependencias",
+      "description": "Análisis completo de dependencias transitivas hasta 10 capas con visualización ASCII del árbol, detección de circulares/duplicados e indicadores de profundidad"
+    },
+    "noticeGeneration": {
+      "title": "Generación de NOTICE.txt",
+      "description": "Archivos de cumplimiento legal estilo Apache con textos completos de licencias obtenidos de npm CDN y GitHub"
+    },
+    "spdxExport": {
+      "title": "Exportación SPDX SBOM",
+      "description": "Software Bill of Materials en formato SPDX 2.3 conforme a CISA SBOM 2025 y NIST 800-161 para cumplimiento federal"
+    },
+    "tokenSecuritySystem": {
+      "title": "Sistema de seguridad de tokens",
+      "description": "Cifrado AES-256-GCM para tokens de GitHub con limpieza segura de memoria y validación de permisos de archivos"
+    },
+    "performanceCaching": {
+      "title": "Caché de rendimiento",
+      "description": "Caché en memoria con TTL configurable (1h metadatos, 24h vulnerabilidades) para análisis subsecuentes en menos de 1 segundo"
+    },
+    "licenseComplianceExtended": {
+      "title": "Cumplimiento de licencias extendido",
+      "description": "221 licencias SPDX con detección de cláusulas de patentes, clasificación Blue Oak Council y soporte para licencias modernas (Elastic-2.0, BUSL-1.1)"
+    },
+    "sarifOutput": {
+      "title": "Exportación SARIF 2.1.0",
+      "description": "Formato de intercambio de resultados de análisis estático para GitHub Code Scanning e integración con plataformas de seguridad con flujos automatizados"
+    },
+    "upgradePathAnalysis": {
+      "title": "Rutas de actualización inteligentes",
+      "description": "Detección automatizada de cambios incompatibles, estimación de esfuerzo y guía de migración paso a paso con análisis de CHANGELOG"
     }
   },
   "installation": {
@@ -46,7 +82,7 @@
   "liveReport": {
     "title": "Demo en Vivo",
     "subtitle": "Ejemplo de análisis de las dependencias de esta landing page",
-    "description": "Esta es una demostración del análisis. La herramienta real genera reportes en múltiples formatos:",
+    "description": "Esta es una demostración del análisis. La herramienta real genera informes en múltiples formatos:",
     "formats": {
       "cli": "CLI - Salida de terminal colorida con tablas y resúmenes",
       "json": "JSON - Datos estructurados perfectos para pipelines CI/CD y automatización",
@@ -64,7 +100,471 @@
   },
   "documentation": {
     "title": "Documentación",
-    "tableOfContents": "Tabla de Contenidos"
+    "subtitle": "Guía completa para usar package-health-analyzer para análisis de dependencias y cumplimiento",
+    "tableOfContents": "Tabla de Contenidos",
+    "sections": {
+      "gettingStarted": {
+        "title": "Primeros Pasos",
+        "installation": {
+          "title": "Instalación",
+          "content": "Instala package-health-analyzer globalmente usando npm o ejecútalo directamente con npx. La instalación global te permite usar la herramienta en todos tus proyectos, mientras que npx es perfecto para análisis únicos o entornos CI/CD."
+        },
+        "quickStart": {
+          "title": "Inicio Rápido",
+          "content": "Navega al directorio de tu proyecto Node.js y ejecuta el analizador. La herramienta detectará automáticamente tu archivo package.json, analizará todas las dependencias (incluyendo devDependencies) y generará un informe integral de salud con insights de seguridad, cumplimiento de licencias y análisis de antigüedad."
+        },
+        "requirements": {
+          "title": "Requisitos",
+          "content": "Requiere Node.js versión 18 o superior y un archivo package.json válido con una sección de dependencias. Para funcionalidad completa incluyendo escaneo de vulnerabilidades e integración con GitHub, asegúrate de tener conectividad a internet y opcionalmente configura un token de GitHub para límites de API mejorados."
+        }
+      },
+      "commands": {
+        "title": "Comandos y Uso",
+        "basicScan": {
+          "title": "Escaneo Básico",
+          "content": "Realiza un escaneo básico de dependencias ejecutando el analizador en el directorio de tu proyecto. Esto genera un informe CLI mostrando puntuaciones de salud de paquetes, información de licencias, análisis de antigüedad e insights básicos de seguridad. La salida está codificada por colores para identificar problemas fácilmente."
+        },
+        "outputFormats": {
+          "title": "Formatos de Salida",
+          "content": "Exporta resultados de análisis en múltiples formatos: CLI para visualización en terminal con colores y tablas, JSON para consumo programático e integración CI/CD, CSV para análisis en hojas de cálculo y seguimiento, y SBOM para lista de materiales de software en formato SPDX 2.3 conforme a estándares federales."
+        },
+        "advancedOptions": {
+          "title": "Opciones Avanzadas",
+          "content": "Personaliza tu análisis con flags avanzados: habilita escaneo de vulnerabilidades con --vulnerabilities, analiza dependencias transitivas con --transitive, genera archivos NOTICE.txt con --notice, exporta SBOM con --sbom, configura rutas de salida, establece TTL de caché personalizado y filtra dependencias por licencia o umbrales de puntuación de salud."
+        },
+        "configuration": {
+          "title": "Archivo de Configuración",
+          "content": "Crea un archivo .packagehealthanalyzerrc.json en la raíz de tu proyecto para definir configuraciones predeterminadas, políticas de licencias, umbrales de seguridad y preferencias de salida. Esto permite análisis consistente entre miembros del equipo y entornos CI/CD sin necesidad de especificar flags cada vez."
+        }
+      },
+      "configuration": {
+        "title": "Configuración",
+        "configFile": {
+          "title": "Estructura del Archivo de Configuración",
+          "content": "El archivo .packagehealthanalyzerrc.json admite opciones de configuración completas incluyendo políticas de licencias, umbrales de seguridad, formatos de salida, cifrado de tokens de GitHub, configuraciones de caché y pesos de puntuación personalizados. Todas las configuraciones son opcionales y recurren a valores predeterminados sensatos."
+        },
+        "licensePolicies": {
+          "title": "Políticas de Licencias",
+          "content": "Define políticas de licencias personalizadas para hacer cumplir los requisitos de tu organización. Configura licencias permitidas, advertidas y bloqueadas, establece requisitos de compatibilidad comercial, detecta cláusulas de patentes y crea clasificaciones de licencias personalizadas. La herramienta admite 221 licencias SPDX más identificadores de licencias personalizados.",
+          "allowedLicenses": "Licencias que siempre se aceptan sin advertencias",
+          "warnedLicenses": "Licencias que generan advertencias pero no fallan la construcción",
+          "blockedLicenses": "Licencias que están prohibidas y fallarán las verificaciones de cumplimiento",
+          "commercialUse": "Filtrar licencias por compatibilidad comercial (amigable, advertencia o incompatible)",
+          "patentClauses": "Detectar y marcar licencias con cláusulas de terminación de patentes"
+        },
+        "securityThresholds": {
+          "title": "Umbrales de Seguridad",
+          "content": "Configura umbrales de escaneo de vulnerabilidades para controlar qué problemas de seguridad activan advertencias o fallos. Establece niveles mínimos de severidad (bajo, moderado, alto, crítico), edad máxima para dependencias, puntuaciones mínimas de salud y pesos de puntuación personalizados para diferentes factores."
+        }
+      },
+      "useCases": {
+        "title": "Casos de Uso",
+        "cicd": {
+          "title": "Integración CI/CD",
+          "content": "Integra package-health-analyzer en tu pipeline de integración continua para escanear automáticamente dependencias en cada construcción. Usa salida JSON para analizar resultados, establece códigos de salida basados en umbrales de seguridad, almacena en caché resultados para construcciones más rápidas y genera artefactos SBOM para seguimiento de cumplimiento. Compatible con GitHub Actions, GitLab CI, Jenkins y todas las principales plataformas CI/CD."
+        },
+        "compliance": {
+          "title": "Cumplimiento de Licencias",
+          "content": "Asegura el cumplimiento legal validando todas las dependencias contra las políticas de licencias de tu organización. Genera archivos NOTICE.txt para proyectos estilo Apache, exporta SBOM en formato SPDX 2.3 para cumplimiento federal (CISA SBOM 2025, NIST 800-161), detecta cláusulas de patentes, identifica riesgos de contaminación GPL y mantiene registros de auditoría para revisión legal."
+        },
+        "security": {
+          "title": "Auditoría de Seguridad",
+          "content": "Realiza auditorías de seguridad completas escaneando vulnerabilidades conocidas mediante GitHub Advisory Database, detectando paquetes obsoletos, analizando antigüedad de dependencias y estado de mantenimiento, identificando propagación de vulnerabilidades transitivas a través de 10 capas de dependencias y rastreando CVEs con clasificaciones de severidad (bajo, moderado, alto, crítico)."
+        },
+        "maintenance": {
+          "title": "Mantenimiento de Dependencias",
+          "content": "Mantén dependencias saludables analizando regularmente la antigüedad de paquetes, identificando dependencias obsoletas con recomendaciones de actualización, detectando paquetes obsoletos, monitoreando la salud del repositorio de GitHub (estrellas, forks, último commit), analizando el estado de mantenimiento y rastreando la sobrecarga de dependencias con análisis de dependencias transitivas."
+        }
+      },
+      "integrations": {
+        "title": "Integraciones",
+        "github": {
+          "title": "Integración con GitHub",
+          "content": "La integración mejorada con GitHub proporciona métricas de salud del repositorio, conteos de estrellas, conteos de forks, fechas del último commit y estado de mantenimiento. Configura un token de acceso personal de GitHub para aumentar los límites de la API de 60 a 5000 solicitudes por hora. Los tokens se cifran usando AES-256-GCM con limpieza segura de memoria y validación de permisos de archivo (600)."
+        },
+        "npm": {
+          "title": "Registro NPM",
+          "content": "Obtiene automáticamente metadatos de paquetes del registro npm incluyendo historial de versiones, fechas de publicación, información de mantenedores, estadísticas de descargas y textos de licencias desde npm CDN. Admite registros privados y paquetes con scope. Los resultados se almacenan en caché con TTL configurable (predeterminado 1 hora) para mejorar el rendimiento."
+        }
+      },
+      "outputs": {
+        "title": "Formatos de Salida",
+        "cli": {
+          "title": "Salida CLI",
+          "content": "Salida de terminal colorida hermosa con tablas formateadas, resúmenes de dependencias, puntuaciones de salud, clasificaciones de licencias, alertas de vulnerabilidades y recomendaciones accionables. Admite modos amplio y compacto, personalización de colores y renderizado seguro ASCII para terminales heredados."
+        },
+        "json": {
+          "title": "Salida JSON",
+          "content": "Formato JSON estructurado perfecto para consumo programático, integración CI/CD y procesamiento automatizado. Incluye metadatos completos de dependencias, detalles de vulnerabilidades, información de licencias, puntuaciones de salud, árboles de dependencias transitivas con estadísticas (totalNodes, uniquePackages, maxDepth, circularDependencies, duplicatePackages) y marcas de tiempo de procesamiento. El esquema es estable y versionado para análisis confiable."
+        },
+        "csv": {
+          "title": "Salida CSV",
+          "content": "Formato CSV compatible con hojas de cálculo para análisis de datos, seguimiento e informes. Incluye nombre de paquete, versión, licencia, antigüedad, puntuación de salud, conteo de vulnerabilidades, métricas de GitHub y flags de estado. Compatible con Excel, Google Sheets y todas las principales aplicaciones de hojas de cálculo. Admite selección y ordenamiento de columnas personalizados."
+        },
+        "sbom": {
+          "title": "SBOM (SPDX)",
+          "content": "Lista de Materiales de Software en formato JSON SPDX 2.3 conforme a elementos mínimos CISA SBOM 2025 y requisitos de cadena de suministro NIST 800-161. Incluye identificadores de paquetes, información de versión, detalles de proveedores, declaraciones de licencias, checksums, referencias externas y relaciones de dependencias. Requerido para adquisición de software del gobierno federal."
+        },
+        "notice": {
+          "title": "NOTICE.txt",
+          "content": "Archivos NOTICE.txt estilo Apache para cumplimiento legal y atribución. Incluye textos completos de licencias obtenidos de npm CDN y repositorios de GitHub, avisos de derechos de autor, requisitos de atribución y textos de descargo de responsabilidad. Maneja automáticamente múltiples licencias, escenarios de licenciamiento dual y excepciones de licencias. Esencial para proyectos de Apache Software Foundation y distribuciones de código abierto."
+        },
+        "sarif": {
+          "title": "SARIF (Análisis Estático)",
+          "content": "Formato de Intercambio de Resultados de Análisis Estático (SARIF) 2.1.0 para integración con GitHub Code Scanning, plataformas de seguridad y herramientas SIEM. Incluye hallazgos de vulnerabilidades con niveles de severidad, problemas de cumplimiento de licencias, advertencias de paquetes obsoletos y sugerencias de remediación automatizadas. Compatible con GitHub Advanced Security, Azure DevOps y otras herramientas compatibles con SARIF."
+        }
+      },
+      "troubleshooting": {
+        "title": "Solución de Problemas",
+        "commonIssues": {
+          "title": "Problemas Comunes",
+          "content": "Conectividad de red: Asegura acceso a internet para solicitudes a registro npm y API de GitHub. Limitación de velocidad: Configura token de GitHub para aumentar límites de API. Problemas de caché: Limpia caché con flag --no-cache o elimina directorio .package-health-cache. Errores de análisis: Verifica que package.json sea JSON válido. Errores de permisos: Verifica permisos de archivo para archivos de configuración y directorios de salida."
+        },
+        "performance": {
+          "title": "Optimización de Rendimiento",
+          "content": "Mejora la velocidad de análisis habilitando el almacenamiento en caché (predeterminado), usando token de GitHub para evitar límites de velocidad, limitando la profundidad de dependencias transitivas, excluyendo devDependencies cuando no sea necesario, ejecutando en CI/CD con node_modules en caché y usando flag --no-vulnerabilities cuando no se requiera escaneo de seguridad. Los análisis en caché se completan en menos de 1 segundo."
+        }
+      },
+      "bestPractices": {
+        "title": "Mejores Prácticas",
+        "regular": {
+          "title": "Análisis Regular",
+          "content": "Ejecuta análisis de salud de dependencias regularmente: antes de cada lanzamiento, semanalmente en desarrollo, diariamente en pipelines CI/CD, después de agregar nuevas dependencias y cuando se publiquen avisos de seguridad. Automatiza el análisis con trabajos CI/CD programados y configura notificaciones para problemas críticos."
+        },
+        "policies": {
+          "title": "Políticas de Licencias",
+          "content": "Establece políticas de licencias claras: define licencias permitidas para tu organización, identifica riesgos de GPL y copyleft, requiere licencias de concesión de patentes para dependencias críticas, mantén una lista de bloqueo de licencias incompatibles, documenta excepciones y aprobaciones, y revisa políticas trimestralmente a medida que evoluciona el panorama de licencias."
+        },
+        "security": {
+          "title": "Higiene de Seguridad",
+          "content": "Mantén higiene de seguridad: corrige vulnerabilidades críticas y altas inmediatamente, actualiza dependencias trimestralmente, monitorea advertencias de obsolescencia, evita paquetes sin mantenimiento reciente, revisa dependencias transitivas en busca de vulnerabilidades ocultas, usa SBOM para seguimiento de cadena de suministro y mantén un plan de respuesta a incidentes para vulnerabilidades de día cero."
+        }
+      }
+    }
+  },
+  "licenseModal": {
+    "title": "Guía de Cumplimiento de Licencias",
+    "howToUse": "Cómo Usar Esta Guía",
+    "howToUseDescription": "Esta guía categoriza 221 licencias SPDX por compatibilidad comercial. Úsala para configurar tu archivo .packagehealthanalyzerrc.json y asegurar el cumplimiento con las políticas de tu organización. Las licencias se clasifican usando calificaciones de Blue Oak Council y análisis de uso comercial.",
+    "tableHeaders": {
+      "licenseId": "ID de Licencia",
+      "fullName": "Nombre Completo",
+      "notes": "Notas"
+    },
+    "licenseDescriptions": {
+      "MIT": {
+        "name": "Licencia MIT",
+        "note": "La más popular, muy permisiva"
+      },
+      "Apache-2.0": {
+        "name": "Licencia Apache 2.0",
+        "note": "Incluye concesión de patentes"
+      },
+      "BSD-3-Clause": {
+        "name": "BSD 3 Cláusulas \"New\"",
+        "note": "Cláusula de no respaldo"
+      },
+      "BSD-2-Clause": {
+        "name": "BSD 2 Cláusulas \"Simplified\"",
+        "note": "Permisiva con atribución"
+      },
+      "0BSD": {
+        "name": "BSD Cero Cláusulas",
+        "note": "Equivalente a dominio público"
+      },
+      "Unlicense": {
+        "name": "The Unlicense",
+        "note": "Dedicación al dominio público"
+      },
+      "ISC": {
+        "name": "Licencia ISC",
+        "note": "Similar a MIT"
+      },
+      "Zlib": {
+        "name": "Licencia zlib",
+        "note": "Permisiva para software"
+      },
+      "Python-2.0": {
+        "name": "Licencia Python 2.0",
+        "note": "Específica de Python"
+      },
+      "PostgreSQL": {
+        "name": "Licencia PostgreSQL",
+        "note": "Licencia de base de datos"
+      },
+      "NCSA": {
+        "name": "UIUC/NCSA Open Source",
+        "note": "Licencia universitaria"
+      },
+      "X11": {
+        "name": "Licencia X11",
+        "note": "Sistema X Window"
+      },
+      "CC0-1.0": {
+        "name": "Creative Commons Zero v1.0",
+        "note": "Renuncia de dominio público"
+      },
+      "BSL-1.0": {
+        "name": "Licencia de Software Boost 1.0",
+        "note": "Bibliotecas C++"
+      },
+      "Ruby": {
+        "name": "Licencia Ruby",
+        "note": "Específica de Ruby"
+      },
+      "PHP-3.01": {
+        "name": "Licencia PHP v3.01",
+        "note": "Específica de PHP"
+      },
+      "Apache-1.0": {
+        "name": "Licencia Apache 1.0",
+        "note": "Apache antigua"
+      },
+      "Apache-1.1": {
+        "name": "Licencia Apache 1.1",
+        "note": "Apache pre-2.0"
+      },
+      "BSD-1-Clause": {
+        "name": "Licencia BSD 1 Cláusula",
+        "note": "BSD mínima"
+      },
+      "MIT-0": {
+        "name": "MIT Sin Atribución",
+        "note": "MIT sin atribución"
+      },
+      "LGPL-2.1": {
+        "name": "GNU Lesser General Public License v2.1",
+        "note": "Vinculación dinámica permitida"
+      },
+      "LGPL-2.1-only": {
+        "name": "GNU Lesser General Public License v2.1 solo",
+        "note": "Bloqueo de versión explícito"
+      },
+      "LGPL-2.1-or-later": {
+        "name": "GNU Lesser General Public License v2.1 o posterior",
+        "note": "Puede actualizar a v3"
+      },
+      "LGPL-3.0": {
+        "name": "GNU Lesser General Public License v3.0",
+        "note": "Compatible con GPLv3, versión actualizada"
+      },
+      "LGPL-3.0-only": {
+        "name": "GNU Lesser General Public License v3.0 solo",
+        "note": "Bloqueo de versión explícito"
+      },
+      "LGPL-3.0-or-later": {
+        "name": "GNU Lesser General Public License v3.0 o posterior",
+        "note": "A prueba de futuro"
+      },
+      "MPL-1.1": {
+        "name": "Licencia Pública Mozilla 1.1",
+        "note": "Copyleft a nivel de archivo, versión antigua"
+      },
+      "MPL-2.0": {
+        "name": "Licencia Pública Mozilla 2.0",
+        "note": "Copyleft a nivel de archivo, compatible con Apache-2.0"
+      },
+      "EPL-1.0": {
+        "name": "Licencia Pública Eclipse 1.0",
+        "note": "Copyleft débil, compatible comercialmente"
+      },
+      "EPL-2.0": {
+        "name": "Licencia Pública Eclipse 2.0",
+        "note": "Versión actualizada con cláusula de patentes"
+      },
+      "EUPL-1.2": {
+        "name": "Licencia Pública de la Unión Europea v1.2",
+        "note": "Copyleft débil multilingüe de la UE"
+      },
+      "CDDL-1.1": {
+        "name": "Licencia Común de Desarrollo y Distribución 1.1",
+        "note": "Copyleft débil de Oracle, actualizado"
+      },
+      "GPL-2.0": {
+        "name": "Licencia Pública General GNU v2.0",
+        "note": "Copyleft fuerte, distribución activa"
+      },
+      "GPL-2.0-only": {
+        "name": "Licencia Pública General GNU v2.0 solo",
+        "note": "Bloqueo de versión explícito"
+      },
+      "GPL-2.0-or-later": {
+        "name": "Licencia Pública General GNU v2.0 o posterior",
+        "note": "Puede actualizar a v3"
+      },
+      "GPL-3.0": {
+        "name": "Licencia Pública General GNU v3.0",
+        "note": "Copyleft actualizado con cláusula de patentes"
+      },
+      "GPL-3.0-only": {
+        "name": "Licencia Pública General GNU v3.0 solo",
+        "note": "Bloqueo de versión explícito"
+      },
+      "GPL-3.0-or-later": {
+        "name": "Licencia Pública General GNU v3.0 o posterior",
+        "note": "A prueba de futuro"
+      },
+      "AGPL-3.0": {
+        "name": "Licencia Pública General Affero GNU v3.0",
+        "note": "Uso en red = distribución (SaaS debe ser abierto)"
+      },
+      "AGPL-3.0-only": {
+        "name": "Licencia Pública General Affero GNU v3.0 solo",
+        "note": "Bloqueo de versión explícito"
+      },
+      "AGPL-3.0-or-later": {
+        "name": "Licencia Pública General Affero GNU v3.0 o posterior",
+        "note": "A prueba de futuro"
+      },
+      "SSPL-1.0": {
+        "name": "Licencia Pública del Lado del Servidor v1.0",
+        "note": "Licencia tipo AGPL de MongoDB para bases de datos"
+      },
+      "OSL-1.0": {
+        "name": "Licencia de Software Abierto 1.0",
+        "note": "Copyleft fuerte con cláusula de patentes"
+      },
+      "OSL-2.0": {
+        "name": "Licencia de Software Abierto 2.0",
+        "note": "Versión actualizada"
+      },
+      "RPSL-1.0": {
+        "name": "Licencia de Fuente Pública RealNetworks v1.0",
+        "note": "Licencia RealPlayer, copyleft fuerte"
+      },
+      "SISSL": {
+        "name": "Licencia de Fuente de Estándares de Industria Sun",
+        "note": "Copyleft fuerte de Sun Microsystems"
+      },
+      "Sleepycat": {
+        "name": "Licencia Sleepycat",
+        "note": "Licencia Berkeley DB, tipo GPL"
+      },
+      "QPL-1.0": {
+        "name": "Licencia Pública Q 1.0",
+        "note": "Licencia Qt, edición comunitaria"
+      },
+      "Watcom-1.0": {
+        "name": "Licencia Pública Abierta Sybase Open Watcom 1.0",
+        "note": "Licencia de compilador, copyleft"
+      },
+      "EUPL-1.1": {
+        "name": "Licencia Pública de la Unión Europea v1.1",
+        "note": "Copyleft fuerte multilingüe de la UE"
+      }
+    },
+    "goldLicensesExpand": "+ Mostrar todas las 47 licencias Oro (clic para expandir)",
+    "copyPasteTop16": "Listo para copiar (16 más usadas):",
+    "copyPasteBronze": "Listo para copiar (todas las 12 licencias Bronce):",
+    "copyPasteLead": "Listo para copiar (todas las 18 licencias Plomo):",
+    "closeButton": "Cerrar",
+    "commercialFriendly": "Licencias Compatibles con Uso Comercial",
+    "commercialFriendlyDescription": "Estas licencias son permisivas y adecuadas para uso comercial sin restricciones significativas. Generalmente requieren atribución y descargo de garantía pero permiten derivados propietarios.",
+    "commercialFriendlyList": {
+      "MIT": "Licencia MIT - La más popular, simple y permisiva",
+      "Apache-2.0": "Licencia Apache 2.0 - Incluye concesión de patentes y protección de marcas",
+      "BSD-2-Clause": "BSD 2 Cláusulas - Licencia permisiva simple",
+      "BSD-3-Clause": "BSD 3 Cláusulas - Agrega cláusula de no respaldo",
+      "ISC": "Licencia ISC - Equivalente a MIT, redacción más simple",
+      "0BSD": "BSD Cero Cláusulas - La más permisiva, sin condiciones",
+      "Unlicense": "The Unlicense - Dedicación al dominio público",
+      "CC0-1.0": "Creative Commons Zero - Renuncia de dominio público",
+      "Python-2.0": "Licencia Python Software Foundation",
+      "PostgreSQL": "Licencia PostgreSQL - Similar a MIT",
+      "Zlib": "Licencia zlib - Permisiva para bibliotecas de software",
+      "Artistic-2.0": "Licencia Artística 2.0 - Licencia de la comunidad Perl",
+      "BlueOak-1.0.0": "Licencia Modelo Blue Oak - Licencia permisiva moderna",
+      "BSL-1.0": "Licencia de Software Boost - Permisiva simple",
+      "MIT-0": "MIT Sin Atribución - MIT sin requisito de atribución",
+      "UPL-1.0": "Licencia Permisiva Universal - Licencia permisiva de Oracle",
+      "WTFPL": "Licencia Haz Lo Que Te Dé La Gana",
+      "X11": "Licencia X11 - Variante de MIT",
+      "curl": "Licencia curl - Similar a MIT",
+      "MPL-2.0": "Licencia Pública Mozilla 2.0 - Copyleft débil, nivel de archivo",
+      "LGPL-2.1": "GNU Lesser GPL 2.1 - Copyleft enfocado en bibliotecas",
+      "LGPL-3.0": "GNU Lesser GPL 3.0 - LGPL actualizado con provisiones de patentes",
+      "EPL-1.0": "Licencia Pública Eclipse 1.0 - Copyleft débil",
+      "EPL-2.0": "Licencia Pública Eclipse 2.0 - EPL actualizado",
+      "CDDL-1.0": "Licencia Común de Desarrollo y Distribución",
+      "CDDL-1.1": "CDDL 1.1 - Versión actualizada",
+      "MS-PL": "Licencia Pública Microsoft - Permisiva",
+      "MS-RL": "Licencia Recíproca Microsoft - Copyleft débil",
+      "OSL-3.0": "Licencia de Software Abierto 3.0",
+      "AFL-3.0": "Licencia Libre Académica 3.0",
+      "NCSA": "Licencia Open Source Universidad de Illinois/NCSA",
+      "ECL-2.0": "Licencia de Comunidad Educativa 2.0",
+      "EFL-2.0": "Licencia del Foro Eiffel 2.0",
+      "LPPL-1.3c": "Licencia Pública del Proyecto LaTeX",
+      "OFL-1.1": "Licencia de Fuente Abierta SIL 1.1",
+      "IPL-1.0": "Licencia Pública IBM",
+      "APSL-2.0": "Licencia de Fuente Pública Apple",
+      "EUPL-1.2": "Licencia Pública de la Unión Europea",
+      "Unicode-DFS-2016": "Licencia de Archivos de Datos y Software Unicode",
+      "FTL": "Licencia del Proyecto Freetype",
+      "IJG": "Licencia del Grupo JPEG Independiente",
+      "Libpng": "Licencia de Biblioteca de Referencia PNG",
+      "OpenSSL": "Licencia OpenSSL - Licencia dual",
+      "PHP-3.01": "Licencia PHP 3.01",
+      "Ruby": "Licencia Ruby",
+      "Vim": "Licencia Vim",
+      "W3C": "Aviso de Software y Licencia W3C",
+      "Xnet": "Licencia X.Net"
+    },
+    "commercialWarning": "Uso Comercial con Precaución",
+    "commercialWarningDescription": "Estas licencias tienen restricciones o requisitos específicos que necesitan revisión cuidadosa antes del uso comercial. Pueden incluir cláusulas de terminación de patentes, requisitos de copyleft o limitaciones de uso comercial.",
+    "commercialWarningList": {
+      "Elastic-2.0": "Licencia Elastic 2.0 - Prohíbe proporcionar software como servicio",
+      "SSPL-1.0": "Licencia Pública del Lado del Servidor - Copyleft fuerte para SaaS",
+      "BUSL-1.1": "Licencia de Fuente Empresarial - Se convierte en código abierto después de un período",
+      "CC-BY-4.0": "Creative Commons Atribución - Principalmente para obras creativas, no software",
+      "CC-BY-SA-4.0": "Creative Commons Atribución-CompartirIgual - Requisito de compartir igual",
+      "CC-BY-NC-4.0": "Creative Commons No Comercial - Prohíbe uso comercial",
+      "RPL-1.5": "Licencia Pública Recíproca - Copyleft de red",
+      "AGPL-3.0": "GNU Affero GPL 3.0 - Copyleft de red, ver sección incompatible",
+      "GPL-2.0": "GNU GPL 2.0 - Copyleft fuerte, ver sección incompatible",
+      "GPL-3.0": "GNU GPL 3.0 - Copyleft fuerte con provisiones de patentes",
+      "LGPL-2.1-only": "LGPL 2.1 solo - No se permiten versiones posteriores",
+      "LGPL-3.0-only": "LGPL 3.0 solo - No se permiten versiones posteriores"
+    },
+    "commercialIncompatible": "Licencias Incompatibles con Uso Comercial",
+    "commercialIncompatibleDescription": "Estas licencias son generalmente incompatibles con software propietario comercial debido a requisitos fuertes de copyleft, restricciones no comerciales u otras limitaciones. Usar estas licencias típicamente requiere liberar tu código base completo bajo la misma licencia.",
+    "commercialIncompatibleList": {
+      "GPL-2.0-only": "GNU GPL 2.0 solo - Copyleft fuerte",
+      "GPL-2.0-or-later": "GNU GPL 2.0 o posterior",
+      "GPL-3.0-only": "GNU GPL 3.0 solo - Copyleft fuerte con patentes",
+      "GPL-3.0-or-later": "GNU GPL 3.0 o posterior",
+      "AGPL-3.0-only": "GNU AGPL 3.0 solo - Copyleft de red",
+      "AGPL-3.0-or-later": "GNU AGPL 3.0 o posterior",
+      "CC-BY-NC-SA-4.0": "Creative Commons No Comercial CompartirIgual",
+      "CC-BY-NC-ND-4.0": "Creative Commons No Comercial Sin Derivados",
+      "CPOL-1.02": "Licencia Abierta Code Project - Restricciones personalizadas",
+      "NPL-1.1": "Licencia Pública Netscape - Obsoleta, usar MPL",
+      "OLDAP-2.8": "Licencia Pública Open LDAP - Específica para OpenLDAP",
+      "QPL-1.0": "Licencia Pública Q - Requisitos de distribución inusuales",
+      "Sleepycat": "Licencia Sleepycat - Copyleft fuerte",
+      "SISSL": "Licencia de Fuente de Estándares de Industria Sun - Obsoleta",
+      "Watcom-1.0": "Licencia Pública Abierta Sybase Open Watcom",
+      "ODbL-1.0": "Licencia de Base de Datos Abierta Open Data Commons",
+      "CECILL-2.1": "CEA CNRS INRIA Logiciel Libre - Equivalente francés a GPL",
+      "SimPL-2.0": "Licencia Pública Simple - Obsoleta"
+    },
+    "configurationExamples": "Ejemplos de Configuración",
+    "configurationExamplesDescription": "Usa estos ejemplos para configurar políticas de licencias en tu archivo .packagehealthanalyzerrc.json. Personaliza las listas según los requisitos de tu organización y recomendaciones de asesoría legal.",
+    "configExample1Title": "Política Comercial Estricta",
+    "configExample1Description": "Solo permitir licencias altamente permisivas, bloquear todo copyleft",
+    "configExample2Title": "Política Moderada",
+    "configExample2Description": "Permitir copyleft débil (MPL, LGPL) pero bloquear copyleft fuerte",
+    "configExample3Title": "Política de Código Abierto",
+    "configExample3Description": "Permitir la mayoría de licencias excepto no comerciales y obsoletas",
+    "quickTips": "Consejos Rápidos",
+    "quickTip1": "Siempre consulta asesoría legal para cumplimiento de licencias en productos comerciales",
+    "quickTip2": "Las licencias MIT, Apache-2.0 y BSD son seguras para la mayoría de casos de uso comercial",
+    "quickTip3": "Las licencias GPL y AGPL requieren liberar tu código base completo bajo la misma licencia",
+    "quickTip4": "LGPL puede usarse en software comercial si se enlaza dinámicamente (biblioteca)",
+    "quickTip5": "Cuidado con Elastic-2.0 y SSPL-1.0 en dependencias de infraestructura - prohíben SaaS",
+    "quickTip6": "Las licencias Creative Commons (CC-*) son para obras creativas, no código de software",
+    "quickTip7": "El flag --notice genera NOTICE.txt con todos los textos de licencias para distribución",
+    "quickTip8": "Usa --sbom para generar lista de materiales de software SPDX 2.3 para seguimiento de cumplimiento"
   },
   "footer": {
     "description": "Analizador de salud de dependencias de código abierto para proyectos Node.js",
@@ -74,5 +574,74 @@
   "theme": {
     "light": "Claro",
     "dark": "Oscuro"
+  },
+  "examples": {
+    "title": "Archivos de Ejemplo",
+    "subtitle": "Descarga ejemplos de salidas y archivos de configuración para ver qué genera la herramienta",
+    "note": "Haz clic en cualquier archivo para descargar. También puedes encontrar estos archivos en el"
+  },
+  "whatsNewV2": {
+    "badge": "Versión 2.0.0 disponible ahora",
+    "title": "Características empresariales de grado profesional",
+    "subtitle": "La versión 2.0 transforma package-health-analyzer de una herramienta de análisis básico a una solución completa de cumplimiento y seguridad para equipos empresariales.",
+    "features": {
+      "vulnerabilityScanning": {
+        "title": "Escaneo de vulnerabilidades",
+        "description": "Detección de CVE en tiempo real mediante GitHub Advisory Database con clasificación por severidad"
+      },
+      "transitiveAnalysis": {
+        "title": "Análisis transitivo completo",
+        "description": "Árbol de dependencias hasta 10 capas con visualización ASCII, detección de circulares/duplicados"
+      },
+      "noticeAndSbom": {
+        "title": "NOTICE.txt y SBOM",
+        "description": "Generación automática conforme a Apache y exportación SPDX 2.3 para cumplimiento federal"
+      },
+      "tokenSecurity": {
+        "title": "Seguridad de tokens",
+        "description": "Cifrado AES-256-GCM con limpieza segura de memoria"
+      },
+      "performanceCache": {
+        "title": "Caché de alto rendimiento",
+        "description": "Análisis subsecuentes en menos de 1 segundo con TTL configurable"
+      },
+      "spdxLicenses": {
+        "title": "221 licencias SPDX",
+        "description": "Base de datos extendida con detección de cláusulas de patentes y soporte para licencias modernas"
+      },
+      "sarifExport": {
+        "title": "Exportación SARIF 2.1.0",
+        "description": "Integración con GitHub Code Scanning con flujos de seguridad automatizados y soporte para pipelines CI/CD"
+      }
+    },
+    "stats": {
+      "licenses": {
+        "value": "221",
+        "label": "Licencias SPDX"
+      },
+      "layers": {
+        "value": "10",
+        "label": "Capas de análisis"
+      },
+      "cache": {
+        "value": "<1s",
+        "label": "Con caché"
+      },
+      "compliance": {
+        "value": "3",
+        "label": "Estándares de cumplimiento"
+      },
+      "projectTypes": {
+        "value": "9",
+        "label": "Perfiles de proyecto"
+      }
+    },
+    "complianceSection": {
+      "title": "Cumplimiento de estándares federales y empresariales"
+    },
+    "cta": {
+      "description": "Ideal para proyectos gubernamentales, empresas con requisitos de seguridad estrictos, y proyectos Apache que requieren archivos NOTICE.txt",
+      "button": "Ver documentación completa de v2.0"
+    }
   }
 }

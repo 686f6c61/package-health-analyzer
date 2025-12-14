@@ -1,6 +1,19 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - CSV Reporter
  *
+ * This module generates comma-separated values (CSV) output for data analysis and spreadsheet integration.
+ * Users choose this format when they need to import dependency health data into Excel, Google Sheets, or
+ * data processing pipelines for trend analysis, compliance reporting, or custom visualizations. The CSV
+ * format strictly follows RFC 4180 standards with proper field escaping and quoting.
+ *
+ * Key responsibilities:
+ * - Exporting package health data in RFC 4180-compliant CSV format
+ * - Properly escaping special characters (commas, quotes, newlines) in field values
+ * - Providing both detailed package-level data and summary statistics
+ * - Supporting data import into spreadsheet applications and analysis tools
+ * - Enabling batch processing and historical trend analysis across multiple scans
+ *
+ * @module reporters/csv
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT

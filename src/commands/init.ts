@@ -1,6 +1,20 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - Configuration Initialization Command
  *
+ * This module handles the interactive initialization of project-specific configuration files,
+ * providing both quick setup with sensible defaults and guided configuration for advanced users.
+ * It ensures secure file handling with path traversal protection while offering an intuitive
+ * CLI experience that helps users tailor the analyzer to their specific project requirements.
+ *
+ * Key responsibilities:
+ * - Provide interactive CLI-based configuration setup with two modes (default and guided)
+ * - Validate and sanitize all file paths to prevent path traversal security vulnerabilities
+ * - Generate properly formatted .packagehealthanalyzerrc.json configuration files with schema references
+ * - Detect existing configuration files and prompt for safe overwrite confirmation
+ * - Validate configuration against Zod schemas to ensure type safety before file creation
+ * - Display helpful next steps and documentation references for new users
+ *
+ * @module commands/init
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT

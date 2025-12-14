@@ -1,6 +1,26 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - Age Analysis Module
  *
+ * This module analyzes the age dimension of package health by evaluating when a package
+ * was last published and assessing its maintenance status. It determines whether packages
+ * are actively maintained, deprecated, or potentially abandoned based on configurable
+ * time thresholds and repository presence.
+ *
+ * Key responsibilities:
+ * - Calculate days since last publish using package metadata timestamps
+ * - Determine severity levels (ok/warning/critical) based on age thresholds
+ * - Check deprecation status and extract deprecation messages from package metadata
+ * - Verify repository presence and extract repository URLs
+ * - Calculate normalized age scores (0-1 scale) using linear decay algorithms
+ * - Generate human-readable age descriptions for reporting
+ *
+ * The scoring algorithm uses a linear decay model: packages receive a perfect score (1.0)
+ * if less than 1 year old, then linearly decrease to 0 as they approach the critical
+ * threshold. Very old packages beyond the critical threshold receive minimal scores
+ * (approaching 0.2) to reflect abandonment risk. Deprecated packages automatically
+ * receive critical severity regardless of age.
+ *
+ * @module analyzers/age
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT

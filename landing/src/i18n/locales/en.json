@@ -37,6 +37,42 @@
     "reporting": {
       "title": "Multiple Formats",
       "description": "Export reports in CLI, JSON, and CSV formats"
+    },
+    "vulnerabilityScanning": {
+      "title": "Vulnerability Scanning",
+      "description": "Real-time CVE detection via GitHub Advisory Database with severity tracking and caching"
+    },
+    "dependencyTreeAnalysis": {
+      "title": "Dependency Tree Analysis",
+      "description": "Complete transitive dependency analysis up to 10 layers with ASCII tree visualization, circular/duplicate detection, and depth indicators"
+    },
+    "noticeGeneration": {
+      "title": "NOTICE.txt Generation",
+      "description": "Apache-style legal compliance files with full license texts obtained from npm CDN and GitHub"
+    },
+    "spdxExport": {
+      "title": "SPDX SBOM Export",
+      "description": "Software Bill of Materials in SPDX 2.3 format compliant with CISA SBOM 2025 and NIST 800-161 for federal compliance"
+    },
+    "tokenSecuritySystem": {
+      "title": "Token Security System",
+      "description": "AES-256-GCM encryption for GitHub tokens with secure memory cleanup and file permission validation"
+    },
+    "performanceCaching": {
+      "title": "Performance Caching",
+      "description": "In-memory cache with configurable TTL (1h metadata, 24h vulnerabilities) for subsequent analysis in less than 1 second"
+    },
+    "licenseComplianceExtended": {
+      "title": "Extended License Compliance",
+      "description": "221 SPDX licenses with patent clause detection, Blue Oak Council classification and support for modern licenses (Elastic-2.0, BUSL-1.1)"
+    },
+    "sarifOutput": {
+      "title": "SARIF 2.1.0 Export",
+      "description": "Static Analysis Results Interchange Format for GitHub Code Scanning and security platform integration with automated workflows"
+    },
+    "upgradePathAnalysis": {
+      "title": "Intelligent Upgrade Paths",
+      "description": "Automated breaking change detection, effort estimation, and step-by-step migration guidance with CHANGELOG analysis"
     }
   },
   "installation": {
@@ -64,7 +100,471 @@
   },
   "documentation": {
     "title": "Documentation",
-    "tableOfContents": "Table of Contents"
+    "subtitle": "Complete guide to using package-health-analyzer for dependency analysis and compliance",
+    "tableOfContents": "Table of Contents",
+    "sections": {
+      "gettingStarted": {
+        "title": "Getting Started",
+        "installation": {
+          "title": "Installation",
+          "content": "Install package-health-analyzer globally using npm or run it directly with npx. Global installation allows you to use the tool across all your projects, while npx is perfect for one-time analyses or CI/CD environments."
+        },
+        "quickStart": {
+          "title": "Quick Start",
+          "content": "Navigate to your Node.js project directory and run the analyzer. The tool will automatically detect your package.json file, analyze all dependencies (including devDependencies), and generate a comprehensive health report with security insights, license compliance, and age analysis."
+        },
+        "requirements": {
+          "title": "Requirements",
+          "content": "Requires Node.js version 18 or higher and a valid package.json file with a dependencies section. For full functionality including vulnerability scanning and GitHub integration, ensure you have internet connectivity and optionally configure a GitHub token for enhanced API limits."
+        }
+      },
+      "commands": {
+        "title": "Commands & Usage",
+        "basicScan": {
+          "title": "Basic Scan",
+          "content": "Perform a basic dependency scan by running the analyzer in your project directory. This generates a CLI report showing package health scores, license information, age analysis, and basic security insights. The output is color-coded for easy identification of issues."
+        },
+        "outputFormats": {
+          "title": "Output Formats",
+          "content": "Export analysis results in multiple formats: CLI for terminal viewing with colors and tables, JSON for programmatic consumption and CI/CD integration, CSV for spreadsheet analysis and tracking, and SBOM for software bill of materials in SPDX 2.3 format compliant with federal standards."
+        },
+        "advancedOptions": {
+          "title": "Advanced Options",
+          "content": "Customize your analysis with advanced flags: enable vulnerability scanning with --vulnerabilities, analyze transitive dependencies with --transitive, generate NOTICE.txt files with --notice, export SBOM with --sbom, configure output paths, set custom cache TTL, and filter dependencies by license or health score thresholds."
+        },
+        "configuration": {
+          "title": "Configuration File",
+          "content": "Create a .packagehealthanalyzerrc.json file in your project root to define default settings, license policies, security thresholds, and output preferences. This allows consistent analysis across team members and CI/CD environments without needing to specify flags each time."
+        }
+      },
+      "configuration": {
+        "title": "Configuration",
+        "configFile": {
+          "title": "Configuration File Structure",
+          "content": "The .packagehealthanalyzerrc.json file supports comprehensive configuration options including license policies, security thresholds, output formats, GitHub token encryption, cache settings, and custom scoring weights. All settings are optional and fall back to sensible defaults."
+        },
+        "licensePolicies": {
+          "title": "License Policies",
+          "content": "Define custom license policies to enforce compliance with your organization's requirements. Configure allowed, warned, and blocked licenses, set commercial compatibility requirements, detect patent clauses, and create custom license classifications. The tool supports 221 SPDX licenses plus custom license identifiers.",
+          "allowedLicenses": "Licenses that are always accepted without warnings",
+          "warnedLicenses": "Licenses that trigger warnings but don't fail the build",
+          "blockedLicenses": "Licenses that are prohibited and will fail compliance checks",
+          "commercialUse": "Filter licenses by commercial compatibility (friendly, warning, or incompatible)",
+          "patentClauses": "Detect and flag licenses with patent termination clauses"
+        },
+        "securityThresholds": {
+          "title": "Security Thresholds",
+          "content": "Configure vulnerability scanning thresholds to control which security issues trigger warnings or failures. Set minimum severity levels (low, moderate, high, critical), maximum age for dependencies, minimum health scores, and custom scoring weights for different factors."
+        }
+      },
+      "useCases": {
+        "title": "Use Cases",
+        "cicd": {
+          "title": "CI/CD Integration",
+          "content": "Integrate package-health-analyzer into your continuous integration pipeline to automatically scan dependencies on every build. Use JSON output for parsing results, set exit codes based on security thresholds, cache results for faster builds, and generate SBOM artifacts for compliance tracking. Compatible with GitHub Actions, GitLab CI, Jenkins, and all major CI/CD platforms."
+        },
+        "compliance": {
+          "title": "License Compliance",
+          "content": "Ensure legal compliance by validating all dependencies against your organization's license policies. Generate NOTICE.txt files for Apache-style projects, export SBOM in SPDX 2.3 format for federal compliance (CISA SBOM 2025, NIST 800-161), detect patent clauses, identify GPL contamination risks, and maintain audit trails for legal review."
+        },
+        "security": {
+          "title": "Security Auditing",
+          "content": "Perform comprehensive security audits by scanning for known vulnerabilities via GitHub Advisory Database, detecting deprecated packages, analyzing dependency age and maintenance status, identifying transitive vulnerability propagation through 10 layers of dependencies, and tracking CVEs with severity classifications (low, moderate, high, critical)."
+        },
+        "maintenance": {
+          "title": "Dependency Maintenance",
+          "content": "Maintain healthy dependencies by regularly analyzing package age, identifying outdated dependencies with upgrade recommendations, detecting deprecated packages, monitoring GitHub repository health (stars, forks, last commit), analyzing maintenance status, and tracking dependency bloat with transitive dependency analysis."
+        }
+      },
+      "integrations": {
+        "title": "Integrations",
+        "github": {
+          "title": "GitHub Integration",
+          "content": "Enhanced GitHub integration provides repository health metrics, star counts, fork counts, last commit dates, and maintenance status. Configure a GitHub personal access token to increase API rate limits from 60 to 5000 requests per hour. Tokens are encrypted using AES-256-GCM with secure memory cleanup and file permission validation (600)."
+        },
+        "npm": {
+          "title": "NPM Registry",
+          "content": "Automatically fetches package metadata from npm registry including version history, publish dates, maintainer information, download statistics, and license texts from npm CDN. Supports private registries and scoped packages. Results are cached with configurable TTL (default 1 hour) for improved performance."
+        }
+      },
+      "outputs": {
+        "title": "Output Formats",
+        "cli": {
+          "title": "CLI Output",
+          "content": "Beautiful colored terminal output with formatted tables, dependency summaries, health scores, license classifications, vulnerability alerts, and actionable recommendations. Supports wide and compact modes, color customization, and ASCII-safe rendering for legacy terminals."
+        },
+        "json": {
+          "title": "JSON Output",
+          "content": "Structured JSON format perfect for programmatic consumption, CI/CD integration, and automated processing. Includes complete dependency metadata, vulnerability details, license information, health scores, transitive dependency trees with statistics (totalNodes, uniquePackages, maxDepth, circularDependencies, duplicatePackages), and processing timestamps. Schema is stable and versioned for reliable parsing."
+        },
+        "csv": {
+          "title": "CSV Output",
+          "content": "Spreadsheet-friendly CSV format for data analysis, tracking, and reporting. Includes package name, version, license, age, health score, vulnerability count, GitHub metrics, and status flags. Compatible with Excel, Google Sheets, and all major spreadsheet applications. Supports custom column selection and ordering."
+        },
+        "sbom": {
+          "title": "SBOM (SPDX)",
+          "content": "Software Bill of Materials in SPDX 2.3 JSON format compliant with CISA SBOM 2025 minimum elements and NIST 800-161 supply chain requirements. Includes package identifiers, version information, supplier details, license declarations, checksums, external references, and dependency relationships. Required for federal government software procurement."
+        },
+        "notice": {
+          "title": "NOTICE.txt",
+          "content": "Apache-style NOTICE.txt files for legal compliance and attribution. Includes full license texts fetched from npm CDN and GitHub repositories, copyright notices, attribution requirements, and disclaimer texts. Automatically handles multiple licenses, dual-licensing scenarios, and license exceptions. Essential for Apache Software Foundation projects and open source distributions."
+        },
+        "sarif": {
+          "title": "SARIF (Static Analysis)",
+          "content": "Static Analysis Results Interchange Format (SARIF) 2.1.0 for integration with GitHub Code Scanning, security platforms, and SIEM tools. Includes vulnerability findings with severity levels, license compliance issues, deprecated package warnings, and automated remediation suggestions. Compatible with GitHub Advanced Security, Azure DevOps, and other SARIF-aware tools."
+        }
+      },
+      "troubleshooting": {
+        "title": "Troubleshooting",
+        "commonIssues": {
+          "title": "Common Issues",
+          "content": "Network connectivity: Ensure internet access for npm registry and GitHub API requests. Rate limiting: Configure GitHub token to increase API limits. Cache issues: Clear cache with --no-cache flag or delete .package-health-cache directory. Parsing errors: Verify package.json is valid JSON. Permission errors: Check file permissions for config files and output directories."
+        },
+        "performance": {
+          "title": "Performance Optimization",
+          "content": "Improve analysis speed by enabling caching (default), using GitHub token to avoid rate limits, limiting transitive dependency depth, excluding devDependencies when not needed, running in CI/CD with cached node_modules, and using --no-vulnerabilities flag when security scanning is not required. Cached analyses complete in less than 1 second."
+        }
+      },
+      "bestPractices": {
+        "title": "Best Practices",
+        "regular": {
+          "title": "Regular Analysis",
+          "content": "Run dependency health analysis regularly: before every release, weekly in development, daily in CI/CD pipelines, after adding new dependencies, and when security advisories are published. Automate analysis with scheduled CI/CD jobs and configure notifications for critical issues."
+        },
+        "policies": {
+          "title": "License Policies",
+          "content": "Establish clear license policies: define allowed licenses for your organization, identify GPL and copyleft risks, require patent grant licenses for critical dependencies, maintain a blocklist of incompatible licenses, document exceptions and approvals, and review policies quarterly as license landscape evolves."
+        },
+        "security": {
+          "title": "Security Hygiene",
+          "content": "Maintain security hygiene: fix critical and high vulnerabilities immediately, update dependencies quarterly, monitor deprecation warnings, avoid packages with no recent maintenance, review transitive dependencies for hidden vulnerabilities, use SBOM for supply chain tracking, and maintain an incident response plan for zero-day vulnerabilities."
+        }
+      }
+    }
+  },
+  "licenseModal": {
+    "title": "License Compliance Guide",
+    "howToUse": "How to Use This Guide",
+    "howToUseDescription": "This guide categorizes 221 SPDX licenses by commercial compatibility. Use it to configure your .packagehealthanalyzerrc.json file and ensure compliance with your organization's policies. Licenses are classified using Blue Oak Council ratings and commercial use analysis.",
+    "tableHeaders": {
+      "licenseId": "License ID",
+      "fullName": "Full Name",
+      "notes": "Notes"
+    },
+    "licenseDescriptions": {
+      "MIT": {
+        "name": "MIT License",
+        "note": "Most popular, very permissive"
+      },
+      "Apache-2.0": {
+        "name": "Apache License 2.0",
+        "note": "Patent grant included"
+      },
+      "BSD-3-Clause": {
+        "name": "BSD 3-Clause \"New\"",
+        "note": "Non-endorsement clause"
+      },
+      "BSD-2-Clause": {
+        "name": "BSD 2-Clause \"Simplified\"",
+        "note": "Permissive with attribution"
+      },
+      "0BSD": {
+        "name": "BSD Zero Clause",
+        "note": "Public domain equivalent"
+      },
+      "Unlicense": {
+        "name": "The Unlicense",
+        "note": "Public domain dedication"
+      },
+      "ISC": {
+        "name": "ISC License",
+        "note": "Similar to MIT"
+      },
+      "Zlib": {
+        "name": "zlib License",
+        "note": "Permissive for software"
+      },
+      "Python-2.0": {
+        "name": "Python License 2.0",
+        "note": "Python-specific"
+      },
+      "PostgreSQL": {
+        "name": "PostgreSQL License",
+        "note": "Database license"
+      },
+      "NCSA": {
+        "name": "UIUC/NCSA Open Source",
+        "note": "University license"
+      },
+      "X11": {
+        "name": "X11 License",
+        "note": "X Window System"
+      },
+      "CC0-1.0": {
+        "name": "Creative Commons Zero v1.0",
+        "note": "Public domain waiver"
+      },
+      "BSL-1.0": {
+        "name": "Boost Software License 1.0",
+        "note": "C++ libraries"
+      },
+      "Ruby": {
+        "name": "Ruby License",
+        "note": "Ruby-specific"
+      },
+      "PHP-3.01": {
+        "name": "PHP License v3.01",
+        "note": "PHP-specific"
+      },
+      "Apache-1.0": {
+        "name": "Apache License 1.0",
+        "note": "Older Apache"
+      },
+      "Apache-1.1": {
+        "name": "Apache License 1.1",
+        "note": "Pre-2.0 Apache"
+      },
+      "BSD-1-Clause": {
+        "name": "BSD 1-Clause License",
+        "note": "Minimal BSD"
+      },
+      "MIT-0": {
+        "name": "MIT No Attribution",
+        "note": "MIT without attribution"
+      },
+      "LGPL-2.1": {
+        "name": "GNU Lesser General Public License v2.1",
+        "note": "Dynamic linking allowed"
+      },
+      "LGPL-2.1-only": {
+        "name": "GNU Lesser General Public License v2.1 only",
+        "note": "Explicit version lock"
+      },
+      "LGPL-2.1-or-later": {
+        "name": "GNU Lesser General Public License v2.1 or later",
+        "note": "Can upgrade to v3"
+      },
+      "LGPL-3.0": {
+        "name": "GNU Lesser General Public License v3.0",
+        "note": "GPLv3 compatible, updated version"
+      },
+      "LGPL-3.0-only": {
+        "name": "GNU Lesser General Public License v3.0 only",
+        "note": "Explicit version lock"
+      },
+      "LGPL-3.0-or-later": {
+        "name": "GNU Lesser General Public License v3.0 or later",
+        "note": "Future-proof"
+      },
+      "MPL-1.1": {
+        "name": "Mozilla Public License 1.1",
+        "note": "File-level copyleft, older version"
+      },
+      "MPL-2.0": {
+        "name": "Mozilla Public License 2.0",
+        "note": "File-level copyleft, Apache-2.0 compatible"
+      },
+      "EPL-1.0": {
+        "name": "Eclipse Public License 1.0",
+        "note": "Weak copyleft, commercial-friendly"
+      },
+      "EPL-2.0": {
+        "name": "Eclipse Public License 2.0",
+        "note": "Updated version with patent clause"
+      },
+      "EUPL-1.2": {
+        "name": "European Union Public License v1.2",
+        "note": "EU multilingual weak copyleft"
+      },
+      "CDDL-1.1": {
+        "name": "Common Development and Distribution License 1.1",
+        "note": "Oracle's weak copyleft, updated"
+      },
+      "GPL-2.0": {
+        "name": "GNU General Public License v2.0",
+        "note": "Strong copyleft, distribution triggers"
+      },
+      "GPL-2.0-only": {
+        "name": "GNU General Public License v2.0 only",
+        "note": "Explicit version lock"
+      },
+      "GPL-2.0-or-later": {
+        "name": "GNU General Public License v2.0 or later",
+        "note": "Can upgrade to v3"
+      },
+      "GPL-3.0": {
+        "name": "GNU General Public License v3.0",
+        "note": "Updated copyleft with patent clause"
+      },
+      "GPL-3.0-only": {
+        "name": "GNU General Public License v3.0 only",
+        "note": "Explicit version lock"
+      },
+      "GPL-3.0-or-later": {
+        "name": "GNU General Public License v3.0 or later",
+        "note": "Future-proof"
+      },
+      "AGPL-3.0": {
+        "name": "GNU Affero General Public License v3.0",
+        "note": "Network use = distribution (SaaS must open)"
+      },
+      "AGPL-3.0-only": {
+        "name": "GNU Affero General Public License v3.0 only",
+        "note": "Explicit version lock"
+      },
+      "AGPL-3.0-or-later": {
+        "name": "GNU Affero General Public License v3.0 or later",
+        "note": "Future-proof"
+      },
+      "SSPL-1.0": {
+        "name": "Server Side Public License v1.0",
+        "note": "MongoDB's AGPL-like license for databases"
+      },
+      "OSL-1.0": {
+        "name": "Open Software License 1.0",
+        "note": "Strong copyleft with patent clause"
+      },
+      "OSL-2.0": {
+        "name": "Open Software License 2.0",
+        "note": "Updated version"
+      },
+      "RPSL-1.0": {
+        "name": "RealNetworks Public Source License v1.0",
+        "note": "RealPlayer license, strong copyleft"
+      },
+      "SISSL": {
+        "name": "Sun Industry Standards Source License",
+        "note": "Sun Microsystems strong copyleft"
+      },
+      "Sleepycat": {
+        "name": "Sleepycat License",
+        "note": "Berkeley DB license, GPL-like"
+      },
+      "QPL-1.0": {
+        "name": "Q Public License 1.0",
+        "note": "Qt license, community edition"
+      },
+      "Watcom-1.0": {
+        "name": "Sybase Open Watcom Public License 1.0",
+        "note": "Compiler license, copyleft"
+      },
+      "EUPL-1.1": {
+        "name": "European Union Public License v1.1",
+        "note": "EU multilingual strong copyleft"
+      }
+    },
+    "goldLicensesExpand": "+ Show all 47 Gold licenses (click to expand)",
+    "copyPasteTop16": "Copy-paste ready (top 16 most used):",
+    "copyPasteBronze": "Copy-paste ready (all 12 Bronze licenses):",
+    "copyPasteLead": "Copy-paste ready (all 18 Lead licenses):",
+    "closeButton": "Close",
+    "commercialFriendly": "Commercial-Friendly Licenses",
+    "commercialFriendlyDescription": "These licenses are permissive and suitable for commercial use without significant restrictions. They generally require attribution and disclaimer of warranty but allow proprietary derivatives.",
+    "commercialFriendlyList": {
+      "MIT": "MIT License - Most popular, simple and permissive",
+      "Apache-2.0": "Apache License 2.0 - Includes patent grant and trademark protection",
+      "BSD-2-Clause": "BSD 2-Clause - Simple permissive license",
+      "BSD-3-Clause": "BSD 3-Clause - Adds non-endorsement clause",
+      "ISC": "ISC License - Equivalent to MIT, simpler wording",
+      "0BSD": "BSD Zero Clause - Most permissive, no conditions",
+      "Unlicense": "The Unlicense - Public domain dedication",
+      "CC0-1.0": "Creative Commons Zero - Public domain waiver",
+      "Python-2.0": "Python Software Foundation License",
+      "PostgreSQL": "PostgreSQL License - Similar to MIT",
+      "Zlib": "zlib License - Permissive for software libraries",
+      "Artistic-2.0": "Artistic License 2.0 - Perl community license",
+      "BlueOak-1.0.0": "Blue Oak Model License - Modern permissive license",
+      "BSL-1.0": "Boost Software License - Simple permissive",
+      "MIT-0": "MIT No Attribution - MIT without attribution requirement",
+      "UPL-1.0": "Universal Permissive License - Oracle's permissive license",
+      "WTFPL": "Do What The F*ck You Want To Public License",
+      "X11": "X11 License - Variant of MIT",
+      "curl": "curl License - Similar to MIT",
+      "MPL-2.0": "Mozilla Public License 2.0 - Weak copyleft, file-level",
+      "LGPL-2.1": "GNU Lesser GPL 2.1 - Library-focused copyleft",
+      "LGPL-3.0": "GNU Lesser GPL 3.0 - Updated LGPL with patent provisions",
+      "EPL-1.0": "Eclipse Public License 1.0 - Weak copyleft",
+      "EPL-2.0": "Eclipse Public License 2.0 - Updated EPL",
+      "CDDL-1.0": "Common Development and Distribution License",
+      "CDDL-1.1": "CDDL 1.1 - Updated version",
+      "MS-PL": "Microsoft Public License - Permissive",
+      "MS-RL": "Microsoft Reciprocal License - Weak copyleft",
+      "OSL-3.0": "Open Software License 3.0",
+      "AFL-3.0": "Academic Free License 3.0",
+      "NCSA": "University of Illinois/NCSA Open Source License",
+      "ECL-2.0": "Educational Community License 2.0",
+      "EFL-2.0": "Eiffel Forum License 2.0",
+      "LPPL-1.3c": "LaTeX Project Public License",
+      "OFL-1.1": "SIL Open Font License 1.1",
+      "IPL-1.0": "IBM Public License",
+      "APSL-2.0": "Apple Public Source License",
+      "EUPL-1.2": "European Union Public License",
+      "Unicode-DFS-2016": "Unicode Data Files and Software License",
+      "FTL": "Freetype Project License",
+      "IJG": "Independent JPEG Group License",
+      "Libpng": "PNG Reference Library License",
+      "OpenSSL": "OpenSSL License - Dual licensed",
+      "PHP-3.01": "PHP License 3.01",
+      "Ruby": "Ruby License",
+      "Vim": "Vim License",
+      "W3C": "W3C Software Notice and License",
+      "Xnet": "X.Net License"
+    },
+    "commercialWarning": "Commercial Use With Caution",
+    "commercialWarningDescription": "These licenses have specific restrictions or requirements that need careful review before commercial use. They may include patent termination clauses, copyleft requirements, or commercial use limitations.",
+    "commercialWarningList": {
+      "Elastic-2.0": "Elastic License 2.0 - Prohibits providing software as a service",
+      "SSPL-1.0": "Server Side Public License - Strong copyleft for SaaS",
+      "BUSL-1.1": "Business Source License - Converts to open source after time period",
+      "CC-BY-4.0": "Creative Commons Attribution - Primarily for creative works, not software",
+      "CC-BY-SA-4.0": "Creative Commons Attribution-ShareAlike - Share-alike requirement",
+      "CC-BY-NC-4.0": "Creative Commons Non-Commercial - Prohibits commercial use",
+      "RPL-1.5": "Reciprocal Public License - Network copyleft",
+      "AGPL-3.0": "GNU Affero GPL 3.0 - Network copyleft, see incompatible section",
+      "GPL-2.0": "GNU GPL 2.0 - Strong copyleft, see incompatible section",
+      "GPL-3.0": "GNU GPL 3.0 - Strong copyleft with patent provisions",
+      "LGPL-2.1-only": "LGPL 2.1 only - No later versions allowed",
+      "LGPL-3.0-only": "LGPL 3.0 only - No later versions allowed"
+    },
+    "commercialIncompatible": "Commercial-Incompatible Licenses",
+    "commercialIncompatibleDescription": "These licenses are generally incompatible with commercial proprietary software due to strong copyleft requirements, non-commercial restrictions, or other limitations. Using these licenses typically requires releasing your entire codebase under the same license.",
+    "commercialIncompatibleList": {
+      "GPL-2.0-only": "GNU GPL 2.0 only - Strong copyleft",
+      "GPL-2.0-or-later": "GNU GPL 2.0 or later",
+      "GPL-3.0-only": "GNU GPL 3.0 only - Strong copyleft with patents",
+      "GPL-3.0-or-later": "GNU GPL 3.0 or later",
+      "AGPL-3.0-only": "GNU AGPL 3.0 only - Network copyleft",
+      "AGPL-3.0-or-later": "GNU AGPL 3.0 or later",
+      "CC-BY-NC-SA-4.0": "Creative Commons Non-Commercial ShareAlike",
+      "CC-BY-NC-ND-4.0": "Creative Commons Non-Commercial NoDerivatives",
+      "CPOL-1.02": "Code Project Open License - Custom restrictions",
+      "NPL-1.1": "Netscape Public License - Deprecated, use MPL",
+      "OLDAP-2.8": "Open LDAP Public License - Specific to OpenLDAP",
+      "QPL-1.0": "Q Public License - Unusual distribution requirements",
+      "Sleepycat": "Sleepycat License - Strong copyleft",
+      "SISSL": "Sun Industry Standards Source License - Deprecated",
+      "Watcom-1.0": "Sybase Open Watcom Public License",
+      "ODbL-1.0": "Open Data Commons Open Database License",
+      "CECILL-2.1": "CEA CNRS INRIA Logiciel Libre - French GPL equivalent",
+      "SimPL-2.0": "Simple Public License - Deprecated"
+    },
+    "configurationExamples": "Configuration Examples",
+    "configurationExamplesDescription": "Use these examples to configure license policies in your .packagehealthanalyzerrc.json file. Customize the lists based on your organization's requirements and legal counsel recommendations.",
+    "configExample1Title": "Strict Commercial Policy",
+    "configExample1Description": "Only allow highly permissive licenses, block all copyleft",
+    "configExample2Title": "Moderate Policy",
+    "configExample2Description": "Allow weak copyleft (MPL, LGPL) but block strong copyleft",
+    "configExample3Title": "Open Source Policy",
+    "configExample3Description": "Allow most licenses except non-commercial and deprecated",
+    "quickTips": "Quick Tips",
+    "quickTip1": "Always consult legal counsel for license compliance in commercial products",
+    "quickTip2": "MIT, Apache-2.0, and BSD licenses are safe for most commercial use cases",
+    "quickTip3": "GPL and AGPL licenses require releasing your entire codebase under the same license",
+    "quickTip4": "LGPL can be used in commercial software if dynamically linked (library)",
+    "quickTip5": "Watch for Elastic-2.0 and SSPL-1.0 in infrastructure dependencies - they prohibit SaaS",
+    "quickTip6": "Creative Commons licenses (CC-*) are for creative works, not software code",
+    "quickTip7": "The --notice flag generates NOTICE.txt with all license texts for distribution",
+    "quickTip8": "Use --sbom to generate SPDX 2.3 software bill of materials for compliance tracking"
   },
   "footer": {
     "description": "Open source dependency health analyzer for Node.js projects",
@@ -74,5 +574,74 @@
   "theme": {
     "light": "Light",
     "dark": "Dark"
+  },
+  "examples": {
+    "title": "Example Files",
+    "subtitle": "Download sample outputs and configuration files to see what the tool generates",
+    "note": "Click any file to download. You can also find these files in the"
+  },
+  "whatsNewV2": {
+    "badge": "Version 2.0.0 available now",
+    "title": "Enterprise-grade professional features",
+    "subtitle": "Version 2.0 transforms package-health-analyzer from a basic analysis tool to a complete compliance and security solution for enterprise teams.",
+    "features": {
+      "vulnerabilityScanning": {
+        "title": "Vulnerability scanning",
+        "description": "Real-time CVE detection via GitHub Advisory Database with severity classification"
+      },
+      "transitiveAnalysis": {
+        "title": "Complete transitive analysis",
+        "description": "Dependency tree up to 10 layers with ASCII visualization, circular/duplicate detection"
+      },
+      "noticeAndSbom": {
+        "title": "NOTICE.txt and SBOM",
+        "description": "Automatic generation compliant with Apache and SPDX 2.3 export for federal compliance"
+      },
+      "tokenSecurity": {
+        "title": "Token security",
+        "description": "AES-256-GCM encryption with secure memory cleanup"
+      },
+      "performanceCache": {
+        "title": "High-performance cache",
+        "description": "Subsequent analysis in less than 1 second with configurable TTL"
+      },
+      "spdxLicenses": {
+        "title": "221 SPDX licenses",
+        "description": "Extended database with patent clause detection and support for modern licenses"
+      },
+      "sarifExport": {
+        "title": "SARIF 2.1.0 export",
+        "description": "GitHub Code Scanning integration with automated security workflows and CI/CD pipeline support"
+      }
+    },
+    "stats": {
+      "licenses": {
+        "value": "221",
+        "label": "SPDX licenses"
+      },
+      "layers": {
+        "value": "10",
+        "label": "Analysis layers"
+      },
+      "cache": {
+        "value": "<1s",
+        "label": "With cache"
+      },
+      "compliance": {
+        "value": "3",
+        "label": "Compliance standards"
+      },
+      "projectTypes": {
+        "value": "9",
+        "label": "Project profiles"
+      }
+    },
+    "complianceSection": {
+      "title": "Federal and enterprise standards compliance"
+    },
+    "cta": {
+      "description": "Ideal for government projects, enterprises with strict security requirements, and Apache projects requiring NOTICE.txt files",
+      "button": "View complete v2.0 documentation"
+    }
   }
 }

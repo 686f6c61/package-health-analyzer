@@ -1,6 +1,19 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - Single Package Check Command
  *
+ * This module provides focused analysis for individual npm packages, allowing developers
+ * to quickly evaluate a single package's health before adding it as a dependency. Unlike
+ * the scan command which analyzes an entire project, check performs a deep-dive assessment
+ * of a specific package with detailed reporting suitable for human review.
+ *
+ * Key responsibilities:
+ * - Perform comprehensive health analysis of a single specified npm package
+ * - Fetch and analyze package metadata including age, licensing, and repository information
+ * - Calculate multi-dimensional health scores based on project-specific configuration
+ * - Format detailed, human-readable CLI output with severity indicators and recommendations
+ * - Provide decision-making support for dependency selection and evaluation
+ *
+ * @module commands/check
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT
@@ -11,6 +24,7 @@ import type { PackageAnalysis } from '../types/index.js';
 import { fetchPackageMetadata } from '../services/npm-registry.js';
 import { analyzeAge } from '../analyzers/age.js';
 import { analyzeLicense } from '../analyzers/license.js';
+import { analyzePopularity } from '../analyzers/popularity.js';
 import { calculateHealthScore, getOverallSeverity } from '../analyzers/scorer.js';
 
 /**
@@ -37,16 +51,25 @@ export async function checkPackage(
       config.license
     );
 
+    // Analyze popularity (npm downloads)
+    const popularityAnalysis = await analyzePopularity(
+      packageName,
+      metadata.version || 'latest',
+      ageAnalysis.ageDays
+    );
+
     // Calculate health score
     const score = calculateHealthScore(
       ageAnalysis,
       licenseAnalysis,
+      undefined, // vulnerability analysis (not in check command yet)
       config.scoring,
-      config.projectType
+      config.projectType,
+      popularityAnalysis
     );
 
     // Get overall severity
-    const overallSeverity = getOverallSeverity(ageAnalysis, licenseAnalysis);
+    const overallSeverity = getOverallSeverity(ageAnalysis, licenseAnalysis, undefined);
 
     const analysis: PackageAnalysis = {
       package: packageName,

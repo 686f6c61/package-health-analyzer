@@ -448,7 +448,7 @@ Create a `.packagehealthanalyzerrc.json` file in your project root:
   },
   "github": {
     "enabled": false,
-    "token": "ghp_your_token_here"
+    "token": "YOUR_GITHUB_TOKEN_HERE"
   },
   "upgradePath": {
     "enabled": true,

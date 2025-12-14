@@ -1,6 +1,22 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - Configuration Schema Validation
  *
+ * Defines comprehensive Zod schemas for runtime type validation of all configuration options, ensuring configuration
+ * integrity and preventing errors from invalid settings. This module creates a strongly-typed contract between user
+ * configuration files and the analyzer's internal configuration system, validating data types, value ranges, and required
+ * fields while providing helpful defaults. By using Zod for runtime validation, it catches configuration errors early
+ * with clear error messages, preventing subtle bugs that could arise from typos or incorrect value types in config files.
+ *
+ * Key responsibilities:
+ * - Define Zod schemas for all configuration sections (age, license, scoring, etc.)
+ * - Validate primitive types (strings, numbers, booleans) and complex objects
+ * - Enforce value constraints (e.g., minimumScore between 0-100, valid project types)
+ * - Provide sensible defaults for all optional configuration fields
+ * - Generate TypeScript types from schemas for type-safe configuration access
+ * - Support nested configuration with sub-schemas (boosters, notifications, etc.)
+ * - Validate enum values for project types, output formats, and severity levels
+ *
+ * @module config/schema
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT
@@ -101,6 +117,26 @@ const upgradePathConfigSchema = z.object({
   estimateEffort: z.boolean().default(true),
 });
 
+const dependencyTreeConfigSchema = z.object({
+  enabled: z.boolean().default(true),
+  maxDepth: z.number().min(1).max(10).default(3).optional(),
+  analyzeTransitive: z.boolean().default(true).optional(),
+  detectCircular: z.boolean().default(true).optional(),
+  detectDuplicates: z.boolean().default(true).optional(),
+  stopOnCircular: z.boolean().default(false).optional(),
+  cacheTrees: z.boolean().default(true).optional(),
+});
+
+const noticeConfigSchema = z.object({
+  format: z.enum(['apache', 'simple']).default('apache').optional(),
+  includeDevDependencies: z.boolean().default(false).optional(),
+  includeTransitive: z.boolean().default(true).optional(),
+  includeCopyright: z.boolean().default(true).optional(),
+  includeUrls: z.boolean().default(true).optional(),
+  groupByLicense: z.boolean().default(false).optional(),
+  outputPath: z.string().default('NOTICE.txt').optional(),
+});
+
 export const configSchema = z.object({
   projectType: z
     .enum([
@@ -122,11 +158,13 @@ export const configSchema = z.object({
   ignore: ignoreConfigSchema.default({}),
   includeDevDependencies: z.boolean().default(false),
   failOn: z.enum(['none', 'info', 'warning', 'critical']).default('critical'),
-  output: z.enum(['cli', 'json', 'csv', 'txt', 'md']).default('cli'),
+  output: z.enum(['cli', 'json', 'csv', 'txt', 'markdown', 'json-sbom', 'sarif']).default('cli'),
   cache: cacheConfigSchema.default({}),
   github: githubConfigSchema.default({}),
   monitor: monitorConfigSchema.default({}),
   upgradePath: upgradePathConfigSchema.default({}),
+  dependencyTree: dependencyTreeConfigSchema.default({}).optional(),
+  notice: noticeConfigSchema.default({}).optional(),
 });
 
 export type ConfigSchema = z.infer<typeof configSchema>;

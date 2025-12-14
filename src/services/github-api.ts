@@ -1,24 +1,60 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - GitHub API Integration Service
  *
+ * This module integrates with the GitHub REST API to analyze repository health metrics for npm packages
+ * hosted on GitHub. It extracts valuable insights including activity levels, community engagement, maintenance
+ * status, and potential red flags (archived repos, high issue counts). The service includes intelligent URL
+ * parsing to handle various GitHub URL formats and implements security measures to prevent SSRF attacks.
+ *
+ * Key responsibilities:
+ * - Fetch repository metadata from api.github.com including stars, forks, open issues, and last commit date
+ * - Extract GitHub owner/repo identifiers from various URL formats (git://, ssh://, https://, github: protocol)
+ * - Calculate repository health metrics including release frequency, activity patterns, and maintenance indicators
+ * - Determine severity levels (ok, info, warning, critical) based on archive status and issue count thresholds
+ * - Validate GitHub identifiers (owner/repo names) against GitHub's naming rules to prevent path traversal
+ * - Handle GitHub API rate limiting (403) and authentication with optional personal access tokens
+ * - Implement 10-second request timeouts with AbortController for reliability
+ *
+ * @module services/github-api
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT
  */
 
+import { z } from 'zod';
 import type { RepositoryAnalysis } from '../types/index.js';
 
-interface GitHubRepo {
-  name: string;
-  full_name: string;
-  description: string;
-  stargazers_count: number;
-  forks_count: number;
-  open_issues_count: number;
-  archived: boolean;
-  pushed_at: string;
-  created_at: string;
-}
+/**
+ * Zod schema for validating GitHub API repository responses
+ */
+const GitHubRepoSchema = z.object({
+  name: z.string().optional(),
+  full_name: z.string().optional(),
+  description: z.string().nullable().optional(),
+  stargazers_count: z.number(),
+  forks_count: z.number(),
+  open_issues_count: z.number(),
+  archived: z.boolean(),
+  pushed_at: z.string(),
+  created_at: z.string(),
+  html_url: z.string().optional(),
+  private: z.boolean().optional(),
+}).passthrough();
+
+type GitHubRepo = z.infer<typeof GitHubRepoSchema>;
+
+/**
+ * Zod schema for validating GitHub releases
+ */
+const GitHubReleaseSchema = z.object({
+  tag_name: z.string(),
+  name: z.string().nullable(),
+  body: z.string().nullable(),
+  published_at: z.string(),
+  html_url: z.string(),
+}).passthrough();
+
+type GitHubRelease = z.infer<typeof GitHubReleaseSchema>;
 
 export class GitHubApiError extends Error {
   constructor(
@@ -145,7 +181,16 @@ export async function fetchGitHubRepo(
       );
     }
 
-    return await response.json();
+    const rawData = await response.json();
+
+    // Validate response with Zod
+    try {
+      return GitHubRepoSchema.parse(rawData);
+    } catch (zodError) {
+      throw new GitHubApiError(
+        `Invalid GitHub API response: ${zodError instanceof Error ? zodError.message : String(zodError)}`
+      );
+    }
   } catch (error) {
     if (error instanceof GitHubApiError) {
       throw error;
@@ -251,4 +296,142 @@ export async function analyzeGitHubRepository(
       severity: 'info',
     };
   }
+}
+
+/**
+ * Fetch GitHub releases for a repository
+ */
+export async function fetchGitHubReleases(
+  owner: string,
+  repo: string,
+  token?: string,
+  perPage: number = 30
+): Promise<GitHubRelease[]> {
+  // Validate inputs
+  validateGitHubIdentifier(owner, 'owner');
+  validateGitHubIdentifier(repo, 'repo');
+
+  const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/releases?per_page=${perPage}`;
+
+  const headers: Record<string, string> = {
+    Accept: 'application/vnd.github.v3+json',
+    'User-Agent': 'package-health-analyzer',
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+
+    const response = await fetch(url, {
+      headers,
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeout);
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        return []; // No releases found
+      }
+
+      if (response.status === 403) {
+        throw new GitHubApiError('GitHub API rate limit exceeded', 403);
+      }
+
+      throw new GitHubApiError(
+        `GitHub API request failed: ${response.statusText}`,
+        response.status
+      );
+    }
+
+    const rawData = await response.json();
+
+    // Validate response
+    if (!Array.isArray(rawData)) {
+      return [];
+    }
+
+    // Validate each release
+    const releases: GitHubRelease[] = [];
+    for (const item of rawData) {
+      try {
+        releases.push(GitHubReleaseSchema.parse(item));
+      } catch {
+        // Skip invalid releases
+        continue;
+      }
+    }
+
+    return releases;
+  } catch (error) {
+    if (error instanceof GitHubApiError) {
+      throw error;
+    }
+
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new GitHubApiError('Request timeout: GitHub API took too long to respond');
+    }
+
+    throw new GitHubApiError(
+      `Network error fetching GitHub releases: ${error instanceof Error ? error.message : String(error)}`
+    );
+  }
+}
+
+/**
+ * Fetch CHANGELOG file content from GitHub repository
+ */
+export async function fetchChangelogFile(
+  owner: string,
+  repo: string,
+  branch: string = 'main'
+): Promise<string | null> {
+  // Validate inputs
+  validateGitHubIdentifier(owner, 'owner');
+  validateGitHubIdentifier(repo, 'repo');
+
+  // Common changelog filenames to try
+  const changelogFiles = [
+    'CHANGELOG.md',
+    'HISTORY.md',
+    'RELEASES.md',
+    'CHANGES.md',
+    'NEWS.md',
+    'changelog.md',
+    'history.md',
+  ];
+
+  // Try each possible changelog file
+  for (const filename of changelogFiles) {
+    try {
+      const url = `https://raw.githubusercontent.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/${branch}/${filename}`;
+
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+      const response = await fetch(url, {
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeout);
+
+      if (response.ok) {
+        return await response.text();
+      }
+    } catch {
+      // Try next filename
+      continue;
+    }
+  }
+
+  // Try with 'master' branch if 'main' failed
+  if (branch === 'main') {
+    return fetchChangelogFile(owner, repo, 'master');
+  }
+
+  return null;
 }

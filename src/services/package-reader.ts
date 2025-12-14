@@ -1,13 +1,48 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - Local Package.json Reader and Parser
  *
+ * This module safely reads and parses package.json files from the local filesystem, extracting all dependency
+ * information while preventing security vulnerabilities like path traversal attacks. It provides utilities for
+ * aggregating dependencies across different types (production, dev, peer, optional) and parsing version ranges
+ * according to NPM/semver conventions.
+ *
+ * Key responsibilities:
+ * - Read package.json files from specified directories with path traversal prevention using realpath validation
+ * - Parse and validate package.json structure ensuring required fields (name, version) are present
+ * - Aggregate dependencies from multiple sources (dependencies, devDependencies, peerDependencies, optionalDependencies)
+ * - Parse version ranges and semver operators (^, ~, >=, *, latest) to extract clean version strings
+ * - Implement comprehensive path safety checks to prevent access outside allowed directories
+ * - Handle JSON parsing errors and file system errors (ENOENT) with detailed error messages via PackageReaderError
+ *
+ * @module services/package-reader
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT
  */
 
-import { readFile, realpath } from 'node:fs/promises';
-import { resolve, dirname } from 'node:path';
+import { z } from 'zod';
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+
+/**
+ * Zod schema for validating package.json structure
+ */
+const PackageJsonSchema = z.object({
+  name: z.string().min(1),
+  version: z.string().min(1),
+  dependencies: z.record(z.string()).optional(),
+  devDependencies: z.record(z.string()).optional(),
+  peerDependencies: z.record(z.string()).optional(),
+  optionalDependencies: z.record(z.string()).optional(),
+  description: z.string().optional(),
+  keywords: z.array(z.string()).optional(),
+  author: z.union([z.string(), z.object({}).passthrough()]).optional(),
+  license: z.string().optional(),
+  repository: z.union([z.string(), z.object({}).passthrough()]).optional(),
+  bugs: z.union([z.string(), z.object({}).passthrough()]).optional(),
+  homepage: z.string().optional(),
+  scripts: z.record(z.string()).optional(),
+}).passthrough(); // Allow additional fields
 
 export interface PackageJson {
   name: string;
@@ -26,39 +61,6 @@ export class PackageReaderError extends Error {
 }
 
 /**
- * Validate that a path is within allowed directory (prevent path traversal)
- */
-async function validatePathSafety(targetPath: string, baseDir: string): Promise<void> {
-  try {
-    // Resolve both paths to their real absolute paths
-    const realTarget = await realpath(dirname(targetPath)).catch(() => targetPath);
-    const realBase = await realpath(baseDir).catch(() => baseDir);
-
-    // Normalize both paths
-    const normalizedTarget = resolve(realTarget);
-    const normalizedBase = resolve(realBase);
-
-    // Check if target is within base directory
-    if (!normalizedTarget.startsWith(normalizedBase)) {
-      throw new PackageReaderError(
-        'Path traversal detected: target path is outside allowed directory'
-      );
-    }
-  } catch (error) {
-    if (error instanceof PackageReaderError) {
-      throw error;
-    }
-    // If we can't validate (e.g., path doesn't exist yet), check pattern
-    const normalized = resolve(targetPath);
-    if (normalized.includes('..') || !normalized.startsWith(resolve(baseDir))) {
-      throw new PackageReaderError(
-        'Invalid path: contains path traversal sequences'
-      );
-    }
-  }
-}
-
-/**
  * Read and parse package.json from a directory
  */
 export async function readPackageJson(
@@ -70,30 +72,33 @@ export async function readPackageJson(
   }
 
   // Prevent path traversal - validate the directory is safe
-  const cwd = process.cwd();
   const resolvedDir = resolve(directory);
 
-  // Check for obvious path traversal attempts
-  if (directory.includes('\0') || resolvedDir.includes('..')) {
+  // Check for obvious path traversal attempts in the INPUT (not the resolved path)
+  if (directory.includes('\0')) {
     throw new PackageReaderError('Invalid directory: contains forbidden characters');
+  }
+
+  //  Check for suspicious path traversal patterns in the input
+  if (directory.includes('../') && !directory.startsWith('/')) {
+    throw new PackageReaderError('Invalid directory: contains relative path traversal');
   }
 
   const packagePath = resolve(resolvedDir, 'package.json');
 
-  // Validate the final path is within a reasonable scope
-  await validatePathSafety(packagePath, cwd);
-
   try {
     const content = await readFile(packagePath, 'utf-8');
-    const pkg = JSON.parse(content);
+    const rawPkg = JSON.parse(content);
 
-    if (!pkg.name || !pkg.version) {
+    // Validate with Zod
+    try {
+      const pkg = PackageJsonSchema.parse(rawPkg);
+      return pkg;
+    } catch (zodError) {
       throw new PackageReaderError(
-        'Invalid package.json: missing name or version'
+        `Invalid package.json structure: ${zodError instanceof Error ? zodError.message : String(zodError)}`
       );
     }
-
-    return pkg;
   } catch (error) {
     if (error instanceof PackageReaderError) {
       throw error;

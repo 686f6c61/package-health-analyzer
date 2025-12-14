@@ -1,5 +1,5 @@
 import { ThemeProvider } from './contexts/ThemeContext';
-import { Header, Footer, Hero, Features, Examples, ConfigurationGuide, Documentation, LiveReport } from './components';
+import { Header, Footer, Hero, WhatsNewV2, Features, Examples, ConfigurationGuide, Documentation, LiveReport } from './components';
 import './i18n';
 
 function App() {
@@ -9,6 +9,7 @@ function App() {
         <Header />
         <main>
           <Hero />
+          <WhatsNewV2 />
           <Features />
           <Examples />
           <ConfigurationGuide />
