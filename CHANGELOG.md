@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2025-12-14
+
+### Changed
+- **Documentation**: Improved README.md with comprehensive SARIF 2.1.0 documentation
+- **Documentation**: Updated all license counts from 214 to 221 SPDX licenses
+- **Documentation**: Removed emoji characters for better compatibility across terminals
+- **Documentation**: Enhanced output format examples with SARIF integration guide
+- **Security**: Replaced example tokens with clear placeholders (YOUR_GITHUB_TOKEN_HERE)
+
 ## [2.0.0] - 2025-12-14
 
 ### Added

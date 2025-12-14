@@ -33,13 +33,14 @@ This tool analyzes all your dependencies in less than 5 seconds and gives you a 
 - **Zero configuration** - Works out of the box with sensible defaults
 - **CI/CD ready** - Built for automation with configurable exit codes
 
-### Enterprise Features (v2.0) ⭐ NEW
+### Enterprise Features (v2.0) - NEW
 - **Security vulnerability scanning** - Real-time CVE detection via GitHub Advisory Database
 - **Transitive dependency analysis** - Complete dependency tree with circular/duplicate detection
 - **NOTICE.txt generation** - Apache-style legal compliance files with real license texts
 - **SPDX SBOM export** - CISA SBOM 2025 and NIST 800-161 compliant software bill of materials
+- **SARIF 2.1.0 export** - GitHub Code Scanning integration with automated security workflows
 - **Token security** - AES-256-GCM encryption for GitHub tokens with secure memory cleanup
-- **Extended license database** - 214 SPDX licenses with patent clause detection (30 with patent grants)
+- **Extended license database** - 221 SPDX licenses with patent clause detection (30 with patent grants)
 - **Performance caching** - In-memory caching with TTL for metadata and vulnerability data
 - **Enhanced reporting** - Markdown output with vulnerability counts and tree visualizations
 
@@ -92,7 +93,7 @@ For v2.0, the tool builds a **complete dependency tree** including transitive de
 - **Duplicate versions**: The same package installed at multiple versions (increases bundle size)
 - **Depth indicators**: How many layers deep each dependency is nested (deep nesting = harder to audit)
 
-#### ⚠️ Dependency Tree Depth Limits
+#### Dependency Tree Depth Limits
 
 The default `maxDepth` is set to **3 layers** (root + direct dependencies + level 2 transitive):
 
@@ -155,6 +156,7 @@ Finally, the tool formats the results in your chosen output format:
 - **TXT**: Plain text format without colors, suitable for logging or CI/CD output
 - **Markdown**: For GitHub README files or pull request comments with formatted tables
 - **SPDX SBOM**: Standards-compliant Software Bill of Materials for compliance requirements (use `--json-sbom`)
+- **SARIF 2.1.0**: Static Analysis Results Interchange Format for GitHub Code Scanning (use `--sarif`)
 
 **Total time: 3-5 seconds** for a typical project with 200+ dependencies.
 
@@ -196,8 +198,9 @@ package-health-analyzer
 | `--fail-on <level>` | Fail on severity: none, info, warning, critical | `critical` |
 | `--json` | Output results as JSON | `false` |
 | `--csv` | Output results as CSV | `false` |
-| `--markdown` | Output results as Markdown with emojis and tables | `false` |
+| `--markdown` | Output results as Markdown with formatted tables | `false` |
 | `--json-sbom` | Export SPDX 2.3 SBOM (CISA/NIST compliant) | `false` |
+| `--sarif` | Export SARIF 2.1.0 for GitHub Code Scanning | `false` |
 | `--no-transitive` | Skip transitive dependency tree analysis | `false` |
 | `--config <path>` | Path to configuration file | auto-detect |
 
@@ -230,11 +233,14 @@ package-health-analyzer --json > report.json
 # CSV output for spreadsheet analysis
 package-health-analyzer --csv > report.csv
 
-# Markdown report with emojis and formatted tables
+# Markdown report with formatted tables
 package-health-analyzer --markdown > report.md
 
 # Generate SPDX 2.3 SBOM for compliance (CISA, NIST)
 package-health-analyzer --json-sbom > sbom.spdx.json
+
+# Generate SARIF 2.1.0 for GitHub Code Scanning integration
+GITHUB_TOKEN="YOUR_GITHUB_TOKEN_HERE" package-health-analyzer --sarif > results.sarif
 
 # Scan only direct dependencies (skip transitive analysis)
 package-health-analyzer --no-transitive
@@ -307,7 +313,7 @@ When you run `init`, you'll choose between:
 
 Default mode:
 ```
-📦 Package Health Analyzer - Configuración Inicial
+Package Health Analyzer - Configuración Inicial
 
 ? ¿Cómo quieres configurar package-health-analyzer? Valores por defecto
 
@@ -456,7 +462,7 @@ cp .packagehealthanalyzerrc.example.json .packagehealthanalyzerrc.json
 vim .packagehealthanalyzerrc.json
 ```
 
-### `generate-notice` ⭐ NEW in v2.0
+### `generate-notice` - NEW in v2.0
 
 Generate NOTICE.txt files for legal compliance (Apache-style or simple format).
 
@@ -820,7 +826,7 @@ Exclude specific packages from analysis.
 Choose how analysis results are displayed.
 
 ```json
-"output": "cli" | "json" | "csv" | "txt" | "markdown" | "json-sbom"
+"output": "cli" | "json" | "csv" | "txt" | "markdown" | "json-sbom" | "sarif"
 ```
 
 - **`cli`** - Colorful table in terminal (default)
@@ -829,8 +835,9 @@ Choose how analysis results are displayed.
 - **`txt`** - Plain text format without colors (use `--txt` flag)
 - **`markdown`** - Markdown with tables and formatting (use `--markdown` flag)
 - **`json-sbom`** - SPDX 2.3 SBOM format (use `--json-sbom` flag)
+- **`sarif`** - SARIF 2.1.0 for GitHub Code Scanning (use `--sarif` flag)
 
-Can also be set via CLI flags: `--json`, `--csv`, `--txt`, `--markdown`, or `--json-sbom`
+Can also be set via CLI flags: `--json`, `--csv`, `--txt`, `--markdown`, `--json-sbom`, or `--sarif`
 
 ---
 
@@ -1020,7 +1027,7 @@ jobs:
 
 ## Output Formats
 
-The tool supports multiple output formats that can be configured via `--json`, `--csv`, `--txt`, `--markdown`, `--json-sbom` flags or in the configuration file (`output` field):
+The tool supports multiple output formats that can be configured via `--json`, `--csv`, `--txt`, `--markdown`, `--json-sbom`, `--sarif` flags or in the configuration file (`output` field):
 
 - **CLI** (default): Colorful table in terminal
 - **JSON**: Structured data for programmatic use
@@ -1028,6 +1035,7 @@ The tool supports multiple output formats that can be configured via `--json`, `
 - **TXT**: Plain text format without colors
 - **Markdown**: Markdown with tables and formatting
 - **SPDX SBOM**: JSON-formatted Software Bill of Materials
+- **SARIF**: Static Analysis Results Interchange Format for security platforms
 
 **Example files:**
 - [examples/express-project-outputs/scan-output.json](examples/express-project-outputs/scan-output.json) - Complete JSON output
@@ -1035,6 +1043,7 @@ The tool supports multiple output formats that can be configured via `--json`, `
 - [examples/express-project-outputs/scan-output-cli.txt](examples/express-project-outputs/scan-output-cli.txt) - Plain text output
 - [examples/express-project-outputs/scan-output.md](examples/express-project-outputs/scan-output.md) - Markdown report
 - [examples/express-project-outputs/scan-output-sbom.json](examples/express-project-outputs/scan-output-sbom.json) - SPDX SBOM format
+- [examples/express-project-outputs/scan-output.sarif](examples/express-project-outputs/scan-output.sarif) - SARIF 2.1.0 for GitHub Code Scanning
 
 **For live examples and downloadable sample outputs in all formats, visit [package-health-analyzer.onrender.com](https://package-health-analyzer.onrender.com)**
 
@@ -1217,7 +1226,7 @@ All user inputs are validated before processing:
 - [OK] **Package names**: Alphanumeric + hyphens/underscores/dots only
 - [OK] **GitHub owner/repo**: RFC-compliant identifiers (1-39 chars for owners, 1-100 for repos)
 - [OK] **Config file paths**: No path traversal sequences allowed
-- [OK] **License identifiers**: Validated against SPDX license list (214 licenses)
+- [OK] **License identifiers**: Validated against SPDX license list (221 licenses)
 - [OK] **Version strings**: Validated with semver library
 
 ### Dependency Security
@@ -1251,7 +1260,7 @@ package-health-analyzer --json-sbom > sbom.spdx.json
 - [OK] CC0-1.0 data license (SPDX requirement)
 - [OK] Unique document namespace with ISO 8601 timestamp
 - [OK] Package URLs (purl) for all dependencies (`pkg:npm/express@4.18.2`)
-- [OK] SPDX license identifiers (all 214 supported licenses)
+- [OK] SPDX license identifiers (all 221 supported licenses)
 - [OK] External references (homepage, repository, npm registry)
 - [OK] Relationship mappings (DEPENDS_ON, CONTAINS, DESCRIBES)
 - [OK] Creation info with tool name and version
@@ -1315,7 +1324,7 @@ package-health-analyzer generate-notice
 
 ### SPDX License Database
 
-Supports **214 SPDX licenses** including:
+Supports **221 SPDX licenses** including:
 
 - [OK] All OSI-approved licenses (MIT, Apache-2.0, GPL, BSD, etc.)
 - [OK] FSF Free/Libre licenses
@@ -1333,7 +1342,7 @@ Apache-2.0, MPL-2.0, EPL-2.0, GPL-3.0+, AFL-*, OSL-*, MS-PL, and 23 others.
 For detailed compliance guides and examples:
 
 - **Compliance Guide**: [`docs/compliance-guide.md`](docs/compliance-guide.md) - Full SPDX, CISA, NIST implementation guide
-- **License Reference**: [`docs/license-reference.md`](docs/license-reference.md) - Complete database of 214 licenses
+- **License Reference**: [`docs/license-reference.md`](docs/license-reference.md) - Complete database of 221 licenses
 - **Security Guide**: [`docs/security.md`](docs/security.md) - Security features and threat model
 
 ---
