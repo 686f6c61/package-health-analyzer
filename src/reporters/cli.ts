@@ -1,6 +1,19 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - CLI Reporter
  *
+ * This module generates rich, colorized terminal output optimized for interactive CLI usage.
+ * It provides the default human-readable format when users run the analyzer without specifying
+ * an output format, designed to quickly communicate health status through visual cues including
+ * colors, tables, and severity indicators.
+ *
+ * Key responsibilities:
+ * - Rendering color-coded package health tables using cli-table3 and chalk
+ * - Highlighting critical issues and warnings with visual severity indicators
+ * - Displaying actionable recommendations with priority-based formatting
+ * - Providing comprehensive summaries with health distributions and risk levels
+ * - Formatting Blue Oak Council license quality ratings with visual icons
+ *
+ * @module reporters/cli
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT

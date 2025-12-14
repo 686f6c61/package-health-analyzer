@@ -7,8 +7,6 @@ import {
   Layers,
   GitBranch,
   FileText,
-  Award,
-  Shield,
   AlertCircle,
   CheckCircle,
   Zap,
@@ -33,22 +31,22 @@ export const Documentation = () => {
   const sections: Section[] = [
     {
       id: 'getting-started',
-      title: 'Getting Started',
+      title: t('documentation.sections.gettingStarted.title'),
       icon: BookOpen,
       subsections: [
         {
           id: 'installation',
-          title: 'Installation',
+          title: t('documentation.sections.gettingStarted.installation.title'),
           content: (
             <div className="space-y-4">
               <p className="text-gray-700 dark:text-gray-300">
-                Install package-health-analyzer globally using npm:
+                {t('documentation.sections.gettingStarted.installation.content')}
               </p>
               <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
                 <code>npm install -g package-health-analyzer</code>
               </pre>
               <p className="text-gray-700 dark:text-gray-300">
-                Or use it directly with npx without installation:
+                {t('documentation.sections.gettingStarted.installation.content')}
               </p>
               <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
                 <code>npx package-health-analyzer scan</code>
@@ -58,26 +56,18 @@ export const Documentation = () => {
         },
         {
           id: 'quick-start',
-          title: 'Quick Start',
+          title: t('documentation.sections.gettingStarted.quickStart.title'),
           content: (
             <div className="space-y-4">
               <p className="text-gray-700 dark:text-gray-300">
-                Initialize configuration (interactive wizard):
+                {t('documentation.sections.gettingStarted.quickStart.content')}
               </p>
               <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
                 <code>package-health-analyzer init</code>
               </pre>
-              <p className="text-gray-700 dark:text-gray-300">
-                Run your first analysis:
-              </p>
               <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
                 <code>package-health-analyzer scan</code>
               </pre>
-              <div className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-                <p className="text-sm text-green-800 dark:text-green-200">
-                  <strong>Tip:</strong> The scan command analyzes all dependencies in your package.json and generates a health report.
-                </p>
-              </div>
             </div>
           ),
         },
@@ -104,7 +94,7 @@ export const Documentation = () => {
     },
     {
       id: 'commands',
-      title: 'Commands Reference',
+      title: t('documentation.sections.commands.title'),
       icon: Terminal,
       subsections: [
         {
@@ -206,11 +196,66 @@ export const Documentation = () => {
             </div>
           ),
         },
+        {
+          id: 'generate-notice-command',
+          title: 'generate-notice - Create NOTICE.txt',
+          content: (
+            <div className="space-y-4">
+              <p className="text-gray-700 dark:text-gray-300">
+                Generate Apache-style NOTICE.txt files with complete dependency licenses:
+              </p>
+              <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+                <code>package-health-analyzer generate-notice [options]</code>
+              </pre>
+              <div className="mt-4">
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Options:</h4>
+                <div className="space-y-2">
+                  <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded">
+                    <code className="text-primary-600 dark:text-primary-400">--format &lt;type&gt;</code>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      Formato: apache (con textos completos de licencia) o simple (solo atribución). Por defecto: apache
+                    </p>
+                  </div>
+                  <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded">
+                    <code className="text-primary-600 dark:text-primary-400">--include-transitive</code>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      Incluir dependencias transitivas en el archivo NOTICE
+                    </p>
+                  </div>
+                  <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded">
+                    <code className="text-primary-600 dark:text-primary-400">--group-by-license</code>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      Agrupar paquetes por tipo de licencia
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4">
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Ejemplos:</h4>
+                <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto space-y-2">
+                  <code className="block"># Generar NOTICE.txt en formato Apache</code>
+                  <code className="block">package-health-analyzer generate-notice</code>
+                  <code className="block mt-2"># Formato simple (solo atribución)</code>
+                  <code className="block">package-health-analyzer generate-notice --format simple</code>
+                  <code className="block mt-2"># Incluir dependencias transitivas</code>
+                  <code className="block">package-health-analyzer generate-notice --include-transitive</code>
+                  <code className="block mt-2"># Agrupar por licencia</code>
+                  <code className="block">package-health-analyzer generate-notice --group-by-license</code>
+                </pre>
+              </div>
+              <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <p className="text-sm text-blue-800 dark:text-blue-200">
+                  <strong>Uso:</strong> El formato Apache es obligatorio para proyectos de Apache Software Foundation y recomendado para cualquier proyecto open source que distribuya software. Los textos completos de licencia se obtienen automáticamente de npm CDN y GitHub.
+                </p>
+              </div>
+            </div>
+          ),
+        },
       ],
     },
     {
       id: 'configuration',
-      title: 'Configuration Guide',
+      title: t('documentation.sections.configuration.title'),
       icon: Settings,
       subsections: [
         {
@@ -292,14 +337,15 @@ export const Documentation = () => {
         },
         {
           id: 'license-policies',
-          title: 'License Policies',
+          title: 'License Reference (221 Licenses)',
           content: (
-            <div className="space-y-4">
-              <p className="text-gray-700 dark:text-gray-300">
-                Define which licenses are allowed, denied, or require review:
-              </p>
-              <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
-                <code>{`{
+            <div className="space-y-6">
+              <div>
+                <p className="text-gray-700 dark:text-gray-300 mb-4">
+                  Configure license policies for your project using our database of 221 SPDX licenses with Blue Oak Council ratings and patent clause detection:
+                </p>
+                <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
+                  <code>{`{
   "license": {
     "allow": ["MIT", "ISC", "Apache-2.0"],
     "deny": ["GPL-*", "AGPL-*", "SSPL-*"],
@@ -308,31 +354,395 @@ export const Documentation = () => {
     "checkPatentClauses": true
   }
 }`}</code>
-              </pre>
-              <div className="mt-4">
-                <a
-                  href="/LICENSES-REFERENCE.md"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
-                >
-                  <Shield className="w-4 h-4" />
-                  View License Reference (40+ licenses)
-                </a>
+                </pre>
+              </div>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h5 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Blue Oak Council Ratings</h5>
+                <p className="text-gray-700 dark:text-gray-300 mb-4">
+                  The Blue Oak Council provides independent ratings that help you quickly identify which licenses are safe for commercial use and which present legal challenges:
+                </p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                    <h6 className="font-semibold text-green-900 dark:text-green-100 mb-2">Gold Tier (47 licenses)</h6>
+                    <p className="text-sm text-green-800 dark:text-green-200 mb-2">
+                      Most permissive licenses with maximum freedom. Ideal for all projects including commercial and proprietary software.
+                    </p>
+                    <div className="text-xs text-green-700 dark:text-green-300">
+                      <strong>Examples:</strong> MIT, Apache-2.0, BSD-3-Clause, ISC, Unlicense
+                    </div>
+                  </div>
+                  <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                    <h6 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Silver Tier (23 licenses)</h6>
+                    <p className="text-sm text-blue-800 dark:text-blue-200 mb-2">
+                      Permissive licenses with slightly more complex legal language. Safe for most uses but may need legal review.
+                    </p>
+                    <div className="text-xs text-blue-700 dark:text-blue-300">
+                      <strong>Examples:</strong> AFL-3.0, BSL-1.0, MS-PL, OFL-1.1
+                    </div>
+                  </div>
+                  <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                    <h6 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2">Bronze Tier (12 licenses)</h6>
+                    <p className="text-sm text-yellow-800 dark:text-yellow-200 mb-2">
+                      Weak copyleft at file/library level. Modifications to licensed code must be shared, but your application code stays private.
+                    </p>
+                    <div className="text-xs text-yellow-700 dark:text-yellow-300">
+                      <strong>Examples:</strong> LGPL-3.0, MPL-2.0, EPL-2.0, EUPL-1.2
+                    </div>
+                  </div>
+                  <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                    <h6 className="font-semibold text-red-900 dark:text-red-100 mb-2">Lead Tier (18 licenses)</h6>
+                    <p className="text-sm text-red-800 dark:text-red-200 mb-2">
+                      Strong copyleft requiring entire application source disclosure. Incompatible with proprietary software.
+                    </p>
+                    <div className="text-xs text-red-700 dark:text-red-300">
+                      <strong>Examples:</strong> GPL-3.0, AGPL-3.0, SSPL-1.0
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h5 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Reference Tables</h5>
+                <p className="text-gray-700 dark:text-gray-300 mb-4">
+                  Copy-paste ready license lists for common project configurations:
+                </p>
+
+                <div className="space-y-4">
+                  <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                    <h6 className="font-semibold text-green-900 dark:text-green-100 mb-2">Commercial-Friendly Licenses (47 total - Blue Oak Gold)</h6>
+                    <p className="text-sm text-green-800 dark:text-green-200 mb-3">
+                      Safe for commercial/proprietary projects - most permissive:
+                    </p>
+                    <div className="overflow-x-auto mb-3">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="border-b border-green-300 dark:border-green-700">
+                            <th className="text-left py-2 text-green-900 dark:text-green-100">License ID</th>
+                            <th className="text-left py-2 text-green-900 dark:text-green-100">Full Name</th>
+                            <th className="text-left py-2 text-green-900 dark:text-green-100">Notes</th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-green-800 dark:text-green-200">
+                          <tr><td className="py-1 font-mono font-bold">MIT</td><td>MIT License</td><td>Most popular, very permissive</td></tr>
+                          <tr><td className="py-1 font-mono font-bold">Apache-2.0</td><td>Apache License 2.0</td><td>With patent grant</td></tr>
+                          <tr><td className="py-1 font-mono font-bold">BSD-3-Clause</td><td>BSD 3-Clause "New"</td><td>Non-endorsement clause</td></tr>
+                          <tr><td className="py-1 font-mono">BSD-2-Clause</td><td>BSD 2-Clause "Simplified"</td><td>Permissive with attribution</td></tr>
+                          <tr><td className="py-1 font-mono">0BSD</td><td>BSD Zero Clause</td><td>Public domain equivalent</td></tr>
+                          <tr><td className="py-1 font-mono">Unlicense</td><td>The Unlicense</td><td>Public domain dedication</td></tr>
+                          <tr><td className="py-1 font-mono">ISC</td><td>ISC License</td><td>Similar to MIT</td></tr>
+                          <tr><td className="py-1 font-mono">Zlib</td><td>zlib License</td><td>Permissive for software</td></tr>
+                          <tr><td className="py-1 font-mono">Python-2.0</td><td>Python License 2.0</td><td>Python-specific</td></tr>
+                          <tr><td className="py-1 font-mono">PostgreSQL</td><td>PostgreSQL License</td><td>Database license</td></tr>
+                          <tr><td className="py-1 font-mono">NCSA</td><td>UIUC/NCSA Open Source</td><td>University license</td></tr>
+                          <tr><td className="py-1 font-mono">X11</td><td>X11 License</td><td>X Window System</td></tr>
+                          <tr><td className="py-1 font-mono">CC0-1.0</td><td>Creative Commons Zero v1.0</td><td>Public domain waiver</td></tr>
+                          <tr><td className="py-1 font-mono">BSL-1.0</td><td>Boost Software License 1.0</td><td>C++ libraries</td></tr>
+                          <tr><td className="py-1 font-mono">Ruby</td><td>Ruby License</td><td>Ruby-specific</td></tr>
+                          <tr><td className="py-1 font-mono">PHP-3.01</td><td>PHP License v3.01</td><td>PHP-specific</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <details className="mb-3">
+                      <summary className="cursor-pointer text-xs font-semibold text-green-900 dark:text-green-100 hover:underline">
+                        + Ver todas las 47 licencias Gold (click para expandir)
+                      </summary>
+                      <div className="mt-2 text-xs text-green-800 dark:text-green-200 grid grid-cols-2 md:grid-cols-3 gap-1 p-2 bg-green-100 dark:bg-green-900/40 rounded">
+                        <code>MIT</code>
+                        <code>Apache-2.0</code>
+                        <code>BSD-3-Clause</code>
+                        <code>BSD-2-Clause</code>
+                        <code>0BSD</code>
+                        <code>Unlicense</code>
+                        <code>ISC</code>
+                        <code>Zlib</code>
+                        <code>Python-2.0</code>
+                        <code>PostgreSQL</code>
+                        <code>NCSA</code>
+                        <code>X11</code>
+                        <code>CC0-1.0</code>
+                        <code>BSL-1.0</code>
+                        <code>WTFPL</code>
+                        <code>AFL-3.0</code>
+                        <code>Artistic-2.0</code>
+                        <code>CDDL-1.0</code>
+                        <code>ECL-2.0</code>
+                        <code>EFL-2.0</code>
+                        <code>MirOS</code>
+                        <code>MS-PL</code>
+                        <code>NTP</code>
+                        <code>OFL-1.1</code>
+                        <code>OSL-3.0</code>
+                        <code>UPL-1.0</code>
+                        <code>Apache-1.0</code>
+                        <code>Apache-1.1</code>
+                        <code>Artistic-1.0</code>
+                        <code>BSD-1-Clause</code>
+                        <code>BSD-4-Clause</code>
+                        <code>BUSL-1.1</code>
+                        <code>CC-BY-4.0</code>
+                        <code>CDDL-1.1</code>
+                        <code>CPL-1.0</code>
+                        <code>Elastic-2.0</code>
+                        <code>FTL</code>
+                        <code>Intel</code>
+                        <code>Libpng</code>
+                        <code>MIT-0</code>
+                        <code>MPL-1.1</code>
+                        <code>MPL-2.0</code>
+                        <code>OpenSSL</code>
+                        <code>W3C</code>
+                        <code>ZPL-2.1</code>
+                        <code>Vim</code>
+                      </div>
+                    </details>
+                    <div className="mt-2 p-3 bg-green-100 dark:bg-green-900/40 rounded">
+                      <p className="text-xs text-green-900 dark:text-green-100 font-semibold mb-1">Copy-paste ready (top 16 most used):</p>
+                      <pre className="bg-green-900 dark:bg-green-950 text-green-100 p-2 rounded text-xs overflow-x-auto">
+                        <code>{`"allow": [
+  "MIT", "ISC", "BSD-2-Clause", "BSD-3-Clause", "0BSD",
+  "Apache-2.0", "Apache-1.1", "Unlicense", "CC0-1.0",
+  "Zlib", "BSL-1.0", "Python-2.0", "Ruby", "PHP-3.01",
+  "PostgreSQL", "X11"
+]`}</code>
+                      </pre>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                    <h6 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2">Commercial-Warning Licenses (12 total - Blue Oak Bronze)</h6>
+                    <p className="text-sm text-yellow-800 dark:text-yellow-200 mb-3">
+                      Weak copyleft at file/library level - share modifications to licensed code, but your app code stays private:
+                    </p>
+                    <div className="overflow-x-auto mb-3">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="border-b border-yellow-300 dark:border-yellow-700">
+                            <th className="text-left py-2 text-yellow-900 dark:text-yellow-100">License ID</th>
+                            <th className="text-left py-2 text-yellow-900 dark:text-yellow-100">Full Name</th>
+                            <th className="text-left py-2 text-yellow-900 dark:text-yellow-100">Notes</th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-yellow-800 dark:text-yellow-200">
+                          <tr><td className="py-1 font-mono font-bold">LGPL-2.1</td><td>GNU LGPL v2.1</td><td>Dynamic linking allowed</td></tr>
+                          <tr><td className="py-1 font-mono font-bold">LGPL-3.0</td><td>GNU LGPL v3.0</td><td>GPLv3 compatible</td></tr>
+                          <tr><td className="py-1 font-mono font-bold">MPL-2.0</td><td>Mozilla Public License 2.0</td><td>File-level copyleft</td></tr>
+                          <tr><td className="py-1 font-mono">LGPL-2.1-only</td><td>GNU LGPL v2.1 only</td><td>Version locked</td></tr>
+                          <tr><td className="py-1 font-mono">LGPL-2.1-or-later</td><td>GNU LGPL v2.1 or later</td><td>Upgrade path</td></tr>
+                          <tr><td className="py-1 font-mono">LGPL-3.0-only</td><td>GNU LGPL v3.0 only</td><td>Version locked</td></tr>
+                          <tr><td className="py-1 font-mono">LGPL-3.0-or-later</td><td>GNU LGPL v3.0 or later</td><td>Upgrade path</td></tr>
+                          <tr><td className="py-1 font-mono">MPL-1.1</td><td>Mozilla Public License 1.1</td><td>Older version</td></tr>
+                          <tr><td className="py-1 font-mono">EPL-1.0</td><td>Eclipse Public License 1.0</td><td>IBM/Eclipse license</td></tr>
+                          <tr><td className="py-1 font-mono">EPL-2.0</td><td>Eclipse Public License 2.0</td><td>Updated version</td></tr>
+                          <tr><td className="py-1 font-mono">EUPL-1.2</td><td>European Union Public License 1.2</td><td>EU official license</td></tr>
+                          <tr><td className="py-1 font-mono">CDDL-1.1</td><td>CDDL 1.1</td><td>Oracle's weak copyleft</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="mt-2 p-3 bg-yellow-100 dark:bg-yellow-900/40 rounded">
+                      <p className="text-xs text-yellow-900 dark:text-yellow-100 font-semibold mb-1">Copy-paste ready (use wildcards for simplicity):</p>
+                      <pre className="bg-yellow-900 dark:bg-yellow-950 text-yellow-100 p-2 rounded text-xs overflow-x-auto">
+                        <code>{`"warn": [
+  "LGPL-*", "MPL-*", "EPL-*", "EUPL-1.2", "CDDL-*"
+]
+
+// Or specific versions:
+"warn": [
+  "LGPL-2.1", "LGPL-2.1-only", "LGPL-2.1-or-later",
+  "LGPL-3.0", "LGPL-3.0-only", "LGPL-3.0-or-later",
+  "MPL-1.1", "MPL-2.0", "EPL-1.0", "EPL-2.0"
+]`}</code>
+                      </pre>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                    <h6 className="font-semibold text-red-900 dark:text-red-100 mb-2">Commercial-Incompatible Licenses (18 total - Blue Oak Lead)</h6>
+                    <p className="text-sm text-red-800 dark:text-red-200 mb-3">
+                      Strong copyleft - entire application source code must be released under same license. Incompatible with proprietary software:
+                    </p>
+                    <div className="overflow-x-auto mb-3">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="border-b border-red-300 dark:border-red-700">
+                            <th className="text-left py-2 text-red-900 dark:text-red-100">License ID</th>
+                            <th className="text-left py-2 text-red-900 dark:text-red-100">Full Name</th>
+                            <th className="text-left py-2 text-red-900 dark:text-red-100">Notes</th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-red-800 dark:text-red-200">
+                          <tr><td className="py-1 font-mono font-bold">GPL-2.0</td><td>GNU GPL v2.0</td><td>Strong copyleft</td></tr>
+                          <tr><td className="py-1 font-mono">GPL-2.0-only</td><td>GNU GPL v2.0 only</td><td>Version locked</td></tr>
+                          <tr><td className="py-1 font-mono">GPL-2.0-or-later</td><td>GNU GPL v2.0 or later</td><td>Can upgrade to v3</td></tr>
+                          <tr><td className="py-1 font-mono font-bold">GPL-3.0</td><td>GNU GPL v3.0</td><td>Updated strong copyleft</td></tr>
+                          <tr><td className="py-1 font-mono">GPL-3.0-only</td><td>GNU GPL v3.0 only</td><td>Version locked</td></tr>
+                          <tr><td className="py-1 font-mono">GPL-3.0-or-later</td><td>GNU GPL v3.0 or later</td><td>Future-proof</td></tr>
+                          <tr><td className="py-1 font-mono font-bold">AGPL-3.0</td><td>GNU AGPL v3.0</td><td>Network copyleft (SaaS triggers)</td></tr>
+                          <tr><td className="py-1 font-mono">AGPL-3.0-only</td><td>GNU AGPL v3.0 only</td><td>Version locked</td></tr>
+                          <tr><td className="py-1 font-mono">AGPL-3.0-or-later</td><td>GNU AGPL v3.0 or later</td><td>Future-proof</td></tr>
+                          <tr><td className="py-1 font-mono font-bold">SSPL-1.0</td><td>Server Side Public License v1</td><td>MongoDB, similar to AGPL</td></tr>
+                          <tr><td className="py-1 font-mono">OSL-1.0</td><td>Open Software License 1.0</td><td>Academic strong copyleft</td></tr>
+                          <tr><td className="py-1 font-mono">OSL-2.0</td><td>Open Software License 2.0</td><td>Updated version</td></tr>
+                          <tr><td className="py-1 font-mono">RPSL-1.0</td><td>RealNetworks Public Source v1.0</td><td>Media software</td></tr>
+                          <tr><td className="py-1 font-mono">SISSL</td><td>Sun Industry Standards v1.1</td><td>Sun Microsystems</td></tr>
+                          <tr><td className="py-1 font-mono">Sleepycat</td><td>Sleepycat License</td><td>Berkeley DB</td></tr>
+                          <tr><td className="py-1 font-mono">QPL-1.0</td><td>Q Public License 1.0</td><td>Qt older version</td></tr>
+                          <tr><td className="py-1 font-mono">Watcom-1.0</td><td>Sybase Open Watcom v1.0</td><td>Compiler license</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="mt-2 p-3 bg-red-100 dark:bg-red-900/40 rounded">
+                      <p className="text-xs text-red-900 dark:text-red-100 font-semibold mb-1">Copy-paste ready (wildcard shortcut recommended):</p>
+                      <pre className="bg-red-900 dark:bg-red-950 text-red-100 p-2 rounded text-xs overflow-x-auto">
+                        <code>{`// Simplest - wildcards cover all versions:
+"deny": ["GPL-*", "AGPL-*", "SSPL-*"]
+
+// Complete - all GPL/AGPL versions:
+"deny": [
+  "GPL-2.0", "GPL-2.0-only", "GPL-2.0-or-later",
+  "GPL-3.0", "GPL-3.0-only", "GPL-3.0-or-later",
+  "AGPL-3.0", "AGPL-3.0-only", "AGPL-3.0-or-later",
+  "SSPL-1.0", "OSL-1.0", "OSL-2.0", "Sleepycat"
+]`}</code>
+                      </pre>
+                    </div>
+                    <div className="mt-2 p-3 bg-red-200 dark:bg-red-900/60 border border-red-400 dark:border-red-700 rounded">
+                      <p className="text-xs text-red-900 dark:text-red-100">
+                        <strong>⚠️ AGPL Warning for SaaS:</strong> If you offer software as a service (web app, API), AGPL treats network use as distribution - you MUST publish your entire application source code. Use <code className="bg-red-300 dark:bg-red-950 px-1 rounded">CC-BY-NC-*</code> in deny list to catch non-commercial variants too.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <h6 className="font-semibold text-gray-900 dark:text-white mb-2">Quick Tips</h6>
+                    <ul className="text-xs text-gray-700 dark:text-gray-300 space-y-1">
+                      <li>• Use wildcards for version matching: <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">GPL-*</code> instead of listing every version</li>
+                      <li>• Check patent clauses - Apache-2.0 includes explicit patent grant</li>
+                      <li>• AGPL applies to SaaS - Network use = distribution</li>
+                      <li>• LGPL dynamic linking - Usually safe if you don't modify the library</li>
+                      <li>• Unknown licenses - Always review before allowing</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h5 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Configuration Presets</h5>
+                <div className="space-y-4">
+                  <div>
+                    <h6 className="font-medium text-gray-900 dark:text-white mb-2">Strict Commercial Project</h6>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      Block all copyleft licenses for maximum commercial safety:
+                    </p>
+                    <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto text-xs">
+                      <code>{`{
+  "license": {
+    "allow": ["MIT", "ISC", "BSD-2-Clause", "BSD-3-Clause", "Apache-2.0"],
+    "deny": ["GPL-*", "AGPL-*", "LGPL-*", "SSPL-*"],
+    "warnOnUnknown": true,
+    "checkPatentClauses": true
+  }
+}`}</code>
+                    </pre>
+                  </div>
+                  <div>
+                    <h6 className="font-medium text-gray-900 dark:text-white mb-2">SaaS Project</h6>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      Extra protection against AGPL (network copyleft):
+                    </p>
+                    <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto text-xs">
+                      <code>{`{
+  "license": {
+    "allow": ["MIT", "ISC", "Apache-2.0", "BSD-*"],
+    "deny": ["GPL-*", "AGPL-*", "SSPL-*", "CC-BY-NC-*"],
+    "warn": ["LGPL-*", "MPL-2.0"]
+  }
+}`}</code>
+                    </pre>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h5 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Patent Clauses</h5>
+                <p className="text-gray-700 dark:text-gray-300 mb-3">
+                  30 licenses in our database include explicit patent grants that protect users from patent litigation. These licenses provide legal protection against the "submarine patent" problem:
+                </p>
+                <div className="grid md:grid-cols-2 gap-3">
+                  <div className="p-3 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
+                    <h6 className="text-sm font-semibold text-purple-900 dark:text-purple-100 mb-1">Strong Protection</h6>
+                    <p className="text-xs text-purple-800 dark:text-purple-200">
+                      Apache-2.0, GPL-3.0, AGPL-3.0, MPL-2.0, EPL-2.0, OSL-3.0
+                    </p>
+                  </div>
+                  <div className="p-3 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg">
+                    <h6 className="text-sm font-semibold text-indigo-900 dark:text-indigo-100 mb-1">Moderate Protection</h6>
+                    <p className="text-xs text-indigo-800 dark:text-indigo-200">
+                      CPL-1.0, IPL-1.0, MS-PL, AFL-3.0, APL-1.0, CATOSL-1.1
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h5 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Modern Licenses (2020+)</h5>
+                <p className="text-gray-700 dark:text-gray-300 mb-3">
+                  New licenses addressing modern business models like SaaS and cloud hosting:
+                </p>
+                <div className="space-y-3">
+                  <div className="p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <h6 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">BUSL-1.1 (Business Source License)</h6>
+                    <p className="text-xs text-gray-700 dark:text-gray-300">
+                      "Delayed open source" - Automatically converts to permissive license (typically Apache-2.0) after 3-4 years. Used by CockroachDB, MariaDB MaxScale.
+                    </p>
+                  </div>
+                  <div className="p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <h6 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Elastic-2.0 (Elastic License)</h6>
+                    <p className="text-xs text-gray-700 dark:text-gray-300">
+                      Prohibits offering software as a managed service to third parties. Created to prevent AWS from offering Elasticsearch-as-a-Service.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h5 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Wildcard Support</h5>
+                <p className="text-gray-700 dark:text-gray-300 mb-3">
+                  Use wildcards to match multiple license versions easily:
+                </p>
+                <ul className="list-disc pl-6 text-sm space-y-1 text-gray-700 dark:text-gray-300">
+                  <li><code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">GPL-*</code> matches GPL-2.0, GPL-2.0-only, GPL-3.0, GPL-3.0-or-later</li>
+                  <li><code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">LGPL-*</code> matches all LGPL variants</li>
+                  <li><code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">CC-BY-NC-*</code> matches all Creative Commons NonCommercial licenses</li>
+                  <li><code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">BSD-*</code> matches BSD-2-Clause, BSD-3-Clause, BSD-4-Clause</li>
+                </ul>
+              </div>
+
+              <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <p className="text-sm text-blue-800 dark:text-blue-200">
+                  <strong>Complete Reference:</strong> All 221 licenses follow the SPDX URL pattern:
+                  <code className="bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded ml-1">https://spdx.org/licenses/[LICENSE-ID].html</code>
+                  <br />
+                  <span className="text-xs mt-2 inline-block">
+                    Example: <a href="https://spdx.org/licenses/MIT.html" target="_blank" rel="noopener noreferrer" className="underline">MIT</a>,
+                    <a href="https://spdx.org/licenses/Apache-2.0.html" target="_blank" rel="noopener noreferrer" className="underline ml-1">Apache-2.0</a>
+                  </span>
+                </p>
               </div>
             </div>
           ),
         },
         {
           id: 'scoring-system',
-          title: 'Health Scoring System',
+          title: 'Health Scoring Algorithm',
           content: (
-            <div className="space-y-4">
-              <p className="text-gray-700 dark:text-gray-300">
-                Customize how health scores are calculated (0-100):
-              </p>
-              <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
-                <code>{`{
+            <div className="space-y-6">
+              <div>
+                <p className="text-gray-700 dark:text-gray-300 mb-4">
+                  Each package receives a health score from 0-100 based on 7 weighted dimensions. Customize the importance of each dimension using booster weights:
+                </p>
+                <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
+                  <code>{`{
   "scoring": {
     "enabled": true,
     "minimumScore": 60,
@@ -347,28 +757,305 @@ export const Documentation = () => {
     }
   }
 }`}</code>
-              </pre>
-              <div className="mt-4 space-y-2">
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  <strong>Score ranges:</strong>
-                </p>
-                <ul className="list-disc pl-6 text-sm space-y-1">
-                  <li>90-100: Excellent (well-maintained, safe)</li>
-                  <li>75-89: Good (solid choice, minor concerns)</li>
-                  <li>60-74: Fair (acceptable, needs monitoring)</li>
-                  <li>0-59: Poor (high risk, consider alternatives)</li>
-                </ul>
+                </pre>
               </div>
-              <div className="mt-4">
-                <a
-                  href="/SCORING-ALGORITHM.md"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
-                >
-                  <Award className="w-4 h-4" />
-                  View Complete Scoring Algorithm
-                </a>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h5 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Formula</h5>
+                <div className="p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
+                  <code className="text-sm text-purple-900 dark:text-purple-100">
+                    Overall Score = Σ (Dimension Score × Booster Weight) / Σ (Booster Weights)
+                  </code>
+                  <p className="text-xs text-purple-800 dark:text-purple-200 mt-2">
+                    Each dimension is scored 0-100, then multiplied by its booster weight. Default total weight sum: 15.0
+                  </p>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h5 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Dimension Details</h5>
+                <div className="space-y-4">
+                  <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <h6 className="font-semibold text-gray-900 dark:text-white mb-2">1. Age Score (Booster: 1.5x)</h6>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      How recently the package was updated:
+                    </p>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs">
+                      <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded">
+                        <div className="font-medium text-green-900 dark:text-green-100">&lt; 6 months</div>
+                        <div className="text-green-700 dark:text-green-300">100 (Perfect)</div>
+                      </div>
+                      <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded">
+                        <div className="font-medium text-green-900 dark:text-green-100">&lt; 1 year</div>
+                        <div className="text-green-700 dark:text-green-300">90 (Excellent)</div>
+                      </div>
+                      <div className="p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded">
+                        <div className="font-medium text-yellow-900 dark:text-yellow-100">&lt; 2 years</div>
+                        <div className="text-yellow-700 dark:text-yellow-300">80 (Good)</div>
+                      </div>
+                      <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded">
+                        <div className="font-medium text-orange-900 dark:text-orange-100">&lt; 3 years</div>
+                        <div className="text-orange-700 dark:text-orange-300">60 (Fair)</div>
+                      </div>
+                      <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded">
+                        <div className="font-medium text-red-900 dark:text-red-100">&lt; 5 years</div>
+                        <div className="text-red-700 dark:text-red-300">40 (Poor)</div>
+                      </div>
+                      <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded">
+                        <div className="font-medium text-red-900 dark:text-red-100">≥ 5 years</div>
+                        <div className="text-red-700 dark:text-red-300">20 (Critical)</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <h6 className="font-semibold text-gray-900 dark:text-white mb-2">2. Deprecation Score (Booster: 4.0x - Highest)</h6>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      Binary: either perfect or fail. Highest booster weight because deprecated packages are critical risk:
+                    </p>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded">
+                        <div className="font-medium text-red-900 dark:text-red-100">Deprecated</div>
+                        <div className="text-red-700 dark:text-red-300">0 (Instant fail)</div>
+                      </div>
+                      <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded">
+                        <div className="font-medium text-green-900 dark:text-green-100">Not deprecated</div>
+                        <div className="text-green-700 dark:text-green-300">100 (Perfect)</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <h6 className="font-semibold text-gray-900 dark:text-white mb-2">3. License Score (Booster: 3.0x - High)</h6>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      License compatibility and quality (Blue Oak Council rating impact):
+                    </p>
+                    <div className="space-y-1 text-xs">
+                      <div className="flex justify-between p-2 bg-green-100 dark:bg-green-900/30 rounded">
+                        <span className="font-medium text-green-900 dark:text-green-100">Commercial-friendly (MIT, Apache-2.0)</span>
+                        <span className="text-green-700 dark:text-green-300">100</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded">
+                        <span className="font-medium text-yellow-900 dark:text-yellow-100">Commercial-warning (LGPL, MPL)</span>
+                        <span className="text-yellow-700 dark:text-yellow-300">70</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded">
+                        <span className="font-medium text-gray-900 dark:text-gray-100">Unknown</span>
+                        <span className="text-gray-700 dark:text-gray-300">50</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-red-100 dark:bg-red-900/30 rounded">
+                        <span className="font-medium text-red-900 dark:text-red-100">Commercial-incompatible (GPL, AGPL)</span>
+                        <span className="text-red-700 dark:text-red-300">30</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-red-100 dark:bg-red-900/30 rounded">
+                        <span className="font-medium text-red-900 dark:text-red-100">Unlicensed</span>
+                        <span className="text-red-700 dark:text-red-300">0</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+                      Blue Oak impact: Gold (0), Silver (-5), Bronze (-10), Lead (-20) | Patent clause: +5 points
+                    </p>
+                  </div>
+
+                  <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <h6 className="font-semibold text-gray-900 dark:text-white mb-2">4. Vulnerability Score (Booster: 2.0x)</h6>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      Known security issues from GitHub Advisory Database:
+                    </p>
+                    <div className="text-xs space-y-1">
+                      <div className="flex justify-between p-2 bg-red-100 dark:bg-red-900/30 rounded">
+                        <span className="font-medium text-red-900 dark:text-red-100">Critical vulnerability</span>
+                        <span className="text-red-700 dark:text-red-300">-30 points</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-orange-100 dark:bg-orange-900/30 rounded">
+                        <span className="font-medium text-orange-900 dark:text-orange-100">High vulnerability</span>
+                        <span className="text-orange-700 dark:text-orange-300">-15 points</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded">
+                        <span className="font-medium text-yellow-900 dark:text-yellow-100">Medium vulnerability</span>
+                        <span className="text-yellow-700 dark:text-yellow-300">-5 points</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-blue-100 dark:bg-blue-900/30 rounded">
+                        <span className="font-medium text-blue-900 dark:text-blue-100">Low vulnerability</span>
+                        <span className="text-blue-700 dark:text-blue-300">-1 point</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+                      Formula: 100 - (critical×30) - (high×15) - (medium×5) - (low×1)
+                    </p>
+                  </div>
+
+                  <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <h6 className="font-semibold text-gray-900 dark:text-white mb-2">5. Popularity Score (Booster: 1.0x - Informational)</h6>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      Based on weekly npm downloads with trend adjustment:
+                    </p>
+                    <div className="text-xs space-y-1">
+                      <div className="flex justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded">
+                        <span className="font-medium">≥ 10M/week</span>
+                        <span>100</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded">
+                        <span className="font-medium">≥ 1M/week</span>
+                        <span>95</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded">
+                        <span className="font-medium">≥ 100K/week</span>
+                        <span>85</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded">
+                        <span className="font-medium">≥ 10K/week</span>
+                        <span>70</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded">
+                        <span className="font-medium">≥ 1K/week</span>
+                        <span>50</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded">
+                        <span className="font-medium">&lt; 1K/week</span>
+                        <span>30</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+                      Trend: Growing (+5), Declining (-10)
+                    </p>
+                  </div>
+
+                  <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <h6 className="font-semibold text-gray-900 dark:text-white mb-2">6. Repository Score (Booster: 2.0x)</h6>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      GitHub activity and health indicators (starts at 100, penalties/bonuses applied):
+                    </p>
+                    <div className="text-xs space-y-1">
+                      <div className="flex justify-between p-2 bg-red-100 dark:bg-red-900/30 rounded">
+                        <span className="font-medium text-red-900 dark:text-red-100">Archived</span>
+                        <span className="text-red-700 dark:text-red-300">0 (instant fail)</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded">
+                        <span>Last commit &gt; 1 year</span>
+                        <span>-30</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded">
+                        <span>Last commit &gt; 6 months</span>
+                        <span>-15</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded">
+                        <span>&gt; 500 open issues</span>
+                        <span>-20</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded">
+                        <span>&lt; 10 stars</span>
+                        <span>-20</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-green-100 dark:bg-green-900/30 rounded">
+                        <span className="font-medium text-green-900 dark:text-green-100">Last commit &lt; 30 days</span>
+                        <span className="text-green-700 dark:text-green-300">+5 (bonus)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <h6 className="font-semibold text-gray-900 dark:text-white mb-2">7. Update Frequency Score (Booster: 1.5x)</h6>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      Average days between releases (last 12 months):
+                    </p>
+                    <div className="text-xs space-y-1">
+                      <div className="flex justify-between p-2 bg-green-100 dark:bg-green-900/30 rounded">
+                        <span className="font-medium text-green-900 dark:text-green-100">≤ 30 days (monthly+)</span>
+                        <span className="text-green-700 dark:text-green-300">100</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded">
+                        <span>≤ 90 days (quarterly)</span>
+                        <span>90</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded">
+                        <span>≤ 180 days (semi-annual)</span>
+                        <span>70</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded">
+                        <span>≤ 365 days (annual)</span>
+                        <span>50</span>
+                      </div>
+                      <div className="flex justify-between p-2 bg-red-100 dark:bg-red-900/30 rounded">
+                        <span>&gt; 365 days (rare)</span>
+                        <span>30</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+                      Bonus: &gt; 20 releases/year → +10 points
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h5 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Rating Categories</h5>
+                <div className="grid md:grid-cols-2 gap-3">
+                  <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                    <div className="font-semibold text-green-900 dark:text-green-100">90-100: Excellent</div>
+                    <p className="text-xs text-green-800 dark:text-green-200">Well-maintained, safe, recommended</p>
+                  </div>
+                  <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                    <div className="font-semibold text-blue-900 dark:text-blue-100">75-89: Good</div>
+                    <p className="text-xs text-blue-800 dark:text-blue-200">Solid choice, minor concerns</p>
+                  </div>
+                  <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                    <div className="font-semibold text-yellow-900 dark:text-yellow-100">60-74: Fair</div>
+                    <p className="text-xs text-yellow-800 dark:text-yellow-200">Acceptable but needs monitoring</p>
+                  </div>
+                  <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                    <div className="font-semibold text-red-900 dark:text-red-100">0-59: Poor</div>
+                    <p className="text-xs text-red-800 dark:text-red-200">High risk, consider alternatives</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h5 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Custom Booster Presets</h5>
+                <div className="space-y-4">
+                  <div>
+                    <h6 className="font-medium text-gray-900 dark:text-white mb-2">Security-Focused</h6>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      Emphasize vulnerabilities and deprecation:
+                    </p>
+                    <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto text-xs">
+                      <code>{`{
+  "scoring": {
+    "boosters": {
+      "age": 1.0,
+      "deprecation": 5.0,
+      "license": 2.0,
+      "vulnerability": 4.0,
+      "popularity": 0.5,
+      "repository": 1.5,
+      "updateFrequency": 1.0
+    }
+  }
+}`}</code>
+                    </pre>
+                  </div>
+                  <div>
+                    <h6 className="font-medium text-gray-900 dark:text-white mb-2">License-Focused</h6>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      Emphasize legal compliance for commercial projects:
+                    </p>
+                    <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto text-xs">
+                      <code>{`{
+  "scoring": {
+    "boosters": {
+      "age": 1.0,
+      "deprecation": 3.0,
+      "license": 5.0,
+      "vulnerability": 2.0,
+      "popularity": 0.5,
+      "repository": 1.5,
+      "updateFrequency": 1.0
+    }
+  }
+}`}</code>
+                    </pre>
+                  </div>
+                </div>
               </div>
             </div>
           ),
@@ -377,7 +1064,7 @@ export const Documentation = () => {
     },
     {
       id: 'use-cases',
-      title: 'Use Cases',
+      title: t('documentation.sections.useCases.title'),
       icon: Layers,
       subsections: [
         {
@@ -550,7 +1237,7 @@ done`}</code>
     },
     {
       id: 'integrations',
-      title: 'Integrations',
+      title: t('documentation.sections.integrations.title'),
       icon: GitBranch,
       subsections: [
         {
@@ -574,7 +1261,7 @@ done`}</code>
                 <div>
                   <h4 className="font-semibold text-gray-900 dark:text-white mb-2">2. Set Environment Variable</h4>
                   <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                    <code>export GITHUB_TOKEN=ghp_your_token_here</code>
+                    <code>export GITHUB_TOKEN=YOUR_GITHUB_TOKEN_HERE</code>
                   </pre>
                 </div>
                 <div>
@@ -624,7 +1311,7 @@ done`}</code>
     },
     {
       id: 'outputs',
-      title: 'Output Formats',
+      title: t('documentation.sections.outputs.title'),
       icon: FileText,
       subsections: [
         {
@@ -660,7 +1347,7 @@ done`}</code>
               </p>
               <div className="mt-4">
                 <a
-                  href="/examples/sample-output.json"
+                  href="/examples/express-project-outputs/scan-output-json.json"
                   download
                   className="text-primary-600 dark:text-primary-400 hover:underline"
                 >
@@ -686,7 +1373,7 @@ done`}</code>
               </p>
               <div className="mt-4">
                 <a
-                  href="/examples/sample-output.csv"
+                  href="/examples/express-project-outputs/scan-output-csv.csv"
                   download
                   className="text-primary-600 dark:text-primary-400 hover:underline"
                 >
@@ -712,7 +1399,7 @@ done`}</code>
               </p>
               <div className="mt-4">
                 <a
-                  href="/examples/sample-report.md"
+                  href="/examples/express-project-outputs/scan-output-markdown.md"
                   download
                   className="text-primary-600 dark:text-primary-400 hover:underline"
                 >
@@ -738,7 +1425,7 @@ done`}</code>
               </p>
               <div className="mt-4">
                 <a
-                  href="/examples/sample-output.txt"
+                  href="/examples/express-project-outputs/scan-output-cli.txt"
                   download
                   className="text-primary-600 dark:text-primary-400 hover:underline"
                 >
@@ -752,7 +1439,7 @@ done`}</code>
     },
     {
       id: 'troubleshooting',
-      title: 'Troubleshooting',
+      title: t('documentation.sections.troubleshooting.title'),
       icon: AlertCircle,
       subsections: [
         {
@@ -829,7 +1516,7 @@ done`}</code>
     },
     {
       id: 'best-practices',
-      title: 'Best Practices',
+      title: t('documentation.sections.bestPractices.title'),
       icon: CheckCircle,
       subsections: [
         {

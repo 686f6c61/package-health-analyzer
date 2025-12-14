@@ -56,7 +56,7 @@ describe('Scan command integration', () => {
 
     const hasChalk = result.packages.some((pkg) => pkg.package === 'chalk');
     expect(hasChalk).toBe(false);
-  }, 10000);
+  }, 15000);
 
   it('should include devDependencies when configured', async () => {
     const configWithoutDev = {

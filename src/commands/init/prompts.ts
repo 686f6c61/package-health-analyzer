@@ -1,6 +1,20 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - Interactive Configuration Prompts
  *
+ * This module defines the interactive prompt system for guided configuration initialization,
+ * leveraging the prompts library to create a user-friendly CLI wizard. It structures all
+ * configuration questions with validation, conditional logic, and helpful descriptions to
+ * guide users through complex configuration options based on their project type and needs.
+ *
+ * Key responsibilities:
+ * - Define structured prompt sequences for all configuration parameters (project type, thresholds, licenses)
+ * - Implement conditional prompt logic that adapts questions based on previous answers
+ * - Provide rich UX with colored output, descriptions, and inline validation messages
+ * - Validate user input for format compliance (age thresholds, score ranges) with helpful error messages
+ * - Export strongly-typed InitAnswers interface for type-safe configuration building
+ * - Handle user cancellation gracefully with proper error signaling
+ *
+ * @module commands/init/prompts
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT

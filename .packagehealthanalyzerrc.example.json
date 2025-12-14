@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "description": "Example configuration for package-health-analyzer v2.0.0",
+
+  "projectType": "commercial",
+  "includeDevDependencies": false,
+  "failOn": "critical",
+  "output": "cli",
+
+  "age": {
+    "warn": "2y",
+    "critical": "5y",
+    "checkDeprecated": true,
+    "checkRepository": true
+  },
+
+  "license": {
+    "allow": ["MIT", "ISC", "BSD-2-Clause", "BSD-3-Clause", "Apache-2.0", "Unlicense"],
+    "deny": [],
+    "warn": ["LGPL-2.1", "LGPL-3.0", "MPL-2.0", "EPL-1.0", "EPL-2.0"],
+    "warnOnUnknown": true,
+    "checkPatentClauses": true
+  },
+
+  "scoring": {
+    "enabled": true,
+    "minimumScore": 0,
+    "boosters": {
+      "age": 1.5,
+      "deprecation": 4.0,
+      "license": 3.0,
+      "vulnerability": 2.0,
+      "popularity": 1.0,
+      "repository": 2.0,
+      "updateFrequency": 1.5
+    }
+  },
+
+  "ignore": {
+    "scopes": [],
+    "prefixes": [],
+    "authors": [],
+    "packages": []
+  },
+
+  "cache": {
+    "enabled": true,
+    "ttl": 3600
+  },
+
+  "github": {
+    "enabled": false,
+    "token": "",
+    "security": {
+      "enabled": true,
+      "cacheTtl": 86400
+    }
+  },
+
+  "dependencyTree": {
+    "enabled": true,
+    "maxDepth": 3,
+    "analyzeTransitive": true,
+    "detectCircular": true,
+    "detectDuplicates": true,
+    "stopOnCircular": false,
+    "cacheTrees": true
+  },
+
+  "notice": {
+    "format": "apache",
+    "includeDevDependencies": true,
+    "includeTransitive": true,
+    "includeCopyright": true,
+    "includeUrls": true,
+    "groupByLicense": false,
+    "outputPath": "NOTICE.txt"
+  },
+
+  "monitor": {
+    "enabled": false
+  },
+
+  "upgradePath": {
+    "enabled": true,
+    "analyzeBreakingChanges": true,
+    "suggestAlternatives": true,
+    "fetchChangelogs": false,
+    "estimateEffort": true
+  }
+}

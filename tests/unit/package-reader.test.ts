@@ -304,7 +304,7 @@ describe('readPackageJson error handling', () => {
 
     vi.mocked(readFile).mockResolvedValue(JSON.stringify(mockPackageJson));
 
-    await expect(readPackageJson()).rejects.toThrow('missing name or version');
+    await expect(readPackageJson()).rejects.toThrow('Invalid package.json structure');
   });
 
   it('should handle missing version field', async () => {
@@ -315,7 +315,7 @@ describe('readPackageJson error handling', () => {
 
     vi.mocked(readFile).mockResolvedValue(JSON.stringify(mockPackageJson));
 
-    await expect(readPackageJson()).rejects.toThrow('missing name or version');
+    await expect(readPackageJson()).rejects.toThrow('Invalid package.json structure');
   });
 
   it('should handle ENOENT error specifically', async () => {

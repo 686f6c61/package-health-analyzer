@@ -1,6 +1,7 @@
 export { Header } from './Header';
 export { Footer } from './Footer';
 export { Hero } from './Hero';
+export { WhatsNewV2 } from './WhatsNewV2';
 export { Features } from './Features';
 export { Examples } from './Examples';
 export { ConfigurationGuide } from './ConfigurationGuide';

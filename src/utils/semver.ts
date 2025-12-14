@@ -1,6 +1,21 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - Semantic Versioning Analysis
  *
+ * Provides semantic versioning analysis utilities that classify version differences and estimate migration complexity.
+ * This module extends the standard semver library with business logic specific to dependency health assessment,
+ * including breaking change estimation and intermediate version discovery. It abstracts semver complexity into
+ * actionable insights about update risk, helping teams understand the difference between a safe patch update
+ * and a potentially breaking major version upgrade.
+ *
+ * Key responsibilities:
+ * - Determine update classification (patch/minor/major) between version pairs
+ * - Estimate breaking change count based on major version jumps
+ * - Extract intermediate versions for incremental upgrade paths
+ * - Find the last stable version within a major release line
+ * - Normalize and clean version strings for consistent comparison
+ * - Handle pre-release versions and version range resolution
+ *
+ * @module utils/semver
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT

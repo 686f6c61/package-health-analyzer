@@ -40,6 +40,7 @@ describe('Health Score Calculator', () => {
     const score = calculateHealthScore(
       healthyAge,
       healthyLicense,
+      undefined, // no vulnerabilities
       defaultConfig.scoring,
       'commercial'
     );
@@ -61,6 +62,7 @@ describe('Health Score Calculator', () => {
     const score = calculateHealthScore(
       deprecatedAge,
       healthyLicense,
+      undefined,
       defaultConfig.scoring,
       'commercial'
     );
@@ -82,6 +84,7 @@ describe('Health Score Calculator', () => {
     const score = calculateHealthScore(
       healthyAge,
       gplLicense,
+      undefined,
       defaultConfig.scoring,
       'commercial'
     );
@@ -146,6 +149,7 @@ describe('Health Score Calculator', () => {
     const score = calculateHealthScore(
       oldAge,
       healthyLicense,
+      undefined,
       defaultConfig.scoring,
       'commercial'
     );
@@ -171,6 +175,7 @@ describe('Health Score Calculator', () => {
     const score = calculateHealthScore(
       deprecatedAge,
       healthyLicense,
+      undefined,
       customConfig,
       'commercial'
     );
@@ -187,6 +192,7 @@ describe('Health Score Calculator', () => {
     const score = calculateHealthScore(
       noRepoAge,
       healthyLicense,
+      undefined,
       defaultConfig.scoring,
       'commercial'
     );

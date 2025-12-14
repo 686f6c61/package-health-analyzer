@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Settings, AlertTriangle, Shield, Award, Filter, FileOutput, Zap, Github, TrendingUp, BookOpen } from 'lucide-react';
+import { Settings, AlertTriangle, Shield, Award, Filter, FileOutput, Zap, Github, TrendingUp, BookOpen, Network, FileText } from 'lucide-react';
 import { LicenseModal } from './LicenseModal';
 import { ScoringModal } from './ScoringModal';
 
@@ -57,8 +57,8 @@ const configSections = [
     note: 'See complete list of supported licenses with exact SPDX identifiers',
     docLink: {
       modalType: 'license',
-      label: 'View License Reference Guide',
-      description: 'Complete catalog of 40+ licenses with copy-paste ready configurations',
+      label: 'Ver guía de referencia de licencias',
+      description: 'Catálogo completo de 221 licencias con configuraciones listas para copiar',
     },
     example: `"license": {
   "allow": ["MIT", "ISC", "Apache-2.0"],
@@ -148,13 +148,63 @@ const configSections = [
     id: 'github',
     title: 'GitHub Integration',
     icon: Github,
-    description: 'Enhanced repository analysis with GitHub API',
+    description: 'Enhanced repository analysis and vulnerability scanning with GitHub API',
     fields: [
       { name: 'enabled', desc: 'Enable GitHub API integration', default: 'false' },
+      { name: 'token', desc: 'GitHub personal access token (encrypted with AES-256-GCM)', default: 'undefined' },
+      { name: 'security.enabled', desc: 'Enable GitHub Advisory Database vulnerability scanning', default: 'false' },
+      { name: 'security.cacheTtl', desc: 'Vulnerability cache duration in milliseconds (24h = 86400000)', default: '86400000' },
     ],
-    note: 'Requires GITHUB_TOKEN environment variable for authentication',
+    note: 'Requires GITHUB_TOKEN environment variable. Token is encrypted using AES-256-GCM with secure memory cleanup and file permission validation (600).',
     example: `"github": {
-  "enabled": false
+  "enabled": true,
+  "security": {
+    "enabled": true,
+    "cacheTtl": 86400000
+  }
+}`,
+  },
+  {
+    id: 'dependencyTree',
+    title: 'Dependency Tree Analysis',
+    icon: Network,
+    description: 'Deep transitive dependency analysis with circular and duplicate detection',
+    fields: [
+      { name: 'enabled', desc: 'Enable dependency tree analysis', default: 'true' },
+      { name: 'maxDepth', desc: 'Maximum depth to traverse (0 = unlimited)', default: '0' },
+      { name: 'analyzeTransitive', desc: 'Analyze all transitive dependencies', default: 'true' },
+      { name: 'detectCircular', desc: 'Detect circular dependency chains', default: 'true' },
+      { name: 'detectDuplicates', desc: 'Detect multiple versions of same package', default: 'true' },
+      { name: 'stopOnCircular', desc: 'Stop analysis when circular dependency found', default: 'false' },
+      { name: 'cacheTrees', desc: 'Cache dependency trees for performance', default: 'true' },
+    ],
+    example: `"dependencyTree": {
+  "enabled": true,
+  "maxDepth": 3,
+  "analyzeTransitive": true,
+  "detectCircular": true,
+  "detectDuplicates": true
+}`,
+  },
+  {
+    id: 'notice',
+    title: 'NOTICE.txt Generation',
+    icon: FileText,
+    description: 'Generate Apache-style NOTICE.txt files for legal compliance',
+    fields: [
+      { name: 'format', desc: 'Output format: "apache" or "simple"', default: '"apache"' },
+      { name: 'includeDevDependencies', desc: 'Include devDependencies in NOTICE', default: 'true' },
+      { name: 'includeTransitive', desc: 'Include transitive dependencies', default: 'true' },
+      { name: 'includeCopyright', desc: 'Include copyright information', default: 'true' },
+      { name: 'includeUrls', desc: 'Include repository URLs', default: 'true' },
+      { name: 'groupByLicense', desc: 'Group packages by license type', default: 'false' },
+      { name: 'outputPath', desc: 'Output file path', default: '"NOTICE.txt"' },
+    ],
+    example: `"notice": {
+  "format": "apache",
+  "includeTransitive": true,
+  "includeCopyright": true,
+  "outputPath": "NOTICE.txt"
 }`,
   },
   {
@@ -166,8 +216,8 @@ const configSections = [
       { name: 'enabled', desc: 'Enable upgrade path analysis', default: 'true' },
       { name: 'analyzeBreakingChanges', desc: 'Detect breaking changes in updates', default: 'true' },
       { name: 'suggestAlternatives', desc: 'Recommend alternative packages', default: 'true' },
-      { name: 'fetchChangelogs', desc: 'Fetch and parse changelogs', default: 'false' },
-      { name: 'estimateEffort', desc: 'Estimate migration effort', default: 'true' },
+      { name: 'fetchChangelogs', desc: 'Automatically fetch CHANGELOG files and GitHub releases for migration context', default: 'false' },
+      { name: 'estimateEffort', desc: 'Estimate migration effort (5min to 2 days)', default: 'true' },
     ],
     example: `"upgradePath": {
   "enabled": true,

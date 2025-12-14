@@ -1,6 +1,20 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - Configuration Builder
  *
+ * This module transforms user responses from interactive prompts into valid configuration
+ * objects that conform to the application's Config type. It applies intelligent defaults,
+ * filters special values, and formats the final configuration for JSON serialization with
+ * proper schema references and human-readable structure.
+ *
+ * Key responsibilities:
+ * - Transform InitAnswers from prompts into fully-typed Config objects with proper defaults
+ * - Apply smart filtering logic to remove placeholder values like 'none' and 'custom' from arrays
+ * - Merge user selections with defaultConfig to ensure all required fields are populated
+ * - Format configuration for file output with JSON schema references for IDE autocomplete support
+ * - Handle edge cases in license lists, ignore patterns, and threshold configurations
+ * - Ensure backward compatibility with existing configuration formats
+ *
+ * @module commands/init/builder
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT
@@ -66,7 +80,8 @@ export function buildConfigFromAnswers(answers: InitAnswers): Config {
 
   // Output format
   if (answers.output) {
-    config.output = answers.output;
+    // Map 'md' to 'markdown' for compatibility
+    config.output = answers.output === 'md' ? 'markdown' : answers.output;
   }
 
   // Security/GitHub integration

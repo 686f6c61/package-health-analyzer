@@ -1,6 +1,21 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - Package Ignore Matcher
  *
+ * Provides flexible, multi-strategy package filtering to exclude dependencies from analysis based on configurable rules.
+ * This module implements a sophisticated matching system supporting exact names, glob patterns, scopes, prefixes, and
+ * author-based exclusions. It enables teams to customize analysis by ignoring internal packages, specific vendor scopes,
+ * or dependencies from trusted authors, reducing noise and focusing on packages that require attention while maintaining
+ * full audit trail with customizable exclusion reasons.
+ *
+ * Key responsibilities:
+ * - Match packages against exact names, wildcard patterns, and npm scopes (@org/*)
+ * - Filter dependencies by author or maintainer metadata
+ * - Support glob-style pattern matching for flexible exclusion rules
+ * - Provide detailed ignore reasons for transparency and audit trails
+ * - Enable scope-based exclusions for internal or trusted organization packages
+ * - Convert user-friendly patterns to regex for efficient matching
+ *
+ * @module utils/ignore-matcher
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT
@@ -54,7 +69,9 @@ function matchesAuthor(
       : metadata.author?.name || metadata.author?.email || '';
 
   const maintainerStrings =
-    metadata.maintainers?.map((m) => m.name || m.email || '') || [];
+    metadata.maintainers?.map((m) =>
+      typeof m === 'string' ? m : (m.name || m.email || '')
+    ) || [];
 
   const allAuthors = [authorString, ...maintainerStrings]
     .filter(Boolean)

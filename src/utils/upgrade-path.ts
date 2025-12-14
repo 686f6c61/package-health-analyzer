@@ -1,6 +1,21 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - Upgrade Path Analysis Engine
  *
+ * Generates intelligent, actionable upgrade strategies for outdated dependencies by analyzing semantic versioning,
+ * estimating migration effort, and providing step-by-step guidance. This module transforms raw version comparisons
+ * into practical migration plans with risk assessment, breaking change estimation, and curated resources. It recognizes
+ * that major version upgrades often require incremental steps and provides graduated migration paths to minimize risk,
+ * along with package alternatives for deprecated or problematic dependencies.
+ *
+ * Key responsibilities:
+ * - Analyze version differences and determine update complexity (patch/minor/major)
+ * - Estimate breaking changes and migration effort based on semver jumps
+ * - Generate multi-step upgrade paths for complex major version migrations
+ * - Provide migration resources including guides, changelogs, and available codemods
+ * - Suggest modern alternatives for deprecated packages (moment→dayjs, request→axios)
+ * - Calculate risk levels and time estimates for upgrade planning
+ *
+ * @module utils/upgrade-path
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT
@@ -13,6 +28,12 @@ import {
   getUpdateType,
   estimateBreakingChanges,
 } from './semver.js';
+import {
+  extractGitHubInfo,
+  fetchGitHubReleases,
+  fetchChangelogFile,
+} from '../services/github-api.js';
+import { fetchPackageMetadata } from '../services/npm-registry.js';
 
 /**
  * Known package alternatives
@@ -136,7 +157,7 @@ export async function analyzeUpgradePath(
 
   // Get migration resources
   const resources = config.fetchChangelogs
-    ? getMigrationResources(packageName, currentVersion, latestVersion)
+    ? await getMigrationResources(packageName, currentVersion, latestVersion)
     : undefined;
 
   // Get alternatives
@@ -215,7 +236,7 @@ function estimateEffort(
  * Build upgrade steps
  */
 function buildUpgradeSteps(
-  packageName: string,
+  _packageName: string,
   currentVersion: string,
   latestVersion: string,
   updateType: 'patch' | 'minor' | 'major'
@@ -289,18 +310,22 @@ function buildUpgradeSteps(
 /**
  * Get migration resources for a package
  */
-function getMigrationResources(
+async function getMigrationResources(
   packageName: string,
   currentVersion: string,
   latestVersion: string
-): {
+): Promise<{
   migrationGuide?: string;
   changelog?: string;
+  changelogContent?: string;
+  releases?: Array<{ version: string; notes: string; url: string }>;
   codemods?: string[];
-} {
+}> {
   const resources: {
     migrationGuide?: string;
     changelog?: string;
+    changelogContent?: string;
+    releases?: Array<{ version: string; notes: string; url: string }>;
     codemods?: string[];
   } = {};
 
@@ -318,8 +343,80 @@ function getMigrationResources(
     }
   }
 
-  // Generic changelog URL
-  resources.changelog = `https://github.com/${getGithubRepo(packageName)}/releases`;
+  // Try to fetch actual changelog content from GitHub
+  try {
+    const metadata = await fetchPackageMetadata(packageName);
+    const repoUrl = typeof metadata.repository === 'string'
+      ? metadata.repository
+      : metadata.repository?.url;
+
+    if (repoUrl && typeof repoUrl === 'string') {
+      const githubInfo = extractGitHubInfo(repoUrl);
+
+      if (githubInfo) {
+        // Set changelog URL
+        resources.changelog = `https://github.com/${githubInfo.owner}/${githubInfo.repo}/releases`;
+
+        // Try to fetch releases from GitHub API
+        try {
+          const releases = await fetchGitHubReleases(
+            githubInfo.owner,
+            githubInfo.repo,
+            process.env.GITHUB_TOKEN,
+            10 // Fetch last 10 releases
+          );
+
+          if (releases.length > 0) {
+            // Filter releases between current and latest version
+            const relevantReleases = releases
+              .filter((release) => {
+                const version = release.tag_name.replace(/^v/, '');
+                return (
+                  semver.valid(version) &&
+                  semver.gt(version, currentVersion) &&
+                  semver.lte(version, latestVersion)
+                );
+              })
+              .map((release) => ({
+                version: release.tag_name,
+                notes: release.body || release.name || 'No release notes',
+                url: release.html_url,
+              }));
+
+            if (relevantReleases.length > 0) {
+              resources.releases = relevantReleases;
+            }
+          }
+        } catch {
+          // If releases fail, try to fetch CHANGELOG file
+          try {
+            const changelogContent = await fetchChangelogFile(
+              githubInfo.owner,
+              githubInfo.repo
+            );
+
+            if (changelogContent) {
+              // Extract relevant section between versions
+              const relevantChangelog = extractChangelogSection(
+                changelogContent,
+                currentVersion,
+                latestVersion
+              );
+
+              if (relevantChangelog) {
+                resources.changelogContent = relevantChangelog;
+              }
+            }
+          } catch {
+            // Silently fail - changelog is optional
+          }
+        }
+      }
+    }
+  } catch {
+    // If fetching fails, just use generic URL
+    resources.changelog = `https://github.com/${getGithubRepo(packageName)}/releases`;
+  }
 
   // Known codemods
   const codemods = getCodemods(packageName);
@@ -359,4 +456,70 @@ function getCodemods(packageName: string): string[] {
   };
 
   return codemods[packageName] || [];
+}
+
+/**
+ * Extract relevant changelog section between two versions
+ */
+function extractChangelogSection(
+  changelogContent: string,
+  currentVersion: string,
+  latestVersion: string
+): string | null {
+  try {
+    // Split changelog into sections by version headers
+    // Common formats: ## [1.2.3], # 1.2.3, ## v1.2.3, etc.
+    const versionRegex = /^#{1,3}\s*\[?v?(\d+\.\d+\.\d+[^\]]*)\]?/gm;
+
+    const sections: Array<{ version: string; content: string; index: number }> = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = versionRegex.exec(changelogContent)) !== null) {
+      if (sections.length > 0) {
+        // Save the previous section's content
+        sections[sections.length - 1]!.content = changelogContent.substring(
+          lastIndex,
+          match.index
+        );
+      }
+
+      sections.push({
+        version: match[1]!,
+        content: '',
+        index: match.index,
+      });
+
+      lastIndex = match.index;
+    }
+
+    // Save the last section
+    if (sections.length > 0) {
+      sections[sections.length - 1]!.content = changelogContent.substring(lastIndex);
+    }
+
+    // Find sections between current and latest version
+    const relevantSections = sections.filter((section) => {
+      const version = section.version.replace(/^v/, '');
+      return (
+        semver.valid(version) &&
+        semver.gt(version, currentVersion) &&
+        semver.lte(version, latestVersion)
+      );
+    });
+
+    if (relevantSections.length === 0) {
+      return null;
+    }
+
+    // Combine relevant sections (limit to first 5000 characters)
+    const combined = relevantSections
+      .map((section) => section.content)
+      .join('\n\n')
+      .trim();
+
+    return combined.length > 5000 ? combined.substring(0, 5000) + '...' : combined;
+  } catch {
+    return null;
+  }
 }

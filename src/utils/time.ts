@@ -1,6 +1,19 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - Time Utilities
  *
+ * Provides comprehensive time-related utilities for package age analysis and human-readable date formatting.
+ * This module centralizes all temporal calculations needed to assess package health based on publication dates,
+ * last update timestamps, and configurable age thresholds. It enables the analyzer to determine whether packages
+ * are actively maintained or potentially abandoned by converting ISO date strings into actionable metrics.
+ *
+ * Key responsibilities:
+ * - Calculate precise day differences between dates for age metrics
+ * - Convert raw day counts to human-readable formats (e.g., "2 years 3 months")
+ * - Parse and validate time threshold configurations (2y, 6m, 90d format)
+ * - Compute package age from ISO date strings with both numeric and textual outputs
+ * - Format dates for consistent reporting across the application
+ *
+ * @module utils/time
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT
@@ -64,7 +77,7 @@ export function daysToHuman(days: number): string {
 export function parseTimeThreshold(threshold: string): number {
   const match = threshold.match(/^(\d+)([ymd])$/i);
 
-  if (!match) {
+  if (!match || !match[1] || !match[2]) {
     throw new Error(
       `Invalid time threshold format: ${threshold}. Use format like "2y", "6m", or "90d"`
     );

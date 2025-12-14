@@ -1,6 +1,6 @@
 {
   "name": "package-health-analyzer",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Comprehensive dependency health analyzer combining age detection, license compliance, and security insights for Node.js projects",
   "keywords": [
     "dependencies",
@@ -12,7 +12,18 @@
     "compliance",
     "outdated",
     "deprecated",
-    "vulnerabilities"
+    "vulnerabilities",
+    "sbom",
+    "spdx",
+    "sarif",
+    "cve",
+    "advisory",
+    "transitive",
+    "dependency-tree",
+    "notice",
+    "patent-clause",
+    "cisa",
+    "supply-chain"
   ],
   "author": "686f6c61",
   "license": "MIT",
@@ -52,7 +63,7 @@
     "lint": "eslint src --ext .ts",
     "typecheck": "tsc --noEmit",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run test && npm run build"
+    "prepublishOnly": "npm run typecheck && npm run test && npm run build"
   },
   "dependencies": {
     "chalk": "^5.3.0",

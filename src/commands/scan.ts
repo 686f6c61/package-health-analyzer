@@ -1,6 +1,20 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - Dependency Scanning Command
  *
+ * This module implements the core dependency scanning functionality that analyzes all
+ * dependencies in a Node.js project. It orchestrates parallel analysis of packages across
+ * multiple dimensions including age, licensing, security vulnerabilities, and repository
+ * health to provide comprehensive insights into dependency health and risk.
+ *
+ * Key responsibilities:
+ * - Orchestrate concurrent analysis of all project dependencies with configurable concurrency limits
+ * - Coordinate multiple analyzers (age, license, security, scoring) to generate holistic package assessments
+ * - Calculate aggregate statistics and health scores across the entire dependency graph
+ * - Generate actionable recommendations for deprecated packages and critical issues
+ * - Determine exit codes based on severity thresholds for CI/CD integration
+ * - Integrate with GitHub APIs for repository metadata and vulnerability scanning when enabled
+ *
+ * @module commands/scan
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT
@@ -8,14 +22,16 @@
 
 import pLimit from 'p-limit';
 import type { Config } from '../types/config.js';
-import type { PackageAnalysis, ScanResult, ScanSummary } from '../types/index.js';
+import type { PackageAnalysis, ScanResult, ScanSummary, VulnerabilityAnalysis, Severity } from '../types/index.js';
 import { readPackageJson, getAllDependencies } from '../services/package-reader.js';
 import { fetchPackageMetadata } from '../services/npm-registry.js';
 import { analyzeAge } from '../analyzers/age.js';
 import { analyzeLicense } from '../analyzers/license.js';
+import { analyzePopularity } from '../analyzers/popularity.js';
 import { calculateHealthScore, getOverallSeverity } from '../analyzers/scorer.js';
 import { analyzePackageUpgrade } from '../analyzers/upgrade.js';
 import { analyzeGitHubRepository } from '../services/github-api.js';
+import { fetchVulnerabilities } from '../services/github-advisories.js';
 import { shouldIgnorePackage } from '../utils/ignore-matcher.js';
 
 const CONCURRENCY_LIMIT = 10;
@@ -62,16 +78,12 @@ export async function scanDependencies(
           config.license
         );
 
-        // Calculate health score
-        const score = calculateHealthScore(
-          ageAnalysis,
-          licenseAnalysis,
-          config.scoring,
-          config.projectType
+        // Analyze popularity (npm downloads)
+        const popularityAnalysis = await analyzePopularity(
+          name,
+          metadata.version || 'latest',
+          ageAnalysis.ageDays
         );
-
-        // Get overall severity
-        const overallSeverity = getOverallSeverity(ageAnalysis, licenseAnalysis);
 
         // Analyze upgrade path (if enabled)
         const upgradePath = await analyzePackageUpgrade(
@@ -96,15 +108,71 @@ export async function scanDependencies(
           );
         }
 
+        // Analyze vulnerabilities (if GitHub security scanning is enabled)
+        let vulnerability = undefined;
+        if (config.github.enabled && config.github.security?.enabled) {
+          try {
+            const vulnResult = await fetchVulnerabilities(
+              name,
+              metadata.version,
+              config.github.token,
+              config.github.security?.cacheTtl
+            );
+
+            // Determine severity based on vulnerability counts
+            let vulnSeverity: Severity = 'ok';
+            if (vulnResult.criticalCount > 0) {
+              vulnSeverity = 'critical';
+            } else if (vulnResult.highCount > 0) {
+              vulnSeverity = 'warning';
+            } else if (vulnResult.moderateCount > 0 || vulnResult.lowCount > 0) {
+              vulnSeverity = 'info';
+            }
+
+            vulnerability = {
+              package: name,
+              version: metadata.version,
+              vulnerabilities: vulnResult.vulnerabilities.map(v => ({
+                ghsaId: v.ghsaId,
+                cveId: v.cveId,
+                severity: v.severity,
+                summary: v.summary,
+              })),
+              totalCount: vulnResult.totalCount,
+              criticalCount: vulnResult.criticalCount,
+              highCount: vulnResult.highCount,
+              moderateCount: vulnResult.moderateCount,
+              lowCount: vulnResult.lowCount,
+              severity: vulnSeverity,
+            } as VulnerabilityAnalysis;
+          } catch {
+            // Silently continue if vulnerability check fails (e.g., rate limit)
+          }
+        }
+
+        // Recalculate health score with vulnerability data
+        const finalScore = calculateHealthScore(
+          ageAnalysis,
+          licenseAnalysis,
+          vulnerability,
+          config.scoring,
+          config.projectType,
+          popularityAnalysis
+        );
+
+        // Recalculate overall severity including vulnerability
+        const finalSeverity = getOverallSeverity(ageAnalysis, licenseAnalysis, vulnerability);
+
         const analysis: PackageAnalysis = {
           package: name,
           version: metadata.version,
           age: ageAnalysis,
           license: licenseAnalysis,
           repository,
-          score,
+          vulnerability,
+          score: finalScore,
           upgradePath,
-          overallSeverity,
+          overallSeverity: finalSeverity,
         };
 
         return analysis;
@@ -137,7 +205,7 @@ export async function scanDependencies(
 
   return {
     meta: {
-      version: '0.1.0', // TODO: Get from package.json
+      version: '2.0.0',
       timestamp: new Date().toISOString(),
       projectType: config.projectType,
       scanDuration,

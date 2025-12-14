@@ -1,0 +1,308 @@
+{
+  "$schema": "https://json.schema.org/draft/2020-12/schema",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "package-health-analyzer",
+          "version": "2.0.0",
+          "informationUri": "https://github.com/686f6c61/package-health-analyzer",
+          "rules": [
+            {
+              "id": "vulnerability-critical",
+              "name": "Critical Vulnerability",
+              "shortDescription": {
+                "text": "Package has critical security vulnerability"
+              },
+              "fullDescription": {
+                "text": "This package has one or more critical security vulnerabilities identified in the GitHub Advisory Database. Immediate action is required."
+              },
+              "help": {
+                "text": "Update to a patched version or find an alternative package. Review the CVE details for specific remediation guidance."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "vulnerability",
+                  "critical"
+                ],
+                "security-severity": "9.0"
+              }
+            },
+            {
+              "id": "vulnerability-high",
+              "name": "High Severity Vulnerability",
+              "shortDescription": {
+                "text": "Package has high severity security vulnerability"
+              },
+              "fullDescription": {
+                "text": "This package has one or more high severity security vulnerabilities identified in the GitHub Advisory Database."
+              },
+              "help": {
+                "text": "Update to a patched version as soon as possible. Review the CVE details for specific remediation guidance."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "vulnerability",
+                  "high"
+                ],
+                "security-severity": "7.0"
+              }
+            },
+            {
+              "id": "vulnerability-moderate",
+              "name": "Moderate Severity Vulnerability",
+              "shortDescription": {
+                "text": "Package has moderate severity security vulnerability"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "vulnerability",
+                  "moderate"
+                ],
+                "security-severity": "5.0"
+              }
+            },
+            {
+              "id": "vulnerability-low",
+              "name": "Low Severity Vulnerability",
+              "shortDescription": {
+                "text": "Package has low severity security vulnerability"
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "vulnerability",
+                  "low"
+                ],
+                "security-severity": "3.0"
+              }
+            },
+            {
+              "id": "deprecated-package",
+              "name": "Deprecated Package",
+              "shortDescription": {
+                "text": "Package is deprecated by maintainers"
+              },
+              "fullDescription": {
+                "text": "This package has been deprecated by its maintainers and should not be used in new projects."
+              },
+              "help": {
+                "text": "Find an alternative package or migrate to the recommended replacement if specified by the maintainers."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "maintenance",
+                  "deprecated"
+                ]
+              }
+            },
+            {
+              "id": "license-denied",
+              "name": "Denied License",
+              "shortDescription": {
+                "text": "Package uses a license that is explicitly denied"
+              },
+              "fullDescription": {
+                "text": "This package uses a license that has been explicitly denied in your project configuration."
+              },
+              "help": {
+                "text": "Remove this package or get approval to use this license type. Consider finding an alternative with a compatible license."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "license",
+                  "compliance"
+                ]
+              }
+            },
+            {
+              "id": "license-warning",
+              "name": "License Warning",
+              "shortDescription": {
+                "text": "Package uses a license that requires review"
+              },
+              "fullDescription": {
+                "text": "This package uses a license that has been flagged for review in your project configuration (copyleft, patent clauses, or other restrictions)."
+              },
+              "help": {
+                "text": "Review license terms with legal team to ensure compliance. Consider implications for your project type."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "license",
+                  "compliance",
+                  "review-required"
+                ]
+              }
+            },
+            {
+              "id": "license-unknown",
+              "name": "Unknown License",
+              "shortDescription": {
+                "text": "Package has unknown or missing license"
+              },
+              "fullDescription": {
+                "text": "This package does not specify a license or uses an unrecognized license identifier."
+              },
+              "help": {
+                "text": "Contact package maintainers to clarify licensing. Avoid using packages without clear licenses in production."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "license",
+                  "unknown"
+                ]
+              }
+            },
+            {
+              "id": "package-age-critical",
+              "name": "Critically Old Package",
+              "shortDescription": {
+                "text": "Package has not been updated in over 5 years"
+              },
+              "fullDescription": {
+                "text": "This package has not received updates for an extended period, indicating potential abandonment."
+              },
+              "help": {
+                "text": "Consider finding an actively maintained alternative. Old packages may have unpatched security issues."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "maintenance",
+                  "age"
+                ]
+              }
+            },
+            {
+              "id": "low-popularity",
+              "name": "Low Popularity Package",
+              "shortDescription": {
+                "text": "Package has very low download counts"
+              },
+              "fullDescription": {
+                "text": "This package has very low weekly download counts, which may indicate limited community trust or usage."
+              },
+              "help": {
+                "text": "Verify package quality and maintainer reputation before using in production."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "tags": [
+                  "popularity",
+                  "community"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "vulnerability-moderate",
+          "level": "warning",
+          "message": {
+            "text": "body-parser@2.2.1: body-parser is vulnerable to denial of service when url encoding is used (GHSA-wqch-xfxh-vrr4, CVE-2025-13466)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "package.json"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "packageName": "body-parser",
+            "packageVersion": "2.2.1",
+            "severity": "moderate"
+          }
+        },
+        {
+          "ruleId": "vulnerability-high",
+          "level": "error",
+          "message": {
+            "text": "body-parser@2.2.1: body-parser vulnerable to denial of service when url encoding is enabled (GHSA-qwcr-r2fm-qrc7, CVE-2024-45590)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "package.json"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "packageName": "body-parser",
+            "packageVersion": "2.2.1",
+            "severity": "high"
+          }
+        },
+        {
+          "ruleId": "vulnerability-critical",
+          "level": "error",
+          "message": {
+            "text": "morgan@1.10.1: Code Injection in morgan (GHSA-gwg9-rgvj-4h5j, CVE-2019-5413)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "package.json"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "packageName": "morgan",
+            "packageVersion": "1.10.1",
+            "severity": "critical"
+          }
+        }
+      ]
+    }
+  ]
+}

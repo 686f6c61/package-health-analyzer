@@ -1,0 +1,443 @@
+Scanning 9 dependencies...
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "express-example-api-1.0.0",
+  "documentNamespace": "https://sbom.express-example-api/1.0.0/2025-12-13T00:49:21.063Z",
+  "creationInfo": {
+    "created": "2025-12-13T00:49:21.063Z",
+    "creators": [
+      "Tool: package-health-analyzer-2.0.0"
+    ],
+    "licenseListVersion": "3.27.0"
+  },
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-root",
+      "name": "express-example-api",
+      "versionInfo": "1.0.0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-1",
+      "name": "express",
+      "versionInfo": "5.2.1",
+      "downloadLocation": "https://registry.npmjs.org/express/-/express-5.2.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": {
+        "package": "express",
+        "version": "5.2.1",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "licenseDeclared": {
+        "package": "express",
+        "version": "5.2.1",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/express@5.2.1"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-2",
+      "name": "body-parser",
+      "versionInfo": "2.2.1",
+      "downloadLocation": "https://registry.npmjs.org/body-parser/-/body-parser-2.2.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": {
+        "package": "body-parser",
+        "version": "2.2.1",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "licenseDeclared": {
+        "package": "body-parser",
+        "version": "2.2.1",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/body-parser@2.2.1"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-3",
+      "name": "cookie-parser",
+      "versionInfo": "1.4.7",
+      "downloadLocation": "https://registry.npmjs.org/cookie-parser/-/cookie-parser-1.4.7.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": {
+        "package": "cookie-parser",
+        "version": "1.4.7",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "licenseDeclared": {
+        "package": "cookie-parser",
+        "version": "1.4.7",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/cookie-parser@1.4.7"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-4",
+      "name": "dotenv",
+      "versionInfo": "17.2.3",
+      "downloadLocation": "https://registry.npmjs.org/dotenv/-/dotenv-17.2.3.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": {
+        "package": "dotenv",
+        "version": "17.2.3",
+        "license": "BSD-2-Clause",
+        "spdxId": "BSD-2-Clause",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "licenseDeclared": {
+        "package": "dotenv",
+        "version": "17.2.3",
+        "license": "BSD-2-Clause",
+        "spdxId": "BSD-2-Clause",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/dotenv@17.2.3"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-5",
+      "name": "cors",
+      "versionInfo": "2.8.5",
+      "downloadLocation": "https://registry.npmjs.org/cors/-/cors-2.8.5.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": {
+        "package": "cors",
+        "version": "2.8.5",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "licenseDeclared": {
+        "package": "cors",
+        "version": "2.8.5",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/cors@2.8.5"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-6",
+      "name": "helmet",
+      "versionInfo": "8.1.0",
+      "downloadLocation": "https://registry.npmjs.org/helmet/-/helmet-8.1.0.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": {
+        "package": "helmet",
+        "version": "8.1.0",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "licenseDeclared": {
+        "package": "helmet",
+        "version": "8.1.0",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/helmet@8.1.0"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-7",
+      "name": "morgan",
+      "versionInfo": "1.10.1",
+      "downloadLocation": "https://registry.npmjs.org/morgan/-/morgan-1.10.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": {
+        "package": "morgan",
+        "version": "1.10.1",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "licenseDeclared": {
+        "package": "morgan",
+        "version": "1.10.1",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/morgan@1.10.1"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-8",
+      "name": "compression",
+      "versionInfo": "1.8.1",
+      "downloadLocation": "https://registry.npmjs.org/compression/-/compression-1.8.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": {
+        "package": "compression",
+        "version": "1.8.1",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "licenseDeclared": {
+        "package": "compression",
+        "version": "1.8.1",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/compression@1.8.1"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-9",
+      "name": "winston",
+      "versionInfo": "3.19.0",
+      "downloadLocation": "https://registry.npmjs.org/winston/-/winston-3.19.0.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": {
+        "package": "winston",
+        "version": "3.19.0",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "licenseDeclared": {
+        "package": "winston",
+        "version": "3.19.0",
+        "license": "MIT",
+        "spdxId": "MIT",
+        "category": "commercial-friendly",
+        "blueOakRating": "gold",
+        "severity": "ok",
+        "isDualLicense": false,
+        "hasPatentClause": false,
+        "commercialUse": true,
+        "reason": "Explicitly allowed in configuration"
+      },
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/winston@3.19.0"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-Package-root",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-1"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-root",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-2"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-root",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-3"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-root",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-4"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-root",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-5"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-root",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-6"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-root",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-7"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-root",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-8"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-root",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-9"
+    }
+  ]
+}

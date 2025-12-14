@@ -1,11 +1,26 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - NPM Registry Integration Service
  *
+ * This module provides a robust and secure interface to the NPM Registry API, handling all package
+ * metadata retrieval operations with comprehensive error handling, input validation, and security measures.
+ * It serves as the primary data source for package information including versions, licenses, maintainers,
+ * and deprecation status.
+ *
+ * Key responsibilities:
+ * - Fetch package metadata from registry.npmjs.org with strict input validation to prevent injection attacks
+ * - Retrieve version-specific package information with semver support and tag resolution
+ * - Query download statistics from api.npmjs.org to assess package popularity and adoption
+ * - Implement request timeouts (10s) and proper error handling with typed exceptions (NpmRegistryError)
+ * - Validate package names against NPM naming rules and prevent path traversal/SSRF attacks
+ * - Handle HTTP errors (404 for missing packages, timeout for slow responses) with detailed error context
+ *
+ * @module services/npm-registry
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT
  */
 
+import { z } from 'zod';
 import type { PackageMetadata } from '../types/index.js';
 
 const NPM_REGISTRY_URL = 'https://registry.npmjs.org';
@@ -20,6 +35,72 @@ export class NpmRegistryError extends Error {
     this.name = 'NpmRegistryError';
   }
 }
+
+/**
+ * Zod schemas for validating NPM Registry API responses
+ */
+const NpmPackageMetadataSchema = z.object({
+  name: z.string(),
+  version: z.string().optional(),
+  'dist-tags': z.object({
+    latest: z.string(),
+  }).catchall(z.string()).optional(),
+  versions: z.record(z.object({
+    name: z.string().optional(),
+    version: z.string().optional(),
+    license: z.union([z.string(), z.object({}).passthrough()]).optional(),
+    repository: z.union([
+      z.string(),
+      z.object({
+        type: z.string().optional(),
+        url: z.string().optional(),
+      }).passthrough()
+    ]).optional(),
+    homepage: z.string().optional(),
+    deprecated: z.union([z.string(), z.boolean()]).optional(),
+    dist: z.object({
+      tarball: z.string(),
+    }).passthrough().optional(),
+    author: z.union([
+      z.string(),
+      z.object({
+        name: z.string().optional(),
+        email: z.string().optional(),
+      }).passthrough()
+    ]).optional(),
+    dependencies: z.record(z.string()).optional(),
+    devDependencies: z.record(z.string()).optional(),
+  }).passthrough()).optional(),
+  time: z.record(z.string()).optional(),
+  license: z.union([z.string(), z.object({}).passthrough()]).optional(),
+  repository: z.union([
+    z.string(),
+    z.object({
+      type: z.string().optional(),
+      url: z.string().optional(),
+    }).passthrough()
+  ]).optional(),
+  homepage: z.string().optional(),
+  deprecated: z.union([z.string(), z.boolean()]).optional(),
+  author: z.union([
+    z.string(),
+    z.object({
+      name: z.string().optional(),
+      email: z.string().optional(),
+    }).passthrough()
+  ]).optional(),
+  maintainers: z.array(z.object({
+    name: z.string(),
+    email: z.string(),
+  }).passthrough()).optional(),
+});
+
+const NpmDownloadStatsSchema = z.object({
+  downloads: z.number(),
+  start: z.string().optional(),
+  end: z.string().optional(),
+  package: z.string().optional(),
+});
 
 /**
  * Validate npm package name
@@ -91,18 +172,31 @@ export async function fetchPackageMetadata(
       );
     }
 
-    const data = await response.json();
+    const rawData = await response.json();
+
+    // Validate response with Zod
+    let data;
+    try {
+      data = NpmPackageMetadataSchema.parse(rawData);
+    } catch (zodError) {
+      throw new NpmRegistryError(
+        `Invalid package metadata from npm registry: ${zodError instanceof Error ? zodError.message : String(zodError)}`,
+        packageName
+      );
+    }
 
     return {
       name: data.name,
-      version: data['dist-tags']?.latest || Object.keys(data.versions || {}).pop(),
-      license: data.license,
-      repository: data.repository,
+      version: data['dist-tags']?.latest || Object.keys(data.versions || {}).pop() || 'unknown',
+      license: typeof data.license === 'string' ? data.license : undefined,
+      repository: typeof data.repository === 'string' ? data.repository : (data.repository as any),
       homepage: data.homepage,
       author: data.author,
       maintainers: data.maintainers,
       time: data.time,
       deprecated: data.deprecated,
+      'dist-tags': data['dist-tags'],
+      versions: data.versions,
     };
   } catch (error) {
     if (error instanceof NpmRegistryError) {
@@ -172,13 +266,50 @@ export async function fetchPackageVersion(
       );
     }
 
-    const data = await response.json();
+    const rawData = await response.json();
+
+    // Validate response with Zod (version endpoint returns simpler structure)
+    const VersionDataSchema = z.object({
+      name: z.string(),
+      version: z.string(),
+      license: z.union([z.string(), z.object({}).passthrough()]).optional(),
+      repository: z.union([
+        z.string(),
+        z.object({
+          type: z.string().optional(),
+          url: z.string().optional(),
+        }).passthrough()
+      ]).optional(),
+      homepage: z.string().optional(),
+      author: z.union([
+        z.string(),
+        z.object({
+          name: z.string().optional(),
+          email: z.string().optional(),
+        }).passthrough()
+      ]).optional(),
+      maintainers: z.array(z.object({
+        name: z.string(),
+        email: z.string(),
+      }).passthrough()).optional(),
+      deprecated: z.union([z.string(), z.boolean()]).optional(),
+    });
+
+    let data;
+    try {
+      data = VersionDataSchema.parse(rawData);
+    } catch (zodError) {
+      throw new NpmRegistryError(
+        `Invalid package version metadata: ${zodError instanceof Error ? zodError.message : String(zodError)}`,
+        packageName
+      );
+    }
 
     return {
       name: data.name,
       version: data.version,
-      license: data.license,
-      repository: data.repository,
+      license: typeof data.license === 'string' ? data.license : undefined,
+      repository: typeof data.repository === 'string' ? data.repository : (data.repository as any),
       homepage: data.homepage,
       author: data.author,
       maintainers: data.maintainers,
@@ -233,8 +364,17 @@ export async function fetchDownloadStats(
       throw new Error(`Failed to fetch download stats: ${response.statusText}`);
     }
 
-    const data = await response.json();
-    return data.downloads || 0;
+    const rawData = await response.json();
+
+    // Validate response with Zod
+    try {
+      const data = NpmDownloadStatsSchema.parse(rawData);
+      return data.downloads || 0;
+    } catch {
+      // If validation fails, treat as no downloads
+      console.warn(`Warning: Invalid download stats format for ${packageName}`);
+      return 0;
+    }
   } catch {
     // If downloads API fails, don't fail the entire analysis
     console.warn(`Warning: Could not fetch download stats for ${packageName}`);

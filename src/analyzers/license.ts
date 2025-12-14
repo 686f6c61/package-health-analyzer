@@ -1,6 +1,27 @@
 /**
- * package-health-analyzer - Comprehensive dependency health analyzer
+ * package-health-analyzer - License Analysis Module
  *
+ * This module analyzes the license dimension of package health by evaluating license
+ * compatibility with different project types (commercial, SaaS, open-source). It categorizes
+ * licenses based on commercial restrictions, copyleft requirements, and SPDX compliance,
+ * then assesses legal quality using Blue Oak Council ratings.
+ *
+ * Key responsibilities:
+ * - Parse and normalize license identifiers to SPDX format
+ * - Categorize licenses (commercial-friendly, commercial-warning, commercial-incompatible, unlicensed, unknown)
+ * - Evaluate license expressions including dual-licensing scenarios (OR operators)
+ * - Determine severity levels based on project type compatibility
+ * - Assess legal quality using Blue Oak Council ratings (gold, silver, bronze, lead)
+ * - Check for patent protection clauses in permissive licenses
+ * - Support configuration-based allow/deny lists with wildcard pattern matching
+ *
+ * The categorization algorithm distinguishes between strong copyleft (GPL, AGPL), weak
+ * copyleft (LGPL, MPL), and permissive licenses (MIT, Apache-2.0, BSD). For dual-licensed
+ * packages, it selects the most permissive option. Commercial projects receive critical
+ * severity for AGPL/GPL licenses, while open-source projects receive only warnings. The
+ * scoring integrates license category compatibility with legal quality assessments.
+ *
+ * @module analyzers/license
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/package-health-analyzer
  * @license MIT
@@ -119,7 +140,7 @@ function matchesLicensePattern(license: string, pattern: string): boolean {
  */
 function determineSeverity(
   category: LicenseCategory,
-  projectType: ProjectType,
+  _projectType: ProjectType,
   config: LicenseConfig
 ): Severity {
   switch (category) {

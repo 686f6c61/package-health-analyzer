@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { FiClock, FiFileText, FiShield, FiActivity, FiGithub, FiFile } from 'react-icons/fi';
+import { FiClock, FiFileText, FiShield, FiActivity, FiGithub, FiFile, FiAlertTriangle, FiLayers, FiPackage, FiLock, FiZap, FiCode, FiTrendingUp } from 'react-icons/fi';
 
 export const Features = () => {
   const { t } = useTranslation();
@@ -14,10 +14,11 @@ export const Features = () => {
     },
     {
       icon: FiFileText,
-      title: t('features.licenseCompliance.title'),
-      description: t('features.licenseCompliance.description'),
+      title: t('features.licenseComplianceExtended.title'),
+      description: t('features.licenseComplianceExtended.description'),
       color: 'text-purple-600 dark:text-purple-400',
       bgColor: 'bg-purple-100 dark:bg-purple-900/30',
+      badge: 'v2.0',
     },
     {
       icon: FiShield,
@@ -47,6 +48,70 @@ export const Features = () => {
       color: 'text-orange-600 dark:text-orange-400',
       bgColor: 'bg-orange-100 dark:bg-orange-900/30',
     },
+    {
+      icon: FiAlertTriangle,
+      title: t('features.vulnerabilityScanning.title'),
+      description: t('features.vulnerabilityScanning.description'),
+      color: 'text-red-600 dark:text-red-400',
+      bgColor: 'bg-red-100 dark:bg-red-900/30',
+      badge: 'v2.0',
+    },
+    {
+      icon: FiLayers,
+      title: t('features.dependencyTreeAnalysis.title'),
+      description: t('features.dependencyTreeAnalysis.description'),
+      color: 'text-indigo-600 dark:text-indigo-400',
+      bgColor: 'bg-indigo-100 dark:bg-indigo-900/30',
+      badge: 'v2.0',
+    },
+    {
+      icon: FiFile,
+      title: t('features.noticeGeneration.title'),
+      description: t('features.noticeGeneration.description'),
+      color: 'text-cyan-600 dark:text-cyan-400',
+      bgColor: 'bg-cyan-100 dark:bg-cyan-900/30',
+      badge: 'v2.0',
+    },
+    {
+      icon: FiPackage,
+      title: t('features.spdxExport.title'),
+      description: t('features.spdxExport.description'),
+      color: 'text-purple-600 dark:text-purple-400',
+      bgColor: 'bg-purple-100 dark:bg-purple-900/30',
+      badge: 'v2.0',
+    },
+    {
+      icon: FiLock,
+      title: t('features.tokenSecuritySystem.title'),
+      description: t('features.tokenSecuritySystem.description'),
+      color: 'text-rose-600 dark:text-rose-400',
+      bgColor: 'bg-rose-100 dark:bg-rose-900/30',
+      badge: 'v2.0',
+    },
+    {
+      icon: FiZap,
+      title: t('features.performanceCaching.title'),
+      description: t('features.performanceCaching.description'),
+      color: 'text-yellow-600 dark:text-yellow-400',
+      bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
+      badge: 'v2.0',
+    },
+    {
+      icon: FiCode,
+      title: t('features.sarifOutput.title'),
+      description: t('features.sarifOutput.description'),
+      color: 'text-teal-600 dark:text-teal-400',
+      bgColor: 'bg-teal-100 dark:bg-teal-900/30',
+      badge: 'v2.0',
+    },
+    {
+      icon: FiTrendingUp,
+      title: t('features.upgradePathAnalysis.title'),
+      description: t('features.upgradePathAnalysis.description'),
+      color: 'text-amber-600 dark:text-amber-400',
+      bgColor: 'bg-amber-100 dark:bg-amber-900/30',
+      badge: 'v2.0',
+    },
   ];
 
   return (
@@ -69,9 +134,16 @@ export const Features = () => {
                 <div className={`w-12 h-12 ${feature.bgColor} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                   <Icon className={`w-6 h-6 ${feature.color}`} />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                  {feature.title}
-                </h3>
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    {feature.title}
+                  </h3>
+                  {feature.badge && (
+                    <span className="px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-full">
+                      {feature.badge}
+                    </span>
+                  )}
+                </div>
                 <p className="text-gray-600 dark:text-gray-400">
                   {feature.description}
                 </p>

@@ -1,0 +1,11 @@
+Scanning 9 dependencies...
+package,version,age_days,age_human,deprecated,license,license_category,blue_oak_rating,commercial_use,health_score,health_rating,severity,has_repository,repository_url
+express,5.2.1,3,3 days,false,MIT,commercial-friendly,gold,true,95,excellent,ok,true,git+https://github.com/expressjs/express.git
+body-parser,2.2.1,11,1 week,false,MIT,commercial-friendly,gold,true,95,excellent,ok,true,git+https://github.com/expressjs/body-parser.git
+cookie-parser,1.4.7,430,1 year 2 months,false,MIT,commercial-friendly,gold,true,94,excellent,ok,true,git+https://github.com/expressjs/cookie-parser.git
+dotenv,17.2.3,74,2 months,false,BSD-2-Clause,commercial-friendly,gold,true,95,excellent,ok,true,git://github.com/motdotla/dotenv.git
+cors,2.8.5,247,8 months,false,MIT,commercial-friendly,gold,true,95,excellent,ok,true,git+https://github.com/expressjs/cors.git
+helmet,8.1.0,270,9 months,false,MIT,commercial-friendly,gold,true,95,excellent,ok,true,git://github.com/helmetjs/helmet.git
+morgan,1.10.1,148,4 months,false,MIT,commercial-friendly,gold,true,95,excellent,ok,true,git+https://github.com/expressjs/morgan.git
+compression,1.8.1,148,4 months,false,MIT,commercial-friendly,gold,true,95,excellent,ok,true,git+https://github.com/expressjs/compression.git
+winston,3.19.0,5,5 days,false,MIT,commercial-friendly,gold,true,95,excellent,ok,true,git+https://github.com/winstonjs/winston.git

@@ -3,16 +3,12 @@ import { FiSun, FiMoon, FiGithub } from 'react-icons/fi';
 import { useTheme } from '../contexts/ThemeContext';
 
 export const Header = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
   };
 
   return (
@@ -71,29 +67,6 @@ export const Header = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
-              <button
-                onClick={() => changeLanguage('en')}
-                className={`px-3 py-1 rounded transition-colors ${
-                  i18n.language === 'en'
-                    ? 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400 shadow-sm'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                }`}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => changeLanguage('es')}
-                className={`px-3 py-1 rounded transition-colors ${
-                  i18n.language === 'es'
-                    ? 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400 shadow-sm'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                }`}
-              >
-                ES
-              </button>
-            </div>
-
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
