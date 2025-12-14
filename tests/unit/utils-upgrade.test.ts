@@ -240,7 +240,7 @@ describe('Upgrade Path Configuration Options', () => {
 
     // Resources should be provided for webpack
     expect(result).toBeDefined();
-  });
+  }, 10000); // Increased timeout for Node.js 18.x compatibility
 
   it('should skip changelogs when disabled', async () => {
     const config = {
